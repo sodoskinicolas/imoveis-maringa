@@ -1,0 +1,42 @@
+name: 🏠 Raspar Imóveis (3h BRT)
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC = 03:00 BRT (UTC-3)
+  workflow_dispatch:        # permite rodar manualmente pelo GitHub
+
+jobs:
+  raspar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Raspar todos os sites
+        run: python3 raspar_imoveis.py
+
+      - name: Salvar planilha atualizada no repositório
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Imoveis_Grupos.xlsx
+          if git diff --staged --quiet; then
+            echo "Nenhum imóvel novo encontrado."
+          else
+            COUNT=$(git diff --staged --stat | grep -o '[0-9]* insertion' | grep -o '[0-9]*' || echo "?")
+            git commit -m "🏠 Raspagem $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M') — imóveis novos adicionados"
+            git push
+            echo "✅ Planilha atualizada e enviada ao GitHub."
+          fi

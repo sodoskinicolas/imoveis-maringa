@@ -1,0 +1,64 @@
+2026/06/26-20:41:13.602 17eda2 Reusing MANIFEST /Users/nicolassodoski/Claude/Projects/PW/chatbot-corretores/.wwebjs_auth/session-corretor-maringa/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/26-20:41:13.604 17eda2 Recovering log #1731
+2026/06/26-20:41:13.628 17eda2 Reusing old log /Users/nicolassodoski/Claude/Projects/PW/chatbot-corretores/.wwebjs_auth/session-corretor-maringa/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/001731.log 
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1730
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1718
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1709
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1697
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1699
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1698
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1714
+2026/06/26-20:41:13.629 17eda2 Delete type=2 #1700
+2026/06/26-20:41:13.635 17eda4 Compacting 1@1 + 4@2 files
+2026/06/26-20:41:13.676 17eda4 Generated table #1734@1: 14038 keys, 2160611 bytes
+2026/06/26-20:41:13.943 17eda4 Generated table #1735@1: 81917 keys, 2227540 bytes
+2026/06/26-20:41:14.014 17eda4 Generated table #1736@1: 94444 keys, 2245521 bytes
+2026/06/26-20:41:14.047 17eda4 Generated table #1737@1: 26067 keys, 856080 bytes
+2026/06/26-20:41:14.047 17eda4 Compacted 1@1 + 4@2 files => 7489752 bytes
+2026/06/26-20:41:14.049 17eda4 compacted to: files[ 2 6 39 0 0 0 0 ]
+2026/06/26-20:41:14.049 17eda4 Delete type=2 #1705
+2026/06/26-20:41:14.049 17eda4 Delete type=2 #1704
+2026/06/26-20:41:14.049 17eda4 Delete type=2 #1729
+2026/06/26-20:41:14.049 17eda4 Delete type=2 #1703
+2026/06/26-20:41:14.049 17eda4 Delete type=2 #1702
+2026/06/26-20:41:17.942 17eda2 Compacting 2@0 + 6@1 files
+2026/06/26-20:41:18.113 17eda2 Generated table #1738@0: 122968 keys, 1780584 bytes
+2026/06/26-20:41:18.142 17eda2 Generated table #1739@0: 3074 keys, 2154068 bytes
+2026/06/26-20:41:18.166 17eda2 Generated table #1740@0: 3806 keys, 2152275 bytes
+2026/06/26-20:41:18.198 17eda2 Generated table #1741@0: 3260 keys, 2149534 bytes
+2026/06/26-20:41:18.217 17eda2 Generated table #1742@0: 7545 keys, 1205966 bytes
+2026/06/26-20:41:18.250 17eda2 Generated table #1743@0: 18160 keys, 954017 bytes
+2026/06/26-20:41:18.250 17eda2 Compacted 2@0 + 6@1 files => 10396444 bytes
+2026/06/26-20:41:18.251 17eda2 compacted to: files[ 0 6 39 0 0 0 0 ]
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1727
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1732
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1726
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1724
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1725
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1721
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1723
+2026/06/26-20:41:18.252 17eda2 Delete type=2 #1728
+2026/06/26-20:41:18.343 17eda4 Compacting 1@1 + 10@2 files
+2026/06/26-20:41:18.434 17eda4 Generated table #1744@1: 62981 keys, 2278507 bytes
+2026/06/26-20:41:18.475 17eda4 Generated table #1745@1: 21705 keys, 2170004 bytes
+2026/06/26-20:41:18.529 17eda4 Generated table #1746@1: 63810 keys, 2225620 bytes
+2026/06/26-20:41:18.587 17eda4 Generated table #1747@1: 60617 keys, 2230004 bytes
+2026/06/26-20:41:18.633 17eda4 Generated table #1748@1: 46234 keys, 2211609 bytes
+2026/06/26-20:41:18.690 17eda4 Generated table #1749@1: 114353 keys, 2282593 bytes
+2026/06/26-20:41:18.712 17eda4 Generated table #1750@1: 2461 keys, 2154604 bytes
+2026/06/26-20:41:18.735 17eda4 Generated table #1751@1: 1830 keys, 2147550 bytes
+2026/06/26-20:41:18.755 17eda4 Generated table #1752@1: 2496 keys, 2158594 bytes
+2026/06/26-20:41:18.761 17eda4 Generated table #1753@1: 498 keys, 588150 bytes
+2026/06/26-20:41:18.761 17eda4 Compacted 1@1 + 10@2 files => 20447235 bytes
+2026/06/26-20:41:18.763 17eda4 compacted to: files[ 0 5 39 0 0 0 0 ]
+2026/06/26-20:41:18.763 17eda4 Delete type=2 #1591
+2026/06/26-20:41:18.763 17eda4 Delete type=2 #1592
+2026/06/26-20:41:18.763 17eda4 Delete type=2 #1593
+2026/06/26-20:41:18.763 17eda4 Delete type=2 #1609
+2026/06/26-20:41:18.763 17eda4 Delete type=2 #1608
+2026/06/26-20:41:18.763 17eda4 Delete type=2 #1657
+2026/06/26-20:41:18.764 17eda4 Delete type=2 #1658
+2026/06/26-20:41:18.764 17eda4 Delete type=2 #1738
+2026/06/26-20:41:18.764 17eda4 Delete type=2 #1610
+2026/06/26-20:41:18.764 17eda4 Delete type=2 #1606
+2026/06/26-20:41:18.764 17eda4 Delete type=2 #1607

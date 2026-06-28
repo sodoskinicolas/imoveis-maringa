@@ -1,0 +1,18 @@
+{
+  "name": "chatbot-corretores-maringa",
+  "version": "1.0.0",
+  "description": "Chatbot para mapear corretores de Maringá via WhatsApp",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "extrair": "node extrair_contatos.js",
+    "enviar": "node enviar_mensagens.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.18",
+    "@hapi/boom": "^10.0.1",
+    "pino": "^9.0.0",
+    "qrcode-terminal": "^0.12.0",
+    "xlsx": "^0.18.5"
+  }
+}

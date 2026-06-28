@@ -1,0 +1,63 @@
+name: 🌐 Gerar Site (8h BRT)
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # 11:00 UTC = 08:00 BRT (UTC-3)
+  workflow_dispatch:         # permite rodar manualmente
+  push:
+    branches: [main]
+    paths:
+      - 'Imoveis_Grupos.xlsx'
+      - 'Demandas_Grupos.xlsx'
+      - 'gerar_site.py'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Gerar Imoveis.html
+        run: python3 gerar_site.py
+
+      - name: Preparar pasta do site
+        run: |
+          mkdir -p _site
+          cp Imoveis.html _site/index.html
+          echo "Site gerado em $(TZ='America/Sao_Paulo' date '+%Y-%m-%d %H:%M BRT')" > _site/status.txt
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Fazer upload do site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

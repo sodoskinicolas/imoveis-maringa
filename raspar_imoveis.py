@@ -94,24 +94,18 @@ def parse_int(s):
 
 def infer_tipo(s):
     s = (s or "").lower()
-    if "apart" in s or "apto" in s:
-        return "Apartamento"
-    if "casa" in s:
-        return "Casa"
-    if "terreno" in s:
-        return "Terreno"
-    if "sala" in s or "comercial" in s or "loja" in s:
-        return "Sala Comercial"
-    if "sobrado" in s:
-        return "Sobrado"
-    if "chácara" in s or "chacara" in s:
-        return "Chácara"
-    if "sítio" in s or "sitio" in s:
-        return "Sítio"
-    if "kitnet" in s or "kit" in s:
-        return "Kitnet"
-    if "galpão" in s or "galpao" in s:
-        return "Galpão"
+    # Tipos mais específicos primeiro para evitar falsos positivos
+    if "sobrado" in s:                                      return "Sobrado"
+    if "kitnet" in s or "kit net" in s or "studio" in s or "flat" in s: return "Kitnet"
+    if "cobertura" in s:                                    return "Apartamento"
+    if "apart" in s or "apto" in s:                        return "Apartamento"
+    if "edif" in s or "andar" in s:                        return "Apartamento"
+    if "chácara" in s or "chacara" in s:                   return "Chácara"
+    if "sítio" in s or "sitio" in s:                       return "Sítio"
+    if "galpão" in s or "galpao" in s:                     return "Galpão"
+    if "terreno" in s or "lote" in s:                      return "Terreno"
+    if "sala" in s or "comercial" in s or "loja" in s:     return "Sala Comercial"
+    if "casa" in s:                                         return "Casa"
     return "Imóvel"
 
 def slug(url):
@@ -169,9 +163,17 @@ def parse_sub100_block(html_block, base_domain):
     )
     bairro = fix_enc(bairro_m.group(1).strip()) if bairro_m else ""
 
-    # Tipo — do título ou tag
-    tipo_m = re.search(r'<h[1-4][^>]*>([^<]+)</h[1-4]>', html_block)
-    tipo_str = fix_enc(tipo_m.group(1).strip()) if tipo_m else ""
+    # Tipo — prioridade: og:title > <title> > h1-4 > bairro
+    tipo_str = ""
+    for pat in [
+        r'og:title["\s]+content="([^"]+)"',     # <meta property="og:title" content="Sobrado à venda...">
+        r'<title>([^<]+)</title>',               # <title>Sobrado à venda...</title>
+        r'<h[1-4][^>]*>([^<]+)</h[1-4]>',       # <h1>Sobrado ...</h1>
+    ]:
+        m = re.search(pat, html_block, re.I)
+        if m:
+            tipo_str = fix_enc(m.group(1).strip())
+            break
     tipo = infer_tipo(tipo_str or bairro)
 
     return {
@@ -189,14 +191,72 @@ def parse_sub100_block(html_block, base_domain):
 
 def scrape_sub100(base_url, domain, nome_grupo):
     """
-    Raspa site Sub100.
-    Tenta AJAX paginado; faz fallback para parse HTML da listagem.
+    Raspa site Sub100 por categoria de tipo, para o tipo vir da URL e nunca
+    ser inferido errado a partir do texto do bloco.
+    Fallback: página geral /imoveis-a-venda para tipos não cobertos pelas categorias.
     """
-    log.info(f"[{nome_grupo}] Iniciando raspagem → {base_url}")
+    # Categorias com tipo explícito — URL padrão Sub100
+    base = f"https://{domain}"
+    cidade_slug = "10-maringa-pr"  # slug padrão Maringá no Sub100
+    CATEGORIAS = [
+        (f"{base}/imoveis/venda/apartamentos/{cidade_slug}", "Apartamento"),
+        (f"{base}/imoveis/venda/casas/{cidade_slug}",         "Casa"),
+        (f"{base}/imoveis/venda/sobrados/{cidade_slug}",      "Sobrado"),
+        (f"{base}/imoveis/venda/terrenos/{cidade_slug}",      "Terreno"),
+        (f"{base}/imoveis/venda/coberturas/{cidade_slug}",    "Apartamento"),
+        (f"{base}/imoveis/venda/salas-comerciais/{cidade_slug}", "Sala Comercial"),
+        (f"{base}/imoveis/venda/galpoes/{cidade_slug}",       "Galpão"),
+        (f"{base}/imoveis/venda/chacaras/{cidade_slug}",      "Chácara"),
+        (f"{base}/imoveis/venda/studios/{cidade_slug}",       "Kitnet"),
+        (f"{base}/imoveis/venda/kitnets/{cidade_slug}",       "Kitnet"),
+    ]
+
     items = []
     seen_refs = set()
-    page = 1
 
+    def _raspar_categoria(cat_url, tipo_fixo):
+        page = 1
+        while True:
+            url = f"{cat_url}?page={page}" if page > 1 else cat_url
+            r = get_page(url, ajax=True)
+            if not r:
+                break
+
+            html = r.text
+            if page > 1 and not re.search(r'/imovel/0{3,}\d+/', html):
+                break
+
+            blocks = re.split(r'Contate\s+agora', html, flags=re.I)
+            found = 0
+            for block in blocks:
+                item = parse_sub100_block(block, domain)
+                if not item or item["ref"] in seen_refs:
+                    continue
+                item["tipo"] = tipo_fixo   # ← tipo vem da categoria, não inferido
+                seen_refs.add(item["ref"])
+                items.append(item)
+                found += 1
+
+            if found == 0:
+                break
+
+            soup = BeautifulSoup(html, "html.parser")
+            next_btn = soup.find("a", string=re.compile(r"próxima|next|›|»", re.I))
+            if not next_btn and not re.search(rf'page={page+1}', html):
+                break
+            page += 1
+            time.sleep(1.0)
+
+    log.info(f"[{nome_grupo}] Raspando por categoria...")
+    for cat_url, tipo_fixo in CATEGORIAS:
+        before = len(items)
+        _raspar_categoria(cat_url, tipo_fixo)
+        log.info(f"[{nome_grupo}] {tipo_fixo}: {len(items)-before} imóveis")
+        time.sleep(1.0)
+
+    # Fallback: página geral para pegar tipos não cobertos pelas categorias acima
+    log.info(f"[{nome_grupo}] Iniciando raspagem → {base_url}")
+    page = 1
     while True:
         url = f"{base_url}?page={page}" if page > 1 else base_url
         r = get_page(url, ajax=True)
@@ -205,33 +265,26 @@ def scrape_sub100(base_url, domain, nome_grupo):
             break
 
         html = r.text
-        # Detectar fim de paginação
         if page > 1 and not re.search(r'/imovel/0{3,}\d+/', html):
-            log.info(f"[{nome_grupo}] Sem mais resultados na página {page}")
             break
 
-        # Split no marcador Sub100 "Contate agora"
         blocks = re.split(r'Contate\s+agora', html, flags=re.I)
         found_this_page = 0
-
         for block in blocks:
             item = parse_sub100_block(block, domain)
             if not item or item["ref"] in seen_refs:
-                continue
+                continue   # já coletado pela categoria
             seen_refs.add(item["ref"])
             items.append(item)
             found_this_page += 1
 
-        log.info(f"[{nome_grupo}] Página {page}: {found_this_page} imóveis")
-
+        log.info(f"[{nome_grupo}] Fallback página {page}: {found_this_page} novos")
         if found_this_page == 0:
             break
 
-        # Verificar se tem próxima página no HTML
         soup = BeautifulSoup(html, "html.parser")
         next_btn = soup.find("a", string=re.compile(r"próxima|next|\bnext\b|›|»", re.I))
         if not next_btn:
-            # Tenta verificar pela presença de link com page=N+1
             if not re.search(rf'page={page+1}', html):
                 break
         page += 1

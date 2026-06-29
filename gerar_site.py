@@ -10,6 +10,7 @@ Uso manual:
 
 import json
 import math
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -32,13 +33,47 @@ def limpar(val):
     if isinstance(val, float) and math.isnan(val): return None
     return val
 
+_TIPO_MAP = [
+    (["apartamento", "apto", "edifício", "edificio", "ed.", "andar", "cobertura"], "Apartamento"),
+    (["casa"],                                                                       "Casa"),
+    (["terreno", "lote"],                                                            "Terreno"),
+    (["sobrado"],                                                                    "Sobrado"),
+    (["sala comercial", "sala", "loja", "comercial"],                               "Sala Comercial"),
+    (["galpão", "galpao"],                                                           "Galpão"),
+    (["kitnet", "kit net"],                                                          "Kitnet"),
+    (["chácara", "chacara"],                                                         "Chácara"),
+    (["sítio", "sitio"],                                                             "Sítio"),
+]
+
+def normalizar_tipo(tipo, obs=""):
+    """Garante que o tipo seja sempre um valor padronizado, inferindo do obs se necessário."""
+    t = (tipo or "").strip()
+    tl = t.lower()
+    for palavras, valor in _TIPO_MAP:
+        if any(p in tl for p in palavras):
+            return valor
+    # Se tipo está vazio ou genérico, tenta inferir do obs
+    if t in ("", "Imóvel") and obs:
+        ol = obs.lower()
+        for palavras, valor in _TIPO_MAP:
+            if any(p in ol for p in palavras):
+                return valor
+    return t or "Imóvel"
 
 
+
+
+def _extrair_url(texto):
+    """Extrai a primeira URL http/https de um texto."""
+    if not texto: return ""
+    m = re.search(r'https?://[^\s]+', texto)
+    return m.group(0).rstrip('.,)') if m else ""
 
 def carregar_imoveis():
     df = pd.read_excel(PLANILHA, sheet_name="Imóveis", dtype=str)
     df = df.where(pd.notnull(df), None)
     rows = []
+    vistos = set()   # deduplicação: corretor + preço + data
     for _, r in df.iterrows():
         if not r.get("Data Captura"): continue
         # JJ and VR entries are loaded separately — skip to avoid duplicates
@@ -51,22 +86,36 @@ def carregar_imoveis():
         def tofloat(x):
             try: return float(x) if x else None
             except: return None
+
+        obs = r.get("Observações", "") or ""
+        link = _extrair_url(obs)  # extrai URL da mensagem do WhatsApp
+
+        # Deduplicar: mesma mensagem enviada para vários grupos ou capturada 2x
+        corretor = r.get("Corretor", "") or ""
+        preco    = r.get("Preço (R$)", "") or ""
+        data     = r.get("Data Captura", "") or ""
+        area     = r.get("Área (m²)", "") or ""
+        chave_dup = f"{corretor}|{preco}|{area}|{data[:16]}"  # data até minuto
+        if chave_dup in vistos:
+            continue
+        vistos.add(chave_dup)
+
         rows.append({
-            "data":     r.get("Data Captura", "") or "",
-            "grupo":    r.get("Grupo", "") or "",
-            "corretor": r.get("Corretor", "") or "",
+            "data":     data,
+            "grupo":    grupo,
+            "corretor": corretor,
             "contato":  r.get("Contato (WhatsApp)", "") or "",
-            "tipo":     r.get("Tipo", "") or "Apartamento",
+            "tipo":     normalizar_tipo(r.get("Tipo", ""), obs),
             "bairro":   r.get("Bairro / Endereço", "") or "",
             "area":     tofloat(r.get("Área (m²)")),
             "quartos":  toint(r.get("Quartos")),
             "suites":   toint(r.get("Suítes")),
             "vagas":    toint(r.get("Vagas")),
             "preco":    toint(r.get("Preço (R$)")),
-            "obs":              r.get("Observações", "") or "",
+            "obs":      obs,
             "status":           r.get("Status", "Novo") or "Novo",
             "data_publicacao":  r.get("Data Publicação", "") or "",
-            "link":     "",
+            "link":     link,
             "fonte":    "",
         })
     return rows
@@ -76,6 +125,7 @@ def carregar_juniorjoda():
     """Lê JuniorJoda_Imoveis.xlsx (abas Venda e Locação) e retorna no mesmo formato de carregar_imoveis()."""
     if not JUNIORJODA.exists(): return []
     rows = []
+    vistos_jj = set()  # deduplicação por tipo+bairro+preço+área
     for sheet_name, modalidade in [("📋 Venda", "Venda"), ("🔑 Locação", "Locação")]:
         try:
             df = pd.read_excel(JUNIORJODA, sheet_name=sheet_name, dtype=str, header=1)
@@ -100,19 +150,34 @@ def carregar_juniorjoda():
             tipo  = r.get("Tipo", "") or ""
             bairro = r.get("Bairro / Localização", "") or ""
             cidade = r.get("Cidade", "") or ""
+            # Limpar cidade: remover sufixo "- PR", "- SP" etc.
+            cidade_clean = re.sub(r'\s*[-–]\s*[A-Z]{2}$', '', cidade).strip()
+            # Não mostrar cidade se for Maringá (óbvio no contexto)
+            cidade_display = cidade_clean if cidade_clean.lower() not in ('maringá', 'maringa', '') else ''
+            # Se bairro é o mesmo que empreendimento (ou contido nele), não repetir
+            bairro_final = bairro
+            if nome and bairro and bairro.lower() in nome.lower():
+                bairro_final = cidade_display  # só cidade diferente, se houver
+            elif cidade_display:
+                bairro_final = f"{bairro} · {cidade_display}".strip(" ·") if bairro else cidade_display
             area_priv = tof(r.get("Área Priv. (m²)"))
             area_tot  = tof(r.get("Área Total (m²)"))
             area = area_priv or area_tot
             label_mod = "Aluguel" if modalidade == "Locação" else "Venda"
             obs_final = f"Ref. {ref}"
+            # Deduplicar entradas idênticas (mesmo imóvel listado duas vezes)
+            chave_jj = f"{tipo}|{bairro}|{preco_num}|{area}"
+            if chave_jj in vistos_jj:
+                continue
+            vistos_jj.add(chave_jj)
             rows.append({
                 "data":     datetime.now().strftime("%Y-%m-%d"),
                 "grupo":    "juniorjoda.com.br",
                 "corretor": "Junior Joda Soluções Imobiliárias",
                 "contato":  WA_JJ,
-                "tipo":     tipo,
+                "tipo":     normalizar_tipo(tipo, nome),
                 "nome":     nome,   # empreendimento — used directly for card title
-                "bairro":   f"{bairro} · {cidade}".strip(" ·") if cidade else bairro,
+                "bairro":   bairro_final,
                 "area":     area,
                 "quartos":  toi(r.get("Quartos")),
                 "suites":   toi(r.get("Suítes")),
@@ -152,7 +217,7 @@ def carregar_vivareal():
             "grupo":            "vivareal.com.br",
             "corretor":         r.get("Corretor", "") or "VivaReal",
             "contato":          "",
-            "tipo":             r.get("Tipo", "") or "Imóvel",
+            "tipo":             normalizar_tipo(r.get("Tipo", "") or "", r.get("Observações", "") or ""),
             "bairro":           f"{bairro} · {rua}".strip(" ·") if rua else bairro,
             "area":             tof(r.get("Área (m²)")),
             "quartos":          toi(r.get("Quartos")),
@@ -169,31 +234,79 @@ def carregar_vivareal():
 
 
 def carregar_demandas():
-    if not DEMANDAS.exists(): return []
-    df = pd.read_excel(DEMANDAS, sheet_name="Demandas", dtype=str)
-    df = df.where(pd.notnull(df), None)
+    """Lê demandas do WhatsApp (Imoveis_Grupos.xlsx aba Demandas) + arquivo legado."""
+    def toint(x):
+        try: return int(float(x)) if x and str(x).strip() not in ("","None") else None
+        except: return None
+
     rows = []
-    for _, r in df.iterrows():
-        if not r.get("Data"): continue
-        def toint(x):
-            try: return int(float(x)) if x else None
-            except: return None
-        rows.append({
-            "data":      r.get("Data", "") or "",
-            "grupo":     r.get("Grupo", "") or "",
-            "corretor":  r.get("Corretor", "") or "",
-            "contato":   r.get("Contato (WhatsApp)", "") or "",
-            "tipo":      r.get("Tipo Buscado", "") or "Apartamento",
-            "regiao":    r.get("Bairro / Região", "") or "",
-            "area_min":  toint(r.get("Área Mín (m²)")),
-            "quartos":   toint(r.get("Quartos")),
-            "suites":    toint(r.get("Suítes")),
-            "banheiros": toint(r.get("Banheiros")),
-            "vagas":     toint(r.get("Vagas")),
-            "orcamento": toint(r.get("Orçamento Máx (R$)")),
-            "obs":       r.get("Observações", "") or "",
-            "status":    r.get("Status", "Novo") or "Novo",
-        })
+    vistos = set()
+
+    # 1. Demandas do bot WhatsApp (Imoveis_Grupos.xlsx aba "Demandas")
+    if PLANILHA.exists():
+        try:
+            df = pd.read_excel(PLANILHA, sheet_name="Demandas", dtype=str)
+            df = df.where(pd.notnull(df), None)
+            for _, r in df.iterrows():
+                if not r.get("Data"): continue
+                corretor = r.get("Corretor","") or ""
+                orc = r.get("Orçamento Máx","") or ""
+                data = r.get("Data","") or ""
+                chave = f"{corretor}|{orc}|{data[:16]}"
+                if chave in vistos: continue
+                vistos.add(chave)
+                rows.append({
+                    "data":      data,
+                    "grupo":     r.get("Grupo","") or "",
+                    "corretor":  corretor,
+                    "contato":   r.get("Contato","") or "",
+                    "tipo":      r.get("Tipo Buscado","") or "Apartamento",
+                    "regiao":    r.get("Bairro/Região","") or "",
+                    "area_min":  toint(r.get("Área Mín")),
+                    "quartos":   toint(r.get("Quartos")),
+                    "suites":    toint(r.get("Suítes")),
+                    "banheiros": toint(r.get("Banheiros")),
+                    "vagas":     toint(r.get("Vagas")),
+                    "orcamento": toint(r.get("Orçamento Máx")),
+                    "obs":       r.get("Observações","") or "",
+                    "status":    r.get("Status","Novo") or "Novo",
+                })
+        except Exception as e:
+            print(f"  ⚠️  Demandas WA: {e}")
+
+    # 2. Arquivo legado Demandas_Grupos.xlsx (se existir e tiver dados reais)
+    if DEMANDAS.exists():
+        try:
+            df2 = pd.read_excel(DEMANDAS, sheet_name="Demandas", dtype=str)
+            df2 = df2.where(pd.notnull(df2), None)
+            for _, r in df2.iterrows():
+                corretor = r.get("Corretor","") or ""
+                if not r.get("Data") or "Exemplo" in corretor or "Desconhecido" in corretor:
+                    continue  # pular entradas de exemplo/dummy
+                orc = r.get("Orçamento Máx (R$)","") or ""
+                data = r.get("Data","") or ""
+                chave = f"{corretor}|{orc}|{data[:16]}"
+                if chave in vistos: continue
+                vistos.add(chave)
+                rows.append({
+                    "data":      data,
+                    "grupo":     r.get("Grupo","") or "",
+                    "corretor":  corretor,
+                    "contato":   r.get("Contato (WhatsApp)","") or "",
+                    "tipo":      r.get("Tipo Buscado","") or "Apartamento",
+                    "regiao":    r.get("Bairro / Região","") or "",
+                    "area_min":  toint(r.get("Área Mín (m²)")),
+                    "quartos":   toint(r.get("Quartos")),
+                    "suites":    toint(r.get("Suítes")),
+                    "banheiros": toint(r.get("Banheiros")),
+                    "vagas":     toint(r.get("Vagas")),
+                    "orcamento": toint(r.get("Orçamento Máx (R$)")),
+                    "obs":       r.get("Observações","") or "",
+                    "status":    r.get("Status","Novo") or "Novo",
+                })
+        except Exception as e:
+            print(f"  ⚠️  Demandas legado: {e}")
+
     return rows
 
 
@@ -266,7 +379,8 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}}
 
 /* Card — imóveis */
-.card{{background:#fff;border:1.5px solid #e8e8e4;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .15s,border-color .15s}}
+.card{{background:#fff;border:1.5px solid #e8e8e4;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;transition:box-shadow .15s,border-color .15s;cursor:pointer}}
+.card:hover{{box-shadow:0 4px 18px rgba(0,0,0,.10);border-color:#c5c5bf}}
 .card:hover{{box-shadow:0 4px 20px rgba(0,0,0,.07);border-color:#d0d0cc}}
 .card-header{{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}}
 .card-name{{font-size:15px;font-weight:600;color:#111;line-height:1.3}}
@@ -306,6 +420,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .btn-wa{{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;background:#25d366;color:#fff;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;transition:opacity .15s}}
 .btn-wa:hover{{opacity:.85}}
 .btn-wa svg{{width:14px;height:14px}}
+.btn-sem-contato{{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:#f3f0fa;color:#a78bca;border-radius:8px;font-size:11px;font-weight:500;border:1px solid #e4d8f5;cursor:default}}
 .btn-link{{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;background:#1a4f8a;color:#fff;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;transition:opacity .15s}}
 .btn-link:hover{{opacity:.85}}
 
@@ -327,28 +442,58 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .empty p{{font-size:15px;margin-top:12px;color:#aaa}}
 
 /* ── Match panel ── */
-.match-block{{margin-bottom:28px}}
-.match-dem-header{{background:#fff;border:1.5px solid #e4d8f5;border-radius:12px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}}
-.match-dem-info{{flex:1;min-width:200px}}
-.match-dem-title{{font-size:15px;font-weight:700;color:#6b21a8}}
-.match-dem-sub{{font-size:12px;color:#999;margin-top:3px;line-height:1.6}}
+/* ── Match acordeão ── */
+.match-list{{display:flex;flex-direction:column;gap:8px}}
+.match-item{{border:1.5px solid #e4d8f5;border-radius:12px;overflow:hidden;background:#fff;transition:box-shadow .15s}}
+.match-item.open{{box-shadow:0 4px 20px rgba(107,33,168,.10);border-color:#c4a9e8}}
+.match-item-header{{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;cursor:pointer;user-select:none}}
+.match-item-header:hover{{background:#faf7fe}}
+.match-item-left{{flex:1;min-width:0}}
+.match-dem-title{{font-size:15px;font-weight:700;color:#6b21a8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.match-dem-sub{{font-size:12px;color:#999;margin-top:2px;line-height:1.5}}
+.match-item-right{{display:flex;align-items:center;gap:8px;flex-shrink:0}}
 .match-count-badge{{background:#f0eafb;color:#6b21a8;font-size:12px;font-weight:700;padding:5px 12px;border-radius:99px;white-space:nowrap}}
-.match-row{{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}}
-.match-row::-webkit-scrollbar{{height:4px}}.match-row::-webkit-scrollbar-thumb{{background:#ddd;border-radius:99px}}
-.match-card{{background:#fff;border:1.5px solid #e8e8e4;border-radius:10px;padding:14px;min-width:230px;max-width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s}}
-.match-card:hover{{box-shadow:0 4px 16px rgba(0,0,0,.08);border-color:#ccc}}
-.match-card-jj{{border-color:#cce0f5}}.match-card-jj:hover{{border-color:#85bff5}}
-.match-card-name{{font-size:13px;font-weight:600;color:#111;line-height:1.3}}
-.match-card-loc{{font-size:11px;color:#999;margin-top:2px}}
-.match-card-price{{font-size:15px;font-weight:700;color:#111;letter-spacing:-.3px}}
-.match-score{{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}}
+.match-chevron{{font-size:16px;color:#a78bca;transition:transform .2s;flex-shrink:0}}
+.match-item.open .match-chevron{{transform:rotate(180deg)}}
+.match-body{{display:none;border-top:1px solid #f0eafb;padding:16px}}
+.match-item.open .match-body{{display:block}}
+.match-grid{{display:flex;flex-direction:column;gap:6px}}
+.match-row-item{{display:flex;align-items:center;gap:12px;background:#faf8fe;border:1px solid #ede8f7;border-radius:9px;padding:11px 14px;transition:background .15s}}
+.match-row-item:hover{{background:#f3eefb;border-color:#c9b8e8}}
+.match-row-jj{{background:#f5f9fe;border-color:#d0e6f7}}.match-row-jj:hover{{background:#eaf3fd;border-color:#9dc8ee}}
+.match-row-near{{border-color:#fde8c0}}.match-row-near:hover{{border-color:#f5c166}}
+.mri-main{{flex:1;min-width:0}}
+.mri-title{{font-size:13px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.mri-info{{font-size:11.5px;color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+.mri-right{{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}}
+.mri-price{{font-size:14px;font-weight:700;color:#111;letter-spacing:-.3px;white-space:nowrap}}
+.mri-actions{{display:flex;align-items:center;gap:5px}}
+.match-score{{display:inline-block;padding:2px 7px;border-radius:99px;font-size:10.5px;font-weight:700}}
 .mscore-high{{background:#eaf5e2;color:#2d7a1a}}
 .mscore-mid{{background:#fff3e0;color:#a06000}}
 .mscore-low{{background:#f0f0ec;color:#777}}
-.match-none{{color:#bbb;font-size:13px;padding:16px 0;text-align:center}}
-.match-near-label{{font-size:12px;font-weight:600;color:#a06000;margin:14px 0 8px;padding-left:2px;letter-spacing:.2px}}
-.match-card-near{{border-color:#fde8c0;opacity:.9}}
-.match-card-near:hover{{border-color:#f5c166;opacity:1}}
+.match-none{{color:#bbb;font-size:13px;padding:8px 0;text-align:center}}
+.match-near-label{{font-size:12px;font-weight:600;color:#a06000;margin:12px 0 5px;letter-spacing:.2px}}
+.match-row-item{{cursor:pointer}}
+/* ── Modal detalhes do imóvel ── */
+#im-modal-overlay{{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center}}
+#im-modal-overlay.active{{display:flex}}
+#im-modal{{background:#fff;border-radius:18px;width:min(560px,95vw);max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:28px 28px 24px;position:relative}}
+.im-modal-close{{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;line-height:1}}
+.im-modal-close:hover{{color:#333}}
+.im-modal-tipo{{font-size:11px;font-weight:700;color:#9c72c8;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px}}
+.im-modal-titulo{{font-size:20px;font-weight:800;color:#111;margin-bottom:2px}}
+.im-modal-bairro{{font-size:13px;color:#888;margin-bottom:16px}}
+.im-modal-specs{{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}}
+.im-spec{{background:#f5f2fc;border-radius:8px;padding:7px 13px;font-size:12.5px;font-weight:600;color:#5a35a0}}
+.im-modal-preco{{font-size:26px;font-weight:900;color:#111;letter-spacing:-.5px;margin-bottom:16px}}
+.im-modal-obs{{font-size:13px;color:#555;line-height:1.65;background:#faf8fe;border-radius:10px;padding:12px 14px;margin-bottom:18px;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto}}
+.im-modal-corretor{{font-size:12px;color:#888;margin-bottom:16px}}
+.im-modal-btns{{display:flex;gap:10px;flex-wrap:wrap}}
+.im-modal-btns a{{flex:1;min-width:130px;text-align:center;padding:11px 16px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:opacity .15s}}
+.im-modal-btns a:hover{{opacity:.85}}
+.im-btn-wa{{background:#25d366;color:#fff}}
+.im-btn-link{{background:#1a4f8a;color:#fff}}
 
 
 @media(max-width:640px){{
@@ -563,7 +708,10 @@ function pillCls(s){{
 
 function btnWa(num){{
   if(!num) return '';
-  return '<a class="btn-wa" href="https://wa.me/'+num.replace(/\\D/g,'')+'" target="_blank">'+
+  var n=num.replace(/\D/g,'');
+  // Rejeitar LIDs (>13 dígitos) e strings muito curtas
+  if(n.length<8||n.length>13) return '';
+  return '<a class="btn-wa" href="https://wa.me/'+n+'" target="_blank">'+
     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.524 5.855L0 24l6.334-1.524A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.374l-.36-.214-3.727.977.994-3.634-.235-.374A9.818 9.818 0 1 1 12 21.818z"/></svg>'+
     'Chamar</a>';
 }}
@@ -577,19 +725,55 @@ function mudarAba(aba,el){{
 }}
 
 /* ════ IMÓVEIS ════ */
+function extrairEdificio(obs) {{
+  // Extrai nome do edifício/condomínio do texto da obs
+  if (!obs) return null;
+  var m = obs.match(/(?:edif[íi]cio|ed\.|condom[íi]nio|cond\.|residencial)\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\s]{{2,30}}?)(?:\s*[·\-,\.\d]|$)/i);
+  if (m) return m[1].trim().replace(/\s+/g, ' ');
+  return null;
+}}
+
 function cardNome(im){{
+  var tipo = im.tipo || 'Imóvel';
   if (im.fonte === 'Junior Joda') {{
-    var tipo = im.tipo || 'Imóvel';
-    return im.nome ? tipo + ' · ' + im.nome : tipo;
+    var nomeJJ = im.nome || '';
+    var bairroJJ = im.bairro || '';
+    // Se tem empreendimento, usar no título
+    if (nomeJJ) return tipo + ' · ' + nomeJJ;
+    // Se não tem empreendimento mas tem bairro, usar bairro no título
+    if (bairroJJ) return tipo + ' · ' + bairroJJ;
+    return tipo;
   }}
   if (im.fonte === 'VivaReal') {{
-    var tipo = im.tipo || 'Imóvel';
     var bairroPrincipal = im.bairro ? im.bairro.split(' · ')[0].trim() : '';
     return bairroPrincipal ? tipo + ' · ' + bairroPrincipal : tipo;
   }}
-  if(!im.obs) return im.tipo||'Imóvel';
-  var p=im.obs.split('|')[0].trim();
-  return p.length>2?p:(im.tipo||'Imóvel');
+  // WhatsApp: Tipo · Edifício · Bairro (quando tem nome de edifício no obs)
+  var bairro = im.bairro ? im.bairro.split(',')[0].trim() : '';
+  // Remover prefixo "Cond." do bairro se presente, pois já é o nome do condomínio
+  var edificio = extrairEdificio(im.obs);
+  if (!edificio && im.bairro && im.bairro.startsWith('Cond. ')) {{
+    edificio = im.bairro.replace(/^Cond\.\s*/, '').split('·')[0].trim();
+    bairro = im.bairro.split('·')[1] ? im.bairro.split('·')[1].trim() : '';
+  }}
+  if (edificio && bairro) {{
+    var bl = bairro.toLowerCase().replace(/^cond\.?\s*/i, '').trim();
+    var el = edificio.toLowerCase().trim();
+    // Se o bairro já contém o nome do edifício → não repetir
+    if (bl.includes(el) || el.includes(bl)) {{
+      return tipo + ' · ' + bairro;
+    }}
+    // Se o bairro está no final do nome do edifício → remover do edifício
+    if (el.endsWith(bl)) {{
+      edificio = edificio.slice(0, edificio.length - bairro.replace(/^Cond\.?\s*/i,'').length)
+                         .replace(/[\s·\-,]+$/, '').trim();
+    }}
+    if (!edificio) return tipo + ' · ' + bairro;
+    return tipo + ' · ' + edificio + ' · ' + bairro;
+  }}
+  if (edificio && bairro) return tipo + ' · ' + edificio + ' · ' + bairro;
+  if (edificio)           return tipo + ' · ' + edificio;
+  return bairro ? tipo + ' · ' + bairro : tipo;
 }}
 
 function cardI(im){{
@@ -610,8 +794,10 @@ function cardI(im){{
   var obsDisplay = isVR
     ? (im.data_publicacao ? 'Publicado em '+im.data_publicacao : '')
     : (im.obs || '');
+  var imIdx = IMOVEIS.indexOf(im);
   var cardCls = isJJ ? ' card-jj' : isVR ? ' card-vr' : isNovo ? ' card-novo' : '';
-  return '<div class="card'+cardCls+'">'+
+  var onclick = imIdx >= 0 ? ' onclick="abrirModalIm('+imIdx+')"' : '';
+  return '<div class="card'+cardCls+'"'+onclick+'>'+
     '<div class="card-header">'+
       '<div><div class="card-name">'+cardNome(im)+'</div>'+(im.bairro?'<div class="card-loc">'+im.bairro+'</div>':'')+' </div>'+
       (im.preco?'<div class="card-price">'+fmtP(im.preco)+'</div>':'<div class="card-price-na">Consultar</div>')+
@@ -620,7 +806,7 @@ function cardI(im){{
     (obsDisplay?'<div class="card-desc">'+obsDisplay+'</div>':'')+
     '<div class="card-foot">'+
       '<div class="card-who">'+(im.corretor||'—')+'<br>'+(im.grupo||'')+(im.data?' · '+im.data:'')+' </div>'+
-      '<div class="foot-right">'+btnWa(im.contato)+linkBtn+'<span class="'+pillCls(im.status||'Novo')+'">'+(im.status||'Novo')+'</span></div>'+
+      '<div class="foot-right" onclick="event.stopPropagation()">'+btnWa(im.contato)+linkBtn+'<span class="'+pillCls(im.status||'Novo')+'">'+(im.status||'Novo')+'</span></div>'+
     '</div>'+
   '</div>';
 }}
@@ -746,9 +932,16 @@ function cardD(dm){{
     dm.suites?(dm.suites+(dm.suites===1?' suíte':' suítes')):null,
     dm.vagas?(dm.vagas+(dm.vagas===1?' vaga':' vagas')):null
   ].filter(Boolean).map(function(c){{return typeof c==='string'&&c.indexOf('class="chip')===-1?'<span class="chip">'+c+'</span>':c;}}).join('');
+  // Título descreve O QUE É BUSCADO, não quem busca
+  var tipo   = dm.tipo   || '';
+  var regiao = dm.regiao || '';
+  var tituloParts = [];
+  if (tipo)   tituloParts.push(tipo);
+  if (regiao) tituloParts.push(regiao);
+  var titulo = tituloParts.length ? 'Busca ' + tituloParts.join(' · ') : 'Demanda';
   return '<div class="card card-dem">'+
     '<div class="card-header">'+
-      '<div><div class="card-name">'+(dm.regiao||dm.corretor||'Demanda')+'</div><div class="card-loc">'+(dm.corretor||'—')+'</div></div>'+
+      '<div><div class="card-name">'+titulo+'</div><div class="card-loc">'+(dm.corretor||'—')+'</div></div>'+
       '<div style="text-align:right">'+
         (dm.orcamento?'<div class="card-price">'+fmtP(dm.orcamento)+'</div><div class="dem-orcamento-label">orçamento máx</div>':'<div class="card-price-na">Consultar</div>')+
       '</div>'+
@@ -870,14 +1063,17 @@ function matchImoveis(dm){{
     if(dm.banheiros) {{total++;if(im.suites&&im.suites>=dm.banheiros)score++;}}
     // vagas
     if(dm.vagas)  {{total++;if(im.vagas&&im.vagas>=dm.vagas)score++;}}
-    // area
-    if(dm.area_min){{total++;if(im.area&&im.area>=dm.area_min)score++;}}
-    // orcamento
+    // area: acima de 80% da área mínima (sem teto — quanto maior melhor)
+    if(dm.area_min){{
+      total++;
+      if(im.area && im.area>=dm.area_min*0.8) score++;
+    }}
+    // orcamento: ±20% (não mostrar imóveis muito baratos nem muito caros)
     var precoOk=false,precoDentro20=false;
     if(dm.orcamento){{
       total++;
-      precoOk=!!(im.preco&&im.preco<=dm.orcamento);
-      precoDentro20=!!(im.preco&&im.preco<=dm.orcamento*1.2&&im.preco>=dm.orcamento*0.8);
+      precoOk=!!(im.preco&&im.preco>=dm.orcamento*0.8&&im.preco<=dm.orcamento*1.2);
+      precoDentro20=precoOk;
       if(precoOk) score++;
     }}
     // regiao — comparação canônica (não word overlap solto)
@@ -920,79 +1116,90 @@ function missedCriteria(dm, im){{
   if(dm.suites&&!(im.suites&&im.suites>=dm.suites))         missed.push(dm.suites+' suítes');
   if(dm.banheiros&&!(im.suites&&im.suites>=dm.banheiros)) missed.push(dm.banheiros+' banheiros');
   if(dm.vagas&&!(im.vagas&&im.vagas>=dm.vagas))           missed.push(dm.vagas+' vagas');
-  if(dm.area_min&&!(im.area&&im.area>=dm.area_min))     missed.push('≥'+dm.area_min+' m²');
-  if(dm.orcamento&&!(im.preco&&im.preco<=dm.orcamento)){{var pct=im.preco?Math.round((im.preco/dm.orcamento-1)*100):0;missed.push(pct>0?'+'+pct+'% do orçamento':'orçamento');}}
+  if(dm.area_min&&!(im.area&&im.area>=dm.area_min*0.8)) missed.push('área < '+Math.round(dm.area_min*0.8)+' m²');
+  if(dm.orcamento&&!(im.preco&&im.preco>=dm.orcamento*0.8&&im.preco<=dm.orcamento*1.2)){{var pct=im.preco?Math.round((im.preco/dm.orcamento-1)*100):null;missed.push(pct!==null?(pct>20?'+'+pct+'% do orçamento':pct<-20?pct+'% abaixo do orçamento':'fora ±20%'):'sem preço');}}
   if(dm.regiao){{var words=dm.regiao.toLowerCase().split(/\W+/).filter(function(w){{return w.length>3;}});var bl=(im.bairro||'').toLowerCase();if(!(words.length&&words.some(function(w){{return bl.indexOf(w)!==-1;}}))){{var viz=ehVizinho(dm.regiao,im.bairro||'');missed.push(viz?'bairro vizinho':'região');}}}}
   return missed;
 }}
 
 function cardMatchIm(entry, dm, isNear){{
   var im=entry.im,isJJ=im.fonte==='Junior Joda';
+  var imIdx=IMOVEIS.indexOf(im);
   var nome=cardNome(im);
-  var chips=[fmtA(im.area),
+  var infoParts=[
+    fmtA(im.area),
     im.quartos?(im.quartos+(im.quartos===1?' qt':' qts')):null,
     im.suites?(im.suites+(im.suites===1?' suíte':' suítes')):null,
-    im.vagas?(im.vagas+(im.vagas===1?' vaga':' vagas')):null
-  ].filter(Boolean).map(function(c){{return'<span class="chip" style="font-size:11px;padding:3px 8px">'+c+'</span>';}}).join('');
-  var linkBtn=im.link?'<a class="btn-link" href="'+im.link+'" target="_blank" style="font-size:11px;padding:4px 8px">Ver ↗</a>':'';
+    im.vagas?(im.vagas+(im.vagas===1?' vaga':' vagas')):null,
+    im.bairro||null
+  ].filter(Boolean).join(' · ');
   var badge=isNear
     ? '<span class="match-score mscore-mid">Falta: '+missedCriteria(dm,im).join(', ')+'</span>'
-    : '<span class="match-score mscore-high">✓ todos os critérios</span>';
-  return '<div class="match-card'+(isJJ?' match-card-jj':'')+(isNear?' match-card-near':'')+'">'+
-    '<div>'+
-      '<div class="match-card-name">'+nome+'</div>'+
-      (im.bairro?'<div class="match-card-loc">'+im.bairro+'</div>':'')+
+    : '<span class="match-score mscore-high">✓ todos critérios</span>';
+  var onclick=imIdx>=0?(' onclick="abrirModalIm('+imIdx+');event.stopPropagation()"'):'';
+  return '<div class="match-row-item'+(isJJ?' match-row-jj':'')+(isNear?' match-row-near':'')+'"'+onclick+'>'+
+    '<div class="mri-main">'+
+      '<div class="mri-title">'+nome+'</div>'+
+      '<div class="mri-info">'+infoParts+'</div>'+
     '</div>'+
-    (im.preco?'<div class="match-card-price">'+fmtP(im.preco)+'</div>':'<div style="font-size:12px;color:#bbb">Consultar</div>')+
-    (chips?'<div class="chips" style="gap:4px">'+chips+'</div>':'')+
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">'+
-      badge+
-      '<div style="display:flex;gap:4px">'+btnWa(im.contato)+linkBtn+'</div>'+
+    '<div class="mri-right">'+
+      '<div class="mri-price">'+(im.preco?fmtP(im.preco):'Consultar')+'</div>'+
+      '<div class="mri-actions">'+badge+'<span style="font-size:10px;color:#b09ad8">▶ detalhes</span>'+'</div>'+
     '</div>'+
   '</div>';
 }}
 
 function renderMatch(){{
-  var html='';
   var totalExact=0;
-  DEMANDAS.forEach(function(dm){{
+  var items=[];
+  DEMANDAS.forEach(function(dm,idx){{
     var res=matchImoveis(dm);
     totalExact+=res.exact.length;
     var demTitle=(dm.regiao&&dm.tipo)?dm.tipo+' · '+dm.regiao:(dm.regiao||dm.tipo||dm.corretor||'Demanda');
-    html+='<div class="match-block">'+
-      '<div class="match-dem-header">'+
-        '<div class="match-dem-info">'+
-          '<div class="match-dem-title">'+demTitle+'</div>'+
-          '<div class="match-dem-sub">'+
-            (dm.corretor||'—')+
-            (dm.orcamento?' · Orçamento: '+fmtP(dm.orcamento):'')+
-            (dm.quartos?' · '+dm.quartos+' quartos':'')+
-            (dm.suites?' · '+dm.suites+' suítes':'')+
-            (dm.banheiros?' · '+dm.banheiros+' banheiros':'')+
-            (dm.vagas?' · '+dm.vagas+' vagas':'')+
-            (dm.area_min?' · Mín '+dm.area_min+' m²':'')+
-            (dm.regiao?' · Região: '+dm.regiao:'')+
-          '</div>'+
-        '</div>'+
-        '<div style="display:flex;gap:8px;align-items:center;flex-shrink:0">'+
-          (dm.contato?btnWa(dm.contato):'')+
-          '<span class="match-count-badge">'+res.exact.length+' exatos · '+res.near.length+' quase</span>'+
-        '</div>'+
-      '</div>'+
-      // — Exatos
+    var subParts=[];
+    if(dm.corretor) subParts.push(dm.corretor);
+    if(dm.orcamento) subParts.push('Orçamento: '+fmtP(dm.orcamento));
+    if(dm.quartos)   subParts.push(dm.quartos+' quartos');
+    if(dm.suites)    subParts.push(dm.suites+' suítes');
+    if(dm.vagas)     subParts.push(dm.vagas+' vagas');
+    if(dm.area_min)  subParts.push('Mín '+dm.area_min+' m²');
+    if(dm.regiao)    subParts.push('Região: '+dm.regiao);
+    var bodyHtml=
       (res.exact.length?
-        '<div class="match-row">'+res.exact.map(function(e){{return cardMatchIm(e,dm,false);}}).join('')+'</div>':
+        '<div class="match-grid">'+res.exact.map(function(e){{return cardMatchIm(e,dm,false);}}).join('')+'</div>':
         '<div class="match-none">Nenhum imóvel atende a todos os critérios.</div>')+
-      // — Quase (falta 1 critério)
       (res.near.length?
         '<div class="match-near-label">Quase lá — falta apenas 1 critério</div>'+
-        '<div class="match-row">'+res.near.map(function(e){{return cardMatchIm(e,dm,true);}}).join('')+'</div>':
-        '')+
-    '</div>';
+        '<div class="match-grid">'+res.near.map(function(e){{return cardMatchIm(e,dm,true);}}).join('')+'</div>':
+        '');
+    items.push(
+      '<div class="match-item" id="mi-'+idx+'">'+
+        '<div class="match-item-header" onclick="toggleMatch('+idx+')">'+
+          '<div class="match-item-left">'+
+            '<div class="match-dem-title">'+demTitle+'</div>'+
+            '<div class="match-dem-sub">'+subParts.join(' · ')+'</div>'+
+          '</div>'+
+          '<div class="match-item-right">'+
+            (dm.contato
+              ? btnWa(dm.contato)
+              : '<span class="btn-sem-contato" title="Número não capturado — LID WhatsApp">📵 Sem contato</span>')+
+            '<span class="match-count-badge">'+res.exact.length+' exatos · '+res.near.length+' quase</span>'+
+            '<span class="match-chevron">&#9662;</span>'+
+          '</div>'+
+        '</div>'+
+        '<div class="match-body">'+bodyHtml+'</div>'+
+      '</div>'
+    );
   }});
   document.getElementById('badge-match').textContent=totalExact;
-  document.getElementById('content-match').innerHTML=html||
+  document.getElementById('content-match').innerHTML=
+    items.length?'<div class="match-list">'+items.join('')+'</div>':
     '<div class="empty"><p>Nenhuma demanda cadastrada.</p></div>';
+  if(items.length) toggleMatch(0);
+}}
+function toggleMatch(idx){{
+  var el=document.getElementById('mi-'+idx);
+  if(el) el.classList.toggle('open');
 }}
 
 
@@ -1000,6 +1207,57 @@ function renderMatch(){{
 aplicarI();
 aplicarL();
 aplicarD();
+
+/* ── Modal de detalhes do imóvel ── */
+(function(){{
+  var overlay=document.createElement('div');
+  overlay.id='im-modal-overlay';
+  overlay.innerHTML=
+    '<div id="im-modal">'+
+      '<button class="im-modal-close" onclick="fecharModalIm()">✕</button>'+
+      '<div id="im-modal-body"></div>'+
+    '</div>';
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click',function(e){{if(e.target===overlay)fecharModalIm();}});
+}})();
+
+function abrirModalIm(idx){{
+  var im=IMOVEIS[idx];
+  if(!im) return;
+  var specs=[];
+  if(im.area)    specs.push(im.area+' m²');
+  if(im.quartos) specs.push(im.quartos+(im.quartos===1?' quarto':' quartos'));
+  if(im.suites)  specs.push(im.suites+(im.suites===1?' suíte':' suítes'));
+  if(im.banheiros) specs.push(im.banheiros+(im.banheiros===1?' banheiro':' banheiros'));
+  if(im.vagas)   specs.push(im.vagas+(im.vagas===1?' vaga':' vagas'));
+  var nome=cardNome(im);
+  var precoHtml=im.preco
+    ? '<div class="im-modal-preco">'+fmtP(im.preco)+'</div>'
+    : '<div class="im-modal-preco" style="color:#aaa">Consultar</div>';
+  var obsHtml=im.obs
+    ? '<div class="im-modal-obs">'+im.obs.replace(/</g,'&lt;')+'</div>'
+    : '';
+  var origem=(im.corretor?im.corretor:'')+(im.grupo?' · '+im.grupo:'')+(im.data?' · '+im.data:'');
+  var btns='';
+  if(im.contato){{var n=String(im.contato).replace(/\D/g,'');if(n.length>=8&&n.length<=13) btns+='<a class="im-btn-wa" href="https://wa.me/'+n+'" target="_blank">💬 WhatsApp</a>';}}
+  if(im.link) btns+='<a class="im-btn-link" href="'+im.link+'" target="_blank">🔗 Ver anúncio</a>';
+  document.getElementById('im-modal-body').innerHTML=
+    '<div class="im-modal-tipo">'+(im.tipo||'Imóvel')+'</div>'+
+    '<div class="im-modal-titulo">'+nome+'</div>'+
+    '<div class="im-modal-bairro">'+(im.bairro||'')+'</div>'+
+    '<div class="im-modal-specs">'+specs.map(function(s){{return '<span class="im-spec">'+s+'</span>';}}).join('')+'</div>'+
+    precoHtml+
+    obsHtml+
+    '<div class="im-modal-corretor">'+origem+'</div>'+
+    (btns?'<div class="im-modal-btns">'+btns+'</div>':'<div style="color:#aaa;font-size:13px">Sem contato disponível</div>');
+  document.getElementById('im-modal-overlay').classList.add('active');
+  document.body.style.overflow='hidden';
+}}
+function fecharModalIm(){{
+  document.getElementById('im-modal-overlay').classList.remove('active');
+  document.body.style.overflow='';
+}}
+document.addEventListener('keydown',function(e){{if(e.key==='Escape')fecharModalIm();}});
 </script>
 </body>
 </html>"""

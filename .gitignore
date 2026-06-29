@@ -1,0 +1,22 @@
+# Auth WhatsApp (nunca subir — contém sessão privada)
+baileys_bot/auth/
+baileys_bot/imagens/
+baileys_bot/baileys.log
+baileys_bot/bot.lock
+baileys_bot/bot.pid
+
+# Fila de mensagens (dados locais temporários)
+mensagens_fila.json
+cache_locais.json
+
+# macOS
+.DS_Store
+
+# Apps gerados
+*.app/
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+.env

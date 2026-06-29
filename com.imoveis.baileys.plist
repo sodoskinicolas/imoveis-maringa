@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.imoveis.baileys</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/node</string>
+        <string>/Users/nicolassodoski/Claude/Projects/PW/baileys_bot/bot.js</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/nicolassodoski/Claude/Projects/PW/baileys_bot</string>
+
+    <key>StandardOutPath</key>
+    <string>/Users/nicolassodoski/Claude/Projects/PW/baileys_bot/baileys.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/nicolassodoski/Claude/Projects/PW/baileys_bot/baileys.log</string>
+
+    <!-- Iniciar automaticamente no login -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Reiniciar automaticamente se o bot cair -->
+    <key>KeepAlive</key>
+    <true/>
+
+    <!-- Aguardar 5s antes de reiniciar após falha -->
+    <key>ThrottleInterval</key>
+    <integer>5</integer>
+
+    <!-- Variáveis de ambiente necessárias para Node.js -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin</string>
+        <key>HOME</key>
+        <string>/Users/nicolassodoski</string>
+        <key>NODE_ENV</key>
+        <string>production</string>
+    </dict>
+</dict>
+</plist>

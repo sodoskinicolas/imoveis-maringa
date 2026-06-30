@@ -540,14 +540,28 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
       <select class="fsel" id="preco-min-i">
         <option value="">Preço de</option>
         <option value="100000">R$ 100 mil</option><option value="200000">R$ 200 mil</option>
-        <option value="300000">R$ 300 mil</option><option value="500000">R$ 500 mil</option>
-        <option value="700000">R$ 700 mil</option><option value="1000000">R$ 1 milhão</option>
+        <option value="300000">R$ 300 mil</option><option value="400000">R$ 400 mil</option>
+        <option value="500000">R$ 500 mil</option><option value="600000">R$ 600 mil</option>
+        <option value="700000">R$ 700 mil</option><option value="800000">R$ 800 mil</option>
+        <option value="900000">R$ 900 mil</option><option value="1000000">R$ 1 milhão</option>
+        <option value="1250000">R$ 1,25 milhão</option><option value="1500000">R$ 1,5 milhão</option>
+        <option value="1750000">R$ 1,75 milhão</option><option value="2000000">R$ 2 milhões</option>
+        <option value="2500000">R$ 2,5 milhões</option><option value="3000000">R$ 3 milhões</option>
+        <option value="3500000">R$ 3,5 milhões</option><option value="4000000">R$ 4 milhões</option>
+        <option value="4500000">R$ 4,5 milhões</option><option value="5000000">R$ 5 milhões</option>
       </select>
       <select class="fsel" id="preco-max-i">
         <option value="">até</option>
+        <option value="100000">R$ 100 mil</option><option value="200000">R$ 200 mil</option>
         <option value="300000">R$ 300 mil</option><option value="400000">R$ 400 mil</option>
-        <option value="500000">R$ 500 mil</option><option value="700000">R$ 700 mil</option>
-        <option value="1000000">R$ 1 milhão</option><option value="2000000">R$ 2 milhões</option>
+        <option value="500000">R$ 500 mil</option><option value="600000">R$ 600 mil</option>
+        <option value="700000">R$ 700 mil</option><option value="800000">R$ 800 mil</option>
+        <option value="900000">R$ 900 mil</option><option value="1000000">R$ 1 milhão</option>
+        <option value="1250000">R$ 1,25 milhão</option><option value="1500000">R$ 1,5 milhão</option>
+        <option value="1750000">R$ 1,75 milhão</option><option value="2000000">R$ 2 milhões</option>
+        <option value="2500000">R$ 2,5 milhões</option><option value="3000000">R$ 3 milhões</option>
+        <option value="3500000">R$ 3,5 milhões</option><option value="4000000">R$ 4 milhões</option>
+        <option value="4500000">R$ 4,5 milhões</option><option value="5000000">R$ 5 milhões</option>
       </select>
       <select class="fsel" id="fonte-i">
         <option value="">Todas as fontes</option>

@@ -701,8 +701,13 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
         if not condo_specs:
             # Tentar classificação via IA
             info_local = classificar_local(edificio)
-            if info_local.get('tipo') == 'condominio':
-                nome_condo = info_local.get('nome', edificio)
+            nome_condo = info_local.get('nome', edificio)
+
+            # Código de empreendimento (ex: NEST635, PARK900) — forçar como condomínio
+            # mesmo que a IA não reconheça, pois esses padrões são sempre empreendimentos
+            eh_codigo = bool(re.match(r'^[A-Z]{3,}\d+', edificio))
+
+            if info_local.get('tipo') == 'condominio' or (eh_codigo and pesquisar_condo_imediato):
                 condo_specs = buscar_specs_condo(nome_condo)
 
                 # Se ainda não está no DB e pesquisa imediata foi solicitada → buscar na web agora

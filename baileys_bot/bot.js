@@ -318,6 +318,8 @@ async function iniciarBot() {
         grupo:      nomeGrupo,
         autor,
         contato,
+        // Guardar LID original para resolução posterior via raspar_contatos.js
+        _lidJid:    isLid ? participante : undefined,
         texto:      texto.trim(),
         temImagem,
         imagemPath,

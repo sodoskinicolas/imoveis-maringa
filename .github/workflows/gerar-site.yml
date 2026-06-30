@@ -7,9 +7,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'Imoveis_Grupos.xlsx'
-      - 'Demandas_Grupos.xlsx'
+      - 'imoveis.db'
       - 'gerar_site.py'
+      - 'db.py'
 
 permissions:
   contents: read

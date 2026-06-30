@@ -2,7 +2,7 @@
 """
 processar_mensagens.py
 Lê mensagens capturadas pelo bot Baileys, agrupa fotos + texto do mesmo corretor
-como um único imóvel, extrai dados e atualiza Imoveis_Grupos.xlsx.
+como um único imóvel, extrai dados e salva no SQLite (imoveis.db).
 
 Uso:
     python3 processar_mensagens.py             # processa e atualiza planilha
@@ -12,13 +12,10 @@ Uso:
 
 import json, re, sys, os, base64
 from pathlib import Path
-from openpyxl import load_workbook
-from openpyxl.styles import PatternFill
-import pandas as pd
+import db
 
 BASE_DIR     = Path(__file__).parent
 FILA_FILE    = BASE_DIR / "mensagens_fila.json"
-PLANILHA     = BASE_DIR / "Imoveis_Grupos.xlsx"
 ABA_IMOVEIS      = "Imóveis"
 ABA_DEMANDAS     = "Demandas"
 ABA_CONDOMINIOS  = "Condomínios"
@@ -352,13 +349,12 @@ def classificar_local(nome):
 
 # ─── Pesquisa de condomínios (web search via Claude) ─────────────────────────
 
-def _condos_ja_na_planilha():
-    """Retorna set com nomes (lowercase) dos condomínios já cadastrados."""
-    if not PLANILHA.exists():
-        return set()
+def _condos_ja_no_db():
+    """Retorna set com nomes (lowercase) dos condomínios já cadastrados no SQLite."""
     try:
-        df = pd.read_excel(PLANILHA, sheet_name=ABA_CONDOMINIOS)
-        return {str(n).lower().strip() for n in df['Nome'].dropna()}
+        with db.db_conn() as conn:
+            nomes = db.listar_condominios_nomes(conn)
+        return {n.lower().strip() for n in nomes}
     except:
         return set()
 
@@ -439,45 +435,87 @@ def pesquisar_condominio(nome, cidade="Maringá-PR"):
     return None
 
 
+def buscar_specs_condo(nome):
+    """
+    Busca specs de um condomínio já cadastrado no SQLite.
+    Retorna dict com area_min, quartos, vagas, bairro, padrao ou None.
+    """
+    if not nome:
+        return None
+    try:
+        with db.db_conn() as conn:
+            r = db.buscar_specs_condo(conn, nome)
+        if r:
+            quartos_raw = str(r.get('quartos') or '')
+            nums_q = re.findall(r'\d+', quartos_raw)
+            quartos = int(nums_q[0]) if nums_q else None
+            def toint(v):
+                try: return int(float(v)) if v else None
+                except: return None
+            return {
+                'nome':     r.get('nome'),
+                'bairro':   r.get('bairro') or None,
+                'area_min': toint(r.get('area_min')),
+                'quartos':  quartos,
+                'vagas':    toint(r.get('vagas')),
+                'padrao':   r.get('padrao') or None,
+            }
+    except Exception as e:
+        print(f"  ⚠️  buscar_specs_condo: {e}")
+    return None
+
+
 def atualizar_aba_condominios(info):
-    """Insere condomínio na aba Condomínios se ainda não estiver lá."""
+    """Insere condomínio no SQLite se ainda não estiver lá."""
     from datetime import datetime
 
     nome = str(info.get('nome', '') or '').strip()
     if not nome:
         return
 
-    # Verificar se já está na planilha
-    ja_cadastrados = _condos_ja_na_planilha()
+    ja_cadastrados = _condos_ja_no_db()
     if nome.lower() in ja_cadastrados:
-        print(f"  ⏭️  '{nome}' já está na aba {ABA_CONDOMINIOS}")
+        print(f"  ⏭️  '{nome}' já está em condominios")
         return
 
-    linha = [
-        nome,
-        info.get('endereco') or '',
-        info.get('bairro') or '',
-        info.get('cep') or '',
-        info.get('construtora') or '',
-        info.get('ano_lancamento') or '',
-        info.get('previsao_entrega') or '',
-        info.get('padrao') or '',
-        info.get('torres') or '',
-        info.get('andares') or '',
-        info.get('total_aptos') or '',
-        info.get('area_min'),
-        info.get('area_max'),
-        info.get('quartos') or '',
-        info.get('vagas') or '',
-        info.get('lazer') or '',
-        info.get('faixa_preco') or '',
-        info.get('observacoes') or '',
-        info.get('link') or '',
-        datetime.now().strftime('%d/%m/%Y %H:%M'),
-    ]
+    def _toint(v):
+        try: return int(float(v)) if v else None
+        except: return None
+    def _tofloat(v):
+        try: return float(v) if v else None
+        except: return None
 
-    inserir_linhas(ABA_CONDOMINIOS, [linha], COLUNAS_CONDOMINIOS)
-    print(f"  🏗️  Condomínio '{nome}' cadastrado na aba {ABA_CONDOMINIOS}")
+    with db.db_conn() as conn:
+        conn.execute("""
+            INSERT OR IGNORE INTO condominios
+                (nome, endereco, bairro, cep, construtora, ano_lancamento,
+                 previsao_entrega, padrao, torres, andares, total_aptos,
+                 area_min, area_max, quartos, vagas, lazer, faixa_preco,
+                 observacoes, site_link, data_cadastro)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (
+            nome,
+            info.get('endereco') or None,
+            info.get('bairro') or None,
+            info.get('cep') or None,
+            info.get('construtora') or None,
+            info.get('ano_lancamento') or None,
+            info.get('previsao_entrega') or None,
+            info.get('padrao') or None,
+            _toint(info.get('torres')),
+            _toint(info.get('andares')),
+            _toint(info.get('total_aptos')),
+            _tofloat(info.get('area_min')),
+            _tofloat(info.get('area_max')),
+            str(info.get('quartos') or '') or None,
+            _toint(info.get('vagas')),
+            info.get('lazer') or None,
+            info.get('faixa_preco') or None,
+            info.get('observacoes') or None,
+            info.get('link') or None,
+            datetime.now().strftime('%d/%m/%Y %H:%M'),
+        ))
+    print(f"  🏗️  Condomínio '{nome}' cadastrado no SQLite")
 
 # Nomes geográficos que NÃO são bairros (cidade, estado, país)
 _NAO_BAIRRO = {
@@ -540,6 +578,7 @@ def extrair_bairro(texto):
 
 def extrair_edificio(texto):
     """Extrai nome de edifício/condomínio mencionado explicitamente no texto."""
+    # 1. Padrão com prefixo: "edifício X", "condomínio X", "residencial X"
     m = re.search(
         r'(?:edifício|ed\.|condomínio|cond\.|residencial)\s+([A-ZÀ-Ú][A-Za-zÀ-ú\s]{2,35}?)(?:\s*[·\-,\.]|\s*\d+[oOºª]|\s*$|\n)',
         texto, re.IGNORECASE
@@ -548,17 +587,95 @@ def extrair_edificio(texto):
         nome = m.group(1).strip().rstrip('·-.,')
         if 2 < len(nome) < 40:
             return nome
+
+    # 2. Nome de edifício no início do texto sem prefixo (ex: "Urban Yticon, 23º andar...")
+    #    Captura 1-4 palavras capitalizadas antes de vírgula, traço ou número de andar
+    m2 = re.match(
+        r'^([A-ZÀ-Ú][A-Za-zÀ-ú]+(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú]+){0,3})\s*(?:,|\.|[–\-]|\d+[oOºª])',
+        texto.strip()
+    )
+    if m2:
+        nome = m2.group(1).strip()
+        _nao_edificio = {'apartamento', 'apto', 'casa', 'terreno', 'venda', 'aluguel',
+                         'ótima', 'lindo', 'excelente', 'bom', 'boa', 'oportunidade',
+                         'imóvel', 'imovel', 'sobrado', 'cobertura', 'studio'}
+        if nome.lower() not in _nao_edificio and 3 < len(nome) < 45:
+            return nome
+
+    # 2b. Código de empreendimento: 3+ letras maiúsculas + dígitos (ex: NEST635, PARK900, MRV123)
+    m3 = re.search(r'\b([A-Z]{3,}\d+[A-Z0-9]*)\b', texto)
+    if m3:
+        nome = m3.group(1)
+        if 4 <= len(nome) <= 20:
+            return nome
+
+    # 2c. Nome próprio após "com", "busco", "busca" em contexto de demanda
+    #     Ex: "alguém com Vista Bela", "busco Residencial das Flores"
+    m4 = re.search(
+        r'(?:\bcom\b|\bbusco\b|\bbusca\b|\bquero\b|\bdo\b|\bda\b)\s+'
+        r'([A-ZÀ-Ú][A-Za-zÀ-ú0-9]+(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú0-9]+){0,3})'
+        r'(?:\s+de\s|\s+com\s|\s*[,\.\n]|$)',
+        texto
+    )
+    if m4:
+        candidato = m4.group(1).strip()
+        _nao_edificio_ctx = {
+            'apartamento', 'apto', 'casa', 'imóvel', 'imovel', 'terreno',
+            'cliente', 'comprador', 'área', 'quartos', 'suítes', 'vaga',
+            'preferência', 'piscina', 'lazer',
+        }
+        if candidato.lower() not in _nao_edificio_ctx and 3 < len(candidato) < 40:
+            return candidato
+
+    # 3. Fallback: verificar se algum condomínio cadastrado no DB aparece no texto
+    try:
+        with db.db_conn() as conn:
+            nomes_condos = db.listar_condominios_nomes(conn)
+        tl = texto.lower()
+        for n in nomes_condos:
+            n = str(n or '').strip()
+            if n and len(n) > 3 and n.lower() in tl:
+                return n
+    except:
+        pass
+
     return None
 
-def extrair_campos(texto):
+def extrair_campos(texto, pesquisar_condo_imediato=False):
+    """
+    Extrai campos do texto da mensagem.
+    pesquisar_condo_imediato=True: se o condomínio não estiver no DB,
+    pesquisa na web na hora (usado para demandas, para preencher specs antes de salvar).
+    """
     edificio = extrair_edificio(texto)
-    # Se achou nome de edifício → acionar classificação/pesquisa
+    condo_specs = None
+
+    # Se achou nome de edifício → buscar specs direto no DB (rápido)
     if edificio:
-        info = classificar_local(edificio)
-        # se for condomínio novo, já foi adicionado a _CONDOS_NOVOS dentro de classificar_local
-    return {
+        condo_specs = buscar_specs_condo(edificio)
+        if not condo_specs:
+            # Tentar classificação via IA
+            info_local = classificar_local(edificio)
+            if info_local.get('tipo') == 'condominio':
+                nome_condo = info_local.get('nome', edificio)
+                condo_specs = buscar_specs_condo(nome_condo)
+
+                # Se ainda não está no DB e pesquisa imediata foi solicitada → buscar na web agora
+                if not condo_specs and pesquisar_condo_imediato:
+                    print(f"  🔎 Condo '{nome_condo}' não encontrado no DB — pesquisando na web...")
+                    info_pesq = pesquisar_condominio(nome_condo)
+                    if info_pesq:
+                        atualizar_aba_condominios(info_pesq)
+                        condo_specs = buscar_specs_condo(nome_condo)
+                elif not condo_specs:
+                    # Defer para o final (fluxo normal de venda)
+                    _CONDOS_NOVOS.add(nome_condo)
+
+    # Extração direta da mensagem
+    campos = {
         'tipo':      extrair_tipo(texto),
         'bairro':    extrair_bairro(texto),
+        'edificio':  edificio,
         'area':      extrair_area(texto),
         'quartos':   extrair_num(texto, [r'quartos?', r'dormit[oó]rios?', r'dorm\.?']),
         'suites':    extrair_num(texto, [r'su[íi]tes?']),
@@ -566,6 +683,25 @@ def extrair_campos(texto):
         'vagas':     extrair_num(texto, [r'vagas?', r'garagens?']),
         'preco':     extrair_preco(texto),
     }
+
+    # Completar campos faltantes com specs do condomínio (mensagem tem prioridade)
+    if condo_specs:
+        if not campos['tipo'] or campos['tipo'] == 'Imóvel':
+            campos['tipo'] = 'Apartamento'  # edifícios são sempre apartamentos
+        if not campos['bairro'] and condo_specs.get('bairro'):
+            campos['bairro'] = condo_specs['bairro']
+            print(f"  🏗️  Bairro do condo '{edificio}': {condo_specs['bairro']}")
+        if not campos['area'] and condo_specs.get('area_min'):
+            campos['area'] = condo_specs['area_min']
+            print(f"  🏗️  Área do condo '{edificio}': {condo_specs['area_min']}m²")
+        if not campos['quartos'] and condo_specs.get('quartos'):
+            campos['quartos'] = condo_specs['quartos']
+            print(f"  🏗️  Quartos do condo '{edificio}': {condo_specs['quartos']}")
+        if not campos['vagas'] and condo_specs.get('vagas'):
+            campos['vagas'] = condo_specs['vagas']
+            print(f"  🏗️  Vagas do condo '{edificio}': {condo_specs['vagas']}")
+
+    return campos
 
 def tem_dados(c):
     return any([c.get('preco'), c.get('area'), c.get('quartos'), c.get('suites'), c.get('vagas')])
@@ -601,13 +737,19 @@ def agrupar_mensagens(pendentes):
                 pacote_idxs.append(idx2)
                 usadas.add(idx2)
 
+        msgs_pacote = [pendentes[i] for i in pacote_idxs]
+        # Melhor contato: primeiro não-vazio de todo o pacote
+        melhor_contato = next(
+            (m.get('contato', '') for m in msgs_pacote if m.get('contato')),
+            ''
+        )
         pacotes.append({
             'idxs': pacote_idxs,
-            'msgs': [pendentes[i] for i in pacote_idxs],
+            'msgs': msgs_pacote,
             'autor': msg['autor'],
             'grupo': msg['grupo'],
             'data':  msg.get('data', ''),
-            'contato': msg.get('contato', ''),
+            'contato': melhor_contato,
         })
 
     return pacotes
@@ -629,7 +771,9 @@ def resolver_pacote(pacote):
     classe = classificar(texto_completo) if texto_completo else 'indefinido'
 
     # Extrair campos do texto
-    campos = extrair_campos(texto_completo) if texto_completo else None
+    # Para demandas: pesquisar condo na web imediatamente para preencher specs
+    eh_demanda = (classe == 'demanda')
+    campos = extrair_campos(texto_completo, pesquisar_condo_imediato=eh_demanda) if texto_completo else None
 
     if campos and tem_dados(campos):
         # Texto tem dados suficientes → não precisa analisar imagem
@@ -674,8 +818,11 @@ def resolver_pacote(pacote):
 def fazer_fp(autor, bairro, preco, area, texto, timestamp=None):
     autor = str(autor or '').lower().strip()
     bairro = str(bairro or '').lower().strip()
-    preco = preco or 0
-    area = area or 0
+    # Normalizar para int para evitar "480000" vs "480000.0" do Excel vs do Claude
+    try:   preco = int(float(preco)) if preco else 0
+    except: preco = 0
+    try:   area = int(float(area)) if area else 0
+    except: area = 0
     texto_curto = str(texto or '')[:80].lower().strip()
 
     if bairro and preco:       return f"{autor}|{bairro}|{preco}"
@@ -685,45 +832,107 @@ def fazer_fp(autor, bairro, preco, area, texto, timestamp=None):
     elif timestamp:            return f"{autor}|ts:{int(timestamp)}"  # fallback: autor+timestamp
     return None  # último recurso: não deduplica
 
-def _load_fps(sheet_name, col_autor, col_bairro, col_preco, col_area, col_obs):
-    if not PLANILHA.exists(): return set()
+# ─── Fingerprints a partir do SQLite ────────────────────────────────────────
+
+def fp_imoveis():
+    """Carrega fingerprints de imóveis do SQLite para deduplicação."""
     try:
-        df = pd.read_excel(PLANILHA, sheet_name=sheet_name)
+        with db.db_conn() as conn:
+            rows = conn.execute(
+                "SELECT corretor, bairro, preco, area, observacoes FROM imoveis"
+            ).fetchall()
         fps = set()
-        for _, r in df.iterrows():
-            fp = fazer_fp(
-                r.get(col_autor,''), r.get(col_bairro,''),
-                r.get(col_preco), r.get(col_area), r.get(col_obs,''))
-            if fp: fps.add(fp)
+        for r in rows:
+            autor  = r["corretor"] or ''
+            bairro = r["bairro"] or ''
+            preco  = r["preco"]
+            area   = r["area"]
+            obs    = r["observacoes"] or ''
+            fp_com = fazer_fp(autor, bairro, preco, area, obs)
+            fp_sem = fazer_fp(autor, '',     preco, area, obs)
+            if fp_com: fps.add(fp_com)
+            if fp_sem: fps.add(fp_sem)
         return fps
     except: return set()
 
-def fp_imoveis():
-    return _load_fps(ABA_IMOVEIS, 'Corretor', 'Bairro / Endereço', 'Preço (R$)', 'Área (m²)', 'Observações')
-
 def fp_demandas():
-    return _load_fps(ABA_DEMANDAS, 'Corretor', 'Bairro/Região', 'Orçamento Máx', 'Área Mín', 'Observações')
+    """Carrega fingerprints de demandas do SQLite para deduplicação."""
+    try:
+        with db.db_conn() as conn:
+            rows = conn.execute(
+                "SELECT corretor, bairro_regiao, orcamento_max, area_min, observacoes FROM demandas"
+            ).fetchall()
+        fps = set()
+        for r in rows:
+            autor  = r["corretor"] or ''
+            bairro = r["bairro_regiao"] or ''
+            preco  = r["orcamento_max"]
+            area   = r["area_min"]
+            obs    = r["observacoes"] or ''
+            fp_com = fazer_fp(autor, bairro, preco, area, obs)
+            fp_sem = fazer_fp(autor, '',     preco, area, obs)
+            if fp_com: fps.add(fp_com)
+            if fp_sem: fps.add(fp_sem)
+        return fps
+    except: return set()
 
-# ─── Planilha ─────────────────────────────────────────────────────────────────
+# ─── Inserção no SQLite ──────────────────────────────────────────────────────
 
-def inserir_linhas(aba, linhas, colunas):
-    if not PLANILHA.exists():
-        from openpyxl import Workbook
-        wb = Workbook()
-        ws = wb.active; ws.title = aba; ws.append(colunas)
-        wb.save(PLANILHA)
+def inserir_linhas_imoveis(linhas):
+    """Insere lista de linhas (ordem: COLUNAS_IMOVEIS) no SQLite."""
+    db.init_db()
+    with db.db_conn() as conn:
+        for ln in linhas:
+            # ln: data_captura, grupo, corretor, contato, tipo, bairro, area,
+            #     quartos, suites, banheiros, vagas, preco, obs, status, data_pub
+            db.inserir_imovel(conn, {
+                "data_captura":    ln[0],
+                "grupo":           ln[1],
+                "corretor":        ln[2],
+                "contato":         ln[3],
+                "tipo":            ln[4],
+                "bairro":          ln[5],
+                "area":            ln[6],
+                "quartos":         ln[7],
+                "suites":          ln[8],
+                "banheiros":       ln[9],
+                "vagas":           ln[10],
+                "preco":           ln[11],
+                "observacoes":     ln[12],
+                "status":          ln[13] if len(ln) > 13 else "Novo",
+                "data_publicacao": ln[14] if len(ln) > 14 else None,
+            })
 
-    wb = load_workbook(PLANILHA)
-    if aba not in wb.sheetnames:
-        ws = wb.create_sheet(aba); ws.append(colunas)
-    else:
-        ws = wb[aba]
-
-    cor = PatternFill(fill_type='solid', fgColor='FFF9C4')
-    for linha in linhas:
-        ws.append(linha)
-        for cell in ws[ws.max_row]: cell.fill = cor
-    wb.save(PLANILHA)
+def inserir_linhas_demandas(linhas):
+    """Insere lista de linhas (ordem: COLUNAS_DEMANDAS) no SQLite."""
+    db.init_db()
+    with db.db_conn() as conn:
+        fps_existentes = db.carregar_fps_demandas(conn)
+        for ln in linhas:
+            # ln: data, grupo, corretor, contato, tipo_buscado, bairro, area_min,
+            #     quartos, suites, banheiros, vagas, orcamento_max, obs, status
+            item = {
+                "data":           ln[0],
+                "grupo":          ln[1],
+                "corretor":       ln[2],
+                "contato":        ln[3],
+                "tipo_buscado":   ln[4],
+                "bairro_regiao":  ln[5],
+                "area_min":       ln[6],
+                "quartos":        ln[7],
+                "suites":         ln[8],
+                "banheiros":      ln[9],
+                "vagas":          ln[10],
+                "orcamento_max":  ln[11],
+                "observacoes":    ln[12],
+                "status":         ln[13] if len(ln) > 13 else "Ativo",
+            }
+            fp = fazer_fp(ln[2], ln[5], ln[11], ln[6], ln[12])
+            if fp and fp in fps_existentes:
+                continue
+            db.inserir_demanda(conn, item, fp)
+            if fp:
+                fps_existentes.add(fp)
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
 
@@ -817,21 +1026,21 @@ def main():
 
     if not DRY_RUN:
         if novas_vendas:
-            inserir_linhas(ABA_IMOVEIS, novas_vendas, COLUNAS_IMOVEIS)
+            inserir_linhas_imoveis(novas_vendas)
         if novas_demandas:
-            inserir_linhas(ABA_DEMANDAS, novas_demandas, COLUNAS_DEMANDAS)
+            inserir_linhas_demandas(novas_demandas)
 
         with open(FILA_FILE, 'w', encoding='utf-8') as f:
             json.dump(fila, f, ensure_ascii=False, indent=2)
 
-    print(f"\n{'[DRY-RUN] ' if DRY_RUN else ''}✅ {len(novas_vendas)} imóveis inseridos → '{ABA_IMOVEIS}'")
-    print(f"{'[DRY-RUN] ' if DRY_RUN else ''}🔍 {len(novas_demandas)} demandas inseridas → '{ABA_DEMANDAS}'")
+    print(f"\n{'[DRY-RUN] ' if DRY_RUN else ''}✅ {len(novas_vendas)} imóveis inseridos → SQLite imoveis")
+    print(f"{'[DRY-RUN] ' if DRY_RUN else ''}🔍 {len(novas_demandas)} demandas inseridas → SQLite demandas")
     print(f"   ↳ {duplicatas} duplicatas ignoradas")
     print(f"   ↳ {sem_dados} pacotes sem dados de imóvel")
 
     # ── Pesquisar e cadastrar condomínios novos encontrados nesta execução ──────
     if not DRY_RUN and _CONDOS_NOVOS:
-        ja_na_planilha = _condos_ja_na_planilha()
+        ja_na_planilha = _condos_ja_no_db()
         novos_para_pesquisar = [n for n in _CONDOS_NOVOS if n.lower() not in ja_na_planilha]
         if novos_para_pesquisar:
             print(f"\n🏗️  Pesquisando {len(novos_para_pesquisar)} condomínio(s) novo(s)...")

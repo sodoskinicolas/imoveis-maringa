@@ -22,13 +22,14 @@ const fs      = require('fs');
 const path    = require('path');
 
 // ─── Caminhos ────────────────────────────────────────────────────────────────
-const BASE_DIR   = path.join(__dirname, '..');
-const AUTH_DIR   = path.join(__dirname, 'auth');
-const FILA_FILE  = path.join(BASE_DIR,  'mensagens_fila.json');
-const CONFIG_FILE= path.join(__dirname, 'config.json');
-const LOG_FILE   = path.join(__dirname, 'baileys.log');
-const IMG_DIR    = path.join(__dirname, 'imagens');
-const LOCK_FILE  = path.join(__dirname, 'bot.lock');
+const BASE_DIR      = path.join(__dirname, '..');
+const AUTH_DIR      = path.join(__dirname, 'auth');
+const FILA_FILE     = path.join(BASE_DIR,  'mensagens_fila.json');
+const CONFIG_FILE   = path.join(__dirname, 'config.json');
+const LOG_FILE      = path.join(__dirname, 'baileys.log');
+const IMG_DIR       = path.join(__dirname, 'imagens');
+const LOCK_FILE     = path.join(__dirname, 'bot.lock');
+const LID_CACHE_FILE= path.join(__dirname, 'lid_cache.json');
 
 // ─── Lock: garante apenas uma instância ──────────────────────────────────────
 if (fs.existsSync(LOCK_FILE)) {
@@ -71,7 +72,19 @@ function getConfig() {
 
 // ─── Cache de metadados dos grupos ───────────────────────────────────────────
 const grupoCache = {};    // jid → nomeGrupo
-const lidPhoneCache = {}; // lid@lid → número de telefone real
+
+// Cache LID → número real, persistido em arquivo para sobreviver restarts
+function _carregarLidCache() {
+  try {
+    if (fs.existsSync(LID_CACHE_FILE))
+      return JSON.parse(fs.readFileSync(LID_CACHE_FILE, 'utf8'));
+  } catch (_) {}
+  return {};
+}
+function _salvarLidCache(cache) {
+  try { fs.writeFileSync(LID_CACHE_FILE, JSON.stringify(cache, null, 2)); } catch (_) {}
+}
+const lidPhoneCache = _carregarLidCache(); // lid@lid → número de telefone real
 
 /**
  * Resolve um LID para telefone real usando metadados do grupo.
@@ -90,15 +103,16 @@ async function resolverLid(sock, grupoJid, lidJid) {
           const num = phoneJid.split('@')[0].replace(/\D/g, '');
           if (num.length >= 10 && num.length <= 13) {
             lidPhoneCache[lidJid] = num;
-            log(`📱 LID resolvido: ${lidJid} → ${num}`);
+            _salvarLidCache(lidPhoneCache);
+            log(`📱 LID resolvido via groupMetadata: ${lidJid} → ${num}`);
             return num;
           }
         }
         // Tentar ID numérico do próprio LID como fallback secundário
-        // (alguns grupos ainda expõem o número no campo id)
         const rawId = p.id.split('@')[0].replace(/\D/g, '');
         if (rawId.length >= 10 && rawId.length <= 13) {
           lidPhoneCache[lidJid] = rawId;
+          _salvarLidCache(lidPhoneCache);
           return rawId;
         }
       }
@@ -111,6 +125,8 @@ async function resolverLid(sock, grupoJid, lidJid) {
       const num = phone.replace(/\D/g, '');
       if (num.length >= 10 && num.length <= 13) {
         lidPhoneCache[lidJid] = num;
+        _salvarLidCache(lidPhoneCache);
+        log(`📱 LID resolvido via getPhoneNumber: ${lidJid} → ${num}`);
         return num;
       }
     }
@@ -162,6 +178,28 @@ async function iniciarBot() {
   });
 
   sock.ev.on('creds.update', saveCreds);
+
+  // ── Mapeamento LID → telefone real via contacts.upsert ────────────────────
+  // O WhatsApp envia esse evento quando sincroniza contatos, incluindo o mapeamento
+  // entre LID (@lid) e o JID real com número (@s.whatsapp.net)
+  sock.ev.on('contacts.upsert', (contacts) => {
+    let novos = 0;
+    for (const c of contacts) {
+      const phoneJid = c.id || '';
+      const lidJid   = c.lid || '';
+      if (lidJid && lidJid.endsWith('@lid') && phoneJid && !phoneJid.endsWith('@lid')) {
+        const num = phoneJid.split('@')[0].replace(/\D/g, '');
+        if (num.length >= 10 && num.length <= 13 && !lidPhoneCache[lidJid]) {
+          lidPhoneCache[lidJid] = num;
+          novos++;
+        }
+      }
+    }
+    if (novos > 0) {
+      _salvarLidCache(lidPhoneCache);
+      log(`📱 contacts.upsert: ${novos} LID(s) mapeados para telefone`);
+    }
+  });
 
   // ── Conexão ────────────────────────────────────────────────────────────────
   sock.ev.on('connection.update', ({ connection, lastDisconnect, qr }) => {

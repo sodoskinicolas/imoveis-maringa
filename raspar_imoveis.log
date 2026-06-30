@@ -1,0 +1,101 @@
+2026-06-29 18:45:56,275 INFO ============================================================
+2026-06-29 18:45:56,275 INFO Iniciando raspagem — 2026-06-29 18:45:56
+2026-06-29 18:45:57,200 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis-a-venda
+2026-06-29 18:45:59,982 WARNING   Tentativa 2/3 falhou: https://harakiimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis-a-venda
+2026-06-29 18:46:04,778 WARNING   Tentativa 3/3 falhou: https://harakiimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis-a-venda
+2026-06-29 18:46:04,779 INFO [Haraki Imóveis] Slug: 10-maringa-pr | Raspando por categoria...
+2026-06-29 18:46:11,377 INFO [Haraki Imóveis] Apartamento: 37 imóveis
+2026-06-29 18:46:28,629 INFO [Haraki Imóveis] Casa: 80 imóveis
+2026-06-29 18:46:34,690 INFO [Haraki Imóveis] Sobrado: 22 imóveis
+2026-06-29 18:46:47,723 INFO [Haraki Imóveis] Terreno: 56 imóveis
+2026-06-29 18:46:49,077 ERROR [Haraki Imóveis] Erro na raspagem: cannot access local variable 'found' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 503, in coletar_todos
+    items = scrape_sub100(cfg)
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 340, in scrape_sub100
+    _raspar_paginas(cat_url, tipo_fixo=tipo_fixo)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 334, in _raspar_paginas
+    return found  # retorna found da última página para log
+           ^^^^^
+UnboundLocalError: cannot access local variable 'found' where it is not associated with a value
+2026-06-29 18:46:51,090 INFO [Massaru Imóveis] Slug: 10-maringa-pr | Raspando por categoria...
+2026-06-29 18:47:03,293 INFO [Massaru Imóveis] Apartamento: 58 imóveis
+2026-06-29 18:47:25,629 INFO [Massaru Imóveis] Casa: 97 imóveis
+2026-06-29 18:47:31,833 INFO [Massaru Imóveis] Sobrado: 30 imóveis
+2026-06-29 18:47:44,223 INFO [Massaru Imóveis] Terreno: 54 imóveis
+2026-06-29 18:47:45,576 ERROR [Massaru Imóveis] Erro na raspagem: cannot access local variable 'found' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 503, in coletar_todos
+    items = scrape_sub100(cfg)
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 340, in scrape_sub100
+    _raspar_paginas(cat_url, tipo_fixo=tipo_fixo)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 334, in _raspar_paginas
+    return found  # retorna found da última página para log
+           ^^^^^
+UnboundLocalError: cannot access local variable 'found' where it is not associated with a value
+2026-06-29 18:47:48,383 WARNING   Tentativa 1/3 falhou: https://bellakaza.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis-a-venda
+2026-06-29 18:47:51,140 WARNING   Tentativa 2/3 falhou: https://bellakaza.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis-a-venda
+2026-06-29 18:47:55,917 WARNING   Tentativa 3/3 falhou: https://bellakaza.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis-a-venda
+2026-06-29 18:47:55,918 INFO [Bellakaza] Slug: 10-maringa-pr | Raspando por categoria...
+2026-06-29 18:47:59,104 INFO [Bellakaza] Apartamento: 13 imóveis
+2026-06-29 18:48:05,575 INFO [Bellakaza] Casa: 27 imóveis
+2026-06-29 18:48:07,709 INFO [Bellakaza] Sobrado: 5 imóveis
+2026-06-29 18:48:11,912 INFO [Bellakaza] Terreno: 20 imóveis
+2026-06-29 18:48:13,136 ERROR [Bellakaza] Erro na raspagem: cannot access local variable 'found' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 503, in coletar_todos
+    items = scrape_sub100(cfg)
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 340, in scrape_sub100
+    _raspar_paginas(cat_url, tipo_fixo=tipo_fixo)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nicolassodoski/Claude/Projects/PW/raspar_imoveis.py", line 334, in _raspar_paginas
+    return found  # retorna found da última página para log
+           ^^^^^
+UnboundLocalError: cannot access local variable 'found' where it is not associated with a value
+2026-06-29 18:48:15,141 INFO [Silvio Iwata] Iniciando raspagem
+2026-06-29 18:48:15,708 WARNING   Tentativa 1/3 falhou: https://silvioiwata.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://silvioiwata.com.br/imoveis-a-venda
+2026-06-29 18:48:17,727 WARNING   Tentativa 2/3 falhou: https://silvioiwata.com.br/imoveis-a-venda → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-06-29 18:48:22,228 WARNING   Tentativa 3/3 falhou: https://silvioiwata.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://silvioiwata.com.br/imoveis-a-venda
+2026-06-29 18:48:22,229 INFO [Silvio Iwata] Total: 0
+2026-06-29 18:48:24,233 INFO [Casa do Corretor] Iniciando raspagem
+2026-06-29 18:48:25,859 WARNING   Tentativa 1/3 falhou: https://casadocorretormga.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://casadocorretormga.com.br/imoveis-a-venda
+2026-06-29 18:48:28,339 WARNING   Tentativa 2/3 falhou: https://casadocorretormga.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://casadocorretormga.com.br/imoveis-a-venda
+2026-06-29 18:48:32,828 WARNING   Tentativa 3/3 falhou: https://casadocorretormga.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://casadocorretormga.com.br/imoveis-a-venda
+2026-06-29 18:48:32,829 INFO [Casa do Corretor] Total: 0
+2026-06-29 18:48:32,829 INFO Total coletado (todos os sites): 0
+2026-06-29 18:53:21,276 INFO ============================================================
+2026-06-29 18:53:21,278 INFO Iniciando raspagem — 2026-06-29 18:53:21
+2026-06-29 18:53:21,278 INFO [Haraki Imóveis] Iniciando raspagem AJAX → https://harakiimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:21,788 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:23,812 WARNING   Tentativa 2/3 falhou: https://harakiimoveis.com.br/imoveis-a-venda → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-06-29 18:53:28,299 WARNING   Tentativa 3/3 falhou: https://harakiimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:28,300 WARNING [Haraki Imóveis] Falha ao carregar página 1
+2026-06-29 18:53:28,301 INFO [Haraki Imóveis] Total: 0 imóveis | {}
+2026-06-29 18:53:30,304 INFO [Massaru Imóveis] Iniciando raspagem AJAX → https://massaruimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:30,788 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:33,273 WARNING   Tentativa 2/3 falhou: https://massaruimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:37,783 WARNING   Tentativa 3/3 falhou: https://massaruimoveis.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis-a-venda
+2026-06-29 18:53:37,783 WARNING [Massaru Imóveis] Falha ao carregar página 1
+2026-06-29 18:53:37,784 INFO [Massaru Imóveis] Total: 0 imóveis | {}
+2026-06-29 18:53:39,785 INFO [Bellakaza] Iniciando raspagem AJAX → https://bellakaza.com.br/imoveis-a-venda
+2026-06-29 18:53:40,267 WARNING   Tentativa 1/3 falhou: https://bellakaza.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis-a-venda
+2026-06-29 18:53:42,289 WARNING   Tentativa 2/3 falhou: https://bellakaza.com.br/imoveis-a-venda → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-06-29 18:53:46,768 WARNING   Tentativa 3/3 falhou: https://bellakaza.com.br/imoveis-a-venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis-a-venda
+2026-06-29 18:53:46,769 WARNING [Bellakaza] Falha ao carregar página 1
+2026-06-29 18:53:46,769 INFO [Bellakaza] Total: 0 imóveis | {}
+2026-06-29 18:53:48,774 INFO [Silvio Iwata] Iniciando raspagem
+2026-06-29 18:53:49,264 WARNING   Tentativa 1/3 falhou: https://silvioiwata.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://silvioiwata.com.br/imoveis-a-venda
+2026-06-29 18:53:51,281 WARNING   Tentativa 2/3 falhou: https://silvioiwata.com.br/imoveis-a-venda → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-06-29 18:53:55,766 WARNING   Tentativa 3/3 falhou: https://silvioiwata.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://silvioiwata.com.br/imoveis-a-venda
+2026-06-29 18:53:55,768 INFO [Silvio Iwata] Total: 0
+2026-06-29 18:53:57,770 INFO [Casa do Corretor] Iniciando raspagem
+2026-06-29 18:53:58,251 WARNING   Tentativa 1/3 falhou: https://casadocorretormga.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://casadocorretormga.com.br/imoveis-a-venda
+2026-06-29 18:54:00,747 WARNING   Tentativa 2/3 falhou: https://casadocorretormga.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://casadocorretormga.com.br/imoveis-a-venda
+2026-06-29 18:54:05,237 WARNING   Tentativa 3/3 falhou: https://casadocorretormga.com.br/imoveis-a-venda → 410 Client Error: Gone for url: https://casadocorretormga.com.br/imoveis-a-venda
+2026-06-29 18:54:05,238 INFO [Casa do Corretor] Total: 0
+2026-06-29 18:54:05,238 INFO Total coletado (todos os sites): 0
+2026-06-29 18:54:05,370 INFO Imóveis novos encontrados: 0 (de 0 coletados)
+2026-06-29 18:54:05,370 INFO Raspagem concluída. Novos inseridos: 0
+2026-06-29 18:54:05,370 INFO ============================================================

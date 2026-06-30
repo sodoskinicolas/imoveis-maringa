@@ -176,10 +176,46 @@ def extrair_preco(texto):
     return None
 
 def extrair_area(texto):
-    m = re.search(r'(\d+(?:[.,]\d+)?)\s*m[²2]', texto, re.IGNORECASE)
+    """
+    Prioridade: área privativa/construída > área total do imóvel > terreno (só obs).
+    Retorna a área útil para match; área de terreno fica só nas observações.
+    """
+    t = texto
+
+    # 1. Área privativa explícita: "192m² privativa", "área privativa 192m²"
+    m = re.search(r'(?:área\s+)?privativ[ao]\s*[:\-]?\s*(\d+(?:[.,]\d+)?)\s*m[²2]', t, re.IGNORECASE)
+    if not m:
+        m = re.search(r'(\d+(?:[.,]\d+)?)\s*m[²2]\s*(?:de\s+)?privativ[ao]', t, re.IGNORECASE)
     if m:
         try: return float(m.group(1).replace(',','.'))
         except: pass
+
+    # 2. Área construída/útil explícita: "192m² de construção", "construção 192m²"
+    m = re.search(r'(?:área\s+)?constru[íi]d[ao]\s*[:\-]?\s*(\d+(?:[.,]\d+)?)\s*m[²2]', t, re.IGNORECASE)
+    if not m:
+        m = re.search(r'(\d+(?:[.,]\d+)?)\s*m[²2]\s*(?:de\s+)?constru[íi]d[ao]', t, re.IGNORECASE)
+    if not m:
+        m = re.search(r'(\d+(?:[.,]\d+)?)\s*m[²2]\s*(?:de\s+)?constru[çc][aã]o', t, re.IGNORECASE)
+    if not m:
+        m = re.search(r'constru[çc][aã]o\s*[:\-]?\s*(\d+(?:[.,]\d+)?)\s*m[²2]', t, re.IGNORECASE)
+    if not m:
+        m = re.search(r'(?:área\s+)?[uú]til\s*[:\-]?\s*(\d+(?:[.,]\d+)?)\s*m[²2]', t, re.IGNORECASE)
+    if m:
+        try: return float(m.group(1).replace(',','.'))
+        except: pass
+
+    # 3. Nenhuma área específica — pegar primeiro número m² que NÃO seja terreno/lote
+    # Se o contexto próximo contém "terreno" ou "lote", ignorar
+    for m in re.finditer(r'(\d+(?:[.,]\d+)?)\s*m[²2]', t, re.IGNORECASE):
+        # Verificar contexto (20 chars antes e depois)
+        start = max(0, m.start() - 25)
+        end   = min(len(t), m.end() + 25)
+        ctx   = t[start:end].lower()
+        if re.search(r'\bterreno\b|\blote\b|\bterr\b', ctx):
+            continue  # pular área de terreno
+        try: return float(m.group(1).replace(',','.'))
+        except: pass
+
     return None
 
 def extrair_num(texto, palavras):

@@ -18,9 +18,10 @@ const {
   fetchLatestBaileysVersion,
   makeCacheableSignalKeyStore,
 } = require('@whiskeysockets/baileys');
-const pino = require('pino');
-const fs   = require('fs');
-const path = require('path');
+const pino   = require('pino');
+const qrcode = require('qrcode-terminal');
+const fs     = require('fs');
+const path   = require('path');
 
 const AUTH_DIR         = path.join(__dirname, 'auth');
 const LID_CACHE_FILE   = path.join(__dirname, 'lid_cache.json');
@@ -48,10 +49,7 @@ function numFromJid(jid = '') {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  if (!fs.existsSync(AUTH_DIR)) {
-    console.error('❌ Pasta auth/ não encontrada — rode o bot primeiro para autenticar.');
-    process.exit(1);
-  }
+  if (!fs.existsSync(AUTH_DIR)) fs.mkdirSync(AUTH_DIR, { recursive: true });
 
   const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
   const { version } = await fetchLatestBaileysVersion();
@@ -94,10 +92,15 @@ async function main() {
     if (novos > 0) console.log(`  📱 contacts.upsert: ${novos} novo(s) LID→telefone`);
   });
 
-  // Aguardar conexão
+  // Aguardar conexão (até 3 min para dar tempo de escanear QR)
   await new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error('Timeout de conexão (30s)')), 30000);
-    sock.ev.on('connection.update', ({ connection, lastDisconnect }) => {
+    const timeout = setTimeout(() => reject(new Error('Timeout de conexão (180s)')), 180000);
+    sock.ev.on('connection.update', ({ connection, lastDisconnect, qr }) => {
+      if (qr) {
+        console.log('\n\n📱 ESCANEIE O QR CODE ABAIXO COM O WHATSAPP:\n');
+        qrcode.generate(qr, { small: true });
+        console.log('\nNo celular: Configurações → Aparelhos Vinculados → Vincular Aparelho\n');
+      }
       if (connection === 'open') {
         clearTimeout(timeout);
         console.log('✅ Conectado!\n');
@@ -110,54 +113,22 @@ async function main() {
     });
   });
 
-  // Aguardar um pouco para contacts.upsert chegar
-  console.log('⏳ Aguardando sincronização de contatos (5s)...');
-  await new Promise(r => setTimeout(r, 5000));
+  // Aguardar contacts.upsert por 60 segundos — o WhatsApp envia automaticamente
+  // ao conectar e contém o mapeamento LID→telefone de todos os contatos
+  console.log('⏳ Aguardando sincronização de contatos (60s)...');
+  console.log('   (o WhatsApp envia mapeamentos LID→telefone automaticamente)\n');
 
-  // Buscar todos os grupos em que o bot participa
-  console.log('📋 Buscando grupos...');
-  const grupos = await sock.groupFetchAllParticipating();
-  const nGrupos = Object.keys(grupos).length;
-  console.log(`  Encontrados: ${nGrupos} grupos\n`);
-
-  let totalNums = 0;
-  let totalLids = 0;
-
-  for (const [jid, meta] of Object.entries(grupos)) {
-    const nomeGrupo = meta.subject || jid;
-    const participantes = meta.participants || [];
-    const numsGrupo = [];
-
-    for (const p of participantes) {
-      const id = p.id || '';
-
-      // Caso 1: JID com telefone direto
-      let num = numFromJid(id);
-
-      // Caso 2: LID — tentar phoneJid ou cache
-      if (!num && id.endsWith('@lid')) {
-        totalLids++;
-        const pjid = p.phoneJid || p.phone_jid || p.pn || '';
-        num = numFromJid(pjid) || lidCache[id] || '';
-        if (num && !lidCache[id]) {
-          lidCache[id] = num;
-        }
-      }
-
-      if (num) {
-        totalNums++;
-        numsGrupo.push(num);
-        if (!contatosMap[num]) contatosMap[num] = { nome: '', grupos: [] };
-        if (!contatosMap[num].grupos.includes(nomeGrupo)) {
-          contatosMap[num].grupos.push(nomeGrupo);
-        }
-      }
+  let ultimoLidCount = 0;
+  for (let seg = 0; seg < 60; seg += 5) {
+    await new Promise(r => setTimeout(r, 5000));
+    const atual = Object.keys(lidCache).length;
+    if (atual !== ultimoLidCount) {
+      console.log(`  📱 ${atual} LIDs mapeados até agora...`);
+      ultimoLidCount = atual;
     }
-
-    console.log(`  [${nomeGrupo}] ${participantes.length} participantes → ${numsGrupo.length} números extraídos`);
   }
 
-  console.log(`\n📊 Total: ${totalNums} números | ${totalLids} LIDs encontrados`);
+  console.log(`\n📊 Total LIDs mapeados via contacts.upsert: ${Object.keys(lidCache).length}`);
 
   // Salvar caches
   salvarJson(LID_CACHE_FILE, lidCache);

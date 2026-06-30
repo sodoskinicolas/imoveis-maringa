@@ -2,7 +2,7 @@
 """
 raspar_imoveis.py
 Raspa todos os sites de imobiliárias de Maringá, identifica imóveis novos
-e atualiza Imoveis_Grupos.xlsx com Status="Novo".
+e insere no SQLite (imoveis.db) com Status="Novo".
 
 Uso manual:
   python3 raspar_imoveis.py
@@ -21,12 +21,10 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import openpyxl
+import db
 
 # ── Configuração ──────────────────────────────────────────────────────────────
 BASE_DIR  = Path(__file__).parent
-PLANILHA  = BASE_DIR / "Imoveis_Grupos.xlsx"
 LOG_FILE  = BASE_DIR / "raspar_imoveis.log"
 
 logging.basicConfig(
@@ -130,167 +128,176 @@ def get_page(url, ajax=False, retries=3, delay=2):
 
 
 # ── Sub100 CMS (Haraki, Massaru, Bellakaza) ──────────────────────────────────
+#
+# Config por site Sub100.
+# pagina_param → parâmetro de paginação (padrão Sub100: "pagina")
+# Para adicionar um novo site Sub100, basta incluir uma entrada aqui.
+SUB100_SITES = [
+    {
+        "url":          "https://harakiimoveis.com.br/imoveis-a-venda",
+        "domain":       "harakiimoveis.com.br",
+        "grupo":        "Haraki Imóveis",
+        "pagina_param": "pagina",
+    },
+    {
+        "url":          "https://massaruimoveis.com.br/imoveis-a-venda",
+        "domain":       "massaruimoveis.com.br",
+        "grupo":        "Massaru Imóveis",
+        "pagina_param": "pagina",
+    },
+    {
+        "url":          "https://bellakaza.com.br/imoveis-a-venda",
+        "domain":       "bellakaza.com.br",
+        "grupo":        "Bellakaza",
+        "pagina_param": "pagina",
+    },
+]
+
 
 def parse_sub100_block(html_block, base_domain):
     """
-    Extrai dados de um bloco HTML de listagem Sub100.
-    O bloco é o trecho antes de 'Contate agora!' para cada imóvel.
+    Extrai dados de um bloco HTML de listagem Sub100 (resposta AJAX).
+
+    Detecção de tipo — ordem de prioridade:
+      1. URL slug do item: /venda/sobrado-em-maringa/ → tipo mais confiável
+      2. og:title / <title> / <h1-4>  (só presentes na página individual)
     """
-    # Ref / URL
-    ref_m = re.search(r'/imovel/(0{3,}\d+)/', html_block)
-    if not ref_m:
+    # ── Ref / URL ─────────────────────────────────────────────────────────────
+    # AJAX retorna URLs longas: /imovel/8020000829/venda/sobrado-em-maringa/bairro
+    # Página individual usa:    /imovel/00000829/
+    # Texto do bloco contém:    00000829 (antes de "Contate agora")
+    full_url_m = re.search(r'/imovel/(\d{7,12})/venda/([^"\'>\s]+)', html_block)
+    short_url_m = re.search(r'/imovel/(0{3,}\d+)/', html_block)
+    text_ref_m  = re.search(r'\b(0{3,}\d{2,})\b', html_block)
+
+    if full_url_m:
+        raw_ref   = full_url_m.group(1)   # ex: 8020000829
+        url_slug  = full_url_m.group(2)   # ex: sobrado-em-maringa/jardim-everest
+    elif short_url_m:
+        raw_ref  = short_url_m.group(1)
+        url_slug = ""
+    elif text_ref_m:
+        raw_ref  = text_ref_m.group(1)
+        url_slug = ""
+    else:
         return None
-    ref = ref_m.group(1)
+
+    # Normalizar ref para 8 dígitos (remover prefixo de cliente ex: 802)
+    if len(raw_ref) > 8 and not raw_ref.startswith('0'):
+        raw_ref = raw_ref[3:].zfill(8)
+    ref  = raw_ref
     link = f"https://{base_domain}/imovel/{ref}/"
 
-    # Área
-    area_m = re.search(r'([\d.,]+)\s*m[²2]', html_block)
-    area_str = area_m.group(0) if area_m else ""
+    # ── Tipo ──────────────────────────────────────────────────────────────────
+    # 1ª opção: slug da URL do item (mais confiável — ex: "sobrado-em-maringa")
+    tipo = None
+    if url_slug:
+        # slug começa com o tipo: "sobrado-em-", "casa-em-", "apartamento-em-", etc.
+        slug_first = url_slug.split("/")[0]   # ex: "sobrado-em-maringa"
+        tipo = infer_tipo(slug_first)
 
-    # Preço
+    # 2ª opção: og:title / <title> / <h1-4> (presentes quando bloco é página individual)
+    if not tipo or tipo == "Imóvel":
+        for pat in [
+            r'og:title["\s]+content="([^"]+)"',
+            r'<title>([^<]+)</title>',
+            r'<h[1-4][^>]*>([^<]+)</h[1-4]>',
+        ]:
+            m = re.search(pat, html_block, re.I)
+            if m:
+                tipo = infer_tipo(fix_enc(m.group(1).strip()))
+                if tipo and tipo != "Imóvel":
+                    break
+
+    tipo = tipo or "Imóvel"
+
+    # ── Demais campos ─────────────────────────────────────────────────────────
+    area_m  = re.search(r'([\d.,]+)\s*m[²2]', html_block)
     preco_m = re.search(r'R\$\s*[\d.,]+', html_block.replace("\xa0", " "))
-    preco_str = preco_m.group(0) if preco_m else ""
-
-    # Quartos / Banheiros / Vagas — ícones com números próximos
     qtos_m  = re.search(r'(\d+)\s*(?:quarto|dorm)', html_block, re.I)
     ban_m   = re.search(r'(\d+)\s*(?:banheiro|ban\.)', html_block, re.I)
     vaga_m  = re.search(r'(\d+)\s*(?:vaga|garagem)', html_block, re.I)
-
-    # Bairro — geralmente aparece depois do endereço numa tag de localização
     bairro_m = re.search(
         r'(?:localiza[çc][aã]o|bairro)[^<]*?([A-ZÀ-Ú][a-zà-ú\s]+(?:Zona\s+\d+)?)',
         html_block, re.I
     )
     bairro = fix_enc(bairro_m.group(1).strip()) if bairro_m else ""
 
-    # Tipo — prioridade: og:title > <title> > h1-4 > bairro
-    tipo_str = ""
-    for pat in [
-        r'og:title["\s]+content="([^"]+)"',     # <meta property="og:title" content="Sobrado à venda...">
-        r'<title>([^<]+)</title>',               # <title>Sobrado à venda...</title>
-        r'<h[1-4][^>]*>([^<]+)</h[1-4]>',       # <h1>Sobrado ...</h1>
-    ]:
-        m = re.search(pat, html_block, re.I)
-        if m:
-            tipo_str = fix_enc(m.group(1).strip())
-            break
-    tipo = infer_tipo(tipo_str or bairro)
-
     return {
         "ref":     ref,
         "link":    link,
         "tipo":    tipo,
         "bairro":  bairro,
-        "area":    parse_area(fix_enc(area_str)),
-        "quartos": parse_int(qtos_m.group(1)) if qtos_m else None,
-        "suites":  parse_int(ban_m.group(1))  if ban_m  else None,
-        "vagas":   parse_int(vaga_m.group(1)) if vaga_m else None,
-        "preco":   parse_preco(preco_str),
+        "area":    parse_area(fix_enc(area_m.group(0))) if area_m else None,
+        "quartos": parse_int(qtos_m.group(1))  if qtos_m  else None,
+        "suites":  parse_int(ban_m.group(1))   if ban_m   else None,
+        "vagas":   parse_int(vaga_m.group(1))  if vaga_m  else None,
+        "preco":   parse_preco(preco_m.group(0)) if preco_m else None,
         "obs":     link,
     }
 
-def scrape_sub100(base_url, domain, nome_grupo):
+def scrape_sub100(cfg):
     """
-    Raspa site Sub100 por categoria de tipo, para o tipo vir da URL e nunca
-    ser inferido errado a partir do texto do bloco.
-    Fallback: página geral /imoveis-a-venda para tipos não cobertos pelas categorias.
-    """
-    # Categorias com tipo explícito — URL padrão Sub100
-    base = f"https://{domain}"
-    cidade_slug = "10-maringa-pr"  # slug padrão Maringá no Sub100
-    CATEGORIAS = [
-        (f"{base}/imoveis/venda/apartamentos/{cidade_slug}", "Apartamento"),
-        (f"{base}/imoveis/venda/casas/{cidade_slug}",         "Casa"),
-        (f"{base}/imoveis/venda/sobrados/{cidade_slug}",      "Sobrado"),
-        (f"{base}/imoveis/venda/terrenos/{cidade_slug}",      "Terreno"),
-        (f"{base}/imoveis/venda/coberturas/{cidade_slug}",    "Apartamento"),
-        (f"{base}/imoveis/venda/salas-comerciais/{cidade_slug}", "Sala Comercial"),
-        (f"{base}/imoveis/venda/galpoes/{cidade_slug}",       "Galpão"),
-        (f"{base}/imoveis/venda/chacaras/{cidade_slug}",      "Chácara"),
-        (f"{base}/imoveis/venda/studios/{cidade_slug}",       "Kitnet"),
-        (f"{base}/imoveis/venda/kitnets/{cidade_slug}",       "Kitnet"),
-    ]
+    Raspa um site Sub100 usando a config do dicionário `cfg` (ver SUB100_SITES).
 
-    items = []
+    Estratégia definitiva:
+      • Usa AJAX (X-Requested-With: XMLHttpRequest) na página geral de listagem.
+        Sem AJAX o Sub100 entrega shell HTML vazio (conteúdo é JS-renderizado).
+      • O tipo é extraído da URL slug de cada item no bloco AJAX:
+          /venda/sobrado-em-maringa/... → Sobrado
+          /venda/casa-em-maringa/...   → Casa
+        Isso substitui a abordagem de categorias, que era necessária antes mas
+        dependia de requests sem AJAX (que não traziam itens).
+    """
+    domain     = cfg["domain"]
+    nome_grupo = cfg["grupo"]
+    base_url   = cfg["url"]
+    pag_param  = cfg.get("pagina_param", "pagina")
+
+    items     = []
     seen_refs = set()
 
-    def _raspar_categoria(cat_url, tipo_fixo):
-        page = 1
-        while True:
-            url = f"{cat_url}?page={page}" if page > 1 else cat_url
-            r = get_page(url, ajax=True)
-            if not r:
-                break
-
-            html = r.text
-            if page > 1 and not re.search(r'/imovel/0{3,}\d+/', html):
-                break
-
-            blocks = re.split(r'Contate\s+agora', html, flags=re.I)
-            found = 0
-            for block in blocks:
-                item = parse_sub100_block(block, domain)
-                if not item or item["ref"] in seen_refs:
-                    continue
-                item["tipo"] = tipo_fixo   # ← tipo vem da categoria, não inferido
-                seen_refs.add(item["ref"])
-                items.append(item)
-                found += 1
-
-            if found == 0:
-                break
-
-            soup = BeautifulSoup(html, "html.parser")
-            next_btn = soup.find("a", string=re.compile(r"próxima|next|›|»", re.I))
-            if not next_btn and not re.search(rf'page={page+1}', html):
-                break
-            page += 1
-            time.sleep(1.0)
-
-    log.info(f"[{nome_grupo}] Raspando por categoria...")
-    for cat_url, tipo_fixo in CATEGORIAS:
-        before = len(items)
-        _raspar_categoria(cat_url, tipo_fixo)
-        log.info(f"[{nome_grupo}] {tipo_fixo}: {len(items)-before} imóveis")
-        time.sleep(1.0)
-
-    # Fallback: página geral para pegar tipos não cobertos pelas categorias acima
-    log.info(f"[{nome_grupo}] Iniciando raspagem → {base_url}")
+    log.info(f"[{nome_grupo}] Iniciando raspagem AJAX → {base_url}")
     page = 1
     while True:
-        url = f"{base_url}?page={page}" if page > 1 else base_url
-        r = get_page(url, ajax=True)
+        url = f"{base_url}?{pag_param}={page}" if page > 1 else base_url
+        r = get_page(url, ajax=True)   # AJAX necessário — sem ele a página é JS-rendered
         if not r:
             log.warning(f"[{nome_grupo}] Falha ao carregar página {page}")
             break
 
         html = r.text
-        if page > 1 and not re.search(r'/imovel/0{3,}\d+/', html):
+        if not re.search(r'/imovel/\d+', html):
             break
 
         blocks = re.split(r'Contate\s+agora', html, flags=re.I)
-        found_this_page = 0
+        found = 0
         for block in blocks:
             item = parse_sub100_block(block, domain)
             if not item or item["ref"] in seen_refs:
-                continue   # já coletado pela categoria
+                continue
             seen_refs.add(item["ref"])
             items.append(item)
-            found_this_page += 1
+            found += 1
 
-        log.info(f"[{nome_grupo}] Fallback página {page}: {found_this_page} novos")
-        if found_this_page == 0:
+        log.info(f"[{nome_grupo}] Página {page}: {found} imóveis")
+        if found == 0:
             break
 
         soup = BeautifulSoup(html, "html.parser")
-        next_btn = soup.find("a", string=re.compile(r"próxima|next|\bnext\b|›|»", re.I))
+        next_btn = (
+            soup.find("a", href=re.compile(rf'{pag_param}={page+1}'))
+            or soup.find("a", string=re.compile(r"próxima|next|›|»", re.I))
+        )
         if not next_btn:
-            if not re.search(rf'page={page+1}', html):
-                break
+            break
         page += 1
         time.sleep(1.5)
 
-    log.info(f"[{nome_grupo}] Total coletado: {len(items)} imóveis")
+    # Resumo por tipo
+    from collections import Counter
+    tipos = Counter(it["tipo"] for it in items)
+    log.info(f"[{nome_grupo}] Total: {len(items)} imóveis | {dict(tipos)}")
     return items
 
 
@@ -438,19 +445,15 @@ def scrape_casa_corretor():
 def coletar_todos():
     todos = []
 
-    # Sub100
-    for url, domain, grupo in [
-        ("https://harakiimoveis.com.br/imoveis-a-venda",  "harakiimoveis.com.br",   "Haraki Imóveis"),
-        ("https://massaruimoveis.com.br/imoveis-a-venda", "massaruimoveis.com.br",  "Massaru Imóveis"),
-        ("https://bellakaza.com.br/imoveis-a-venda",      "bellakaza.com.br",       "Bellakaza"),
-    ]:
+    # Sub100 (Haraki, Massaru, Bellakaza)
+    for cfg in SUB100_SITES:
         try:
-            items = scrape_sub100(url, domain, grupo)
+            items = scrape_sub100(cfg)
             for it in items:
-                it["grupo"] = domain
+                it["grupo"] = cfg["domain"]
             todos.extend(items)
         except Exception as e:
-            log.error(f"[{grupo}] Erro na raspagem: {e}", exc_info=True)
+            log.error(f"[{cfg['grupo']}] Erro na raspagem: {e}", exc_info=True)
         time.sleep(2)
 
     # Silvio
@@ -479,60 +482,44 @@ def coletar_todos():
 
 # ── Deduplicação e import ─────────────────────────────────────────────────────
 
-def fingerprint(item):
-    """Chave para deduplicar: bairro (20 chars) + área arredondada + preço."""
-    bairro = (item.get("bairro") or "").lower().strip()[:20]
-    area   = round(item.get("area") or 0, 0)
-    preco  = item.get("preco") or 0
-    return (bairro, area, preco)
+def atualizar_db(novos_raw, dry_run=False):
+    """Deduplica e insere imóveis raspados no SQLite."""
+    db.init_db()
 
-def atualizar_planilha(novos_raw, dry_run=False):
-    if not PLANILHA.exists():
-        log.error(f"Planilha não encontrada: {PLANILHA}")
-        return 0
+    hoje = date.today().isoformat()
 
-    # Carregar planilha existente
-    df = pd.read_excel(PLANILHA, sheet_name="Imóveis", dtype=str)
-    df = df.where(pd.notnull(df), None)
+    # Carregar slugs e fingerprints existentes para deduplicação em memória
+    with db.db_conn() as conn:
+        slugs_existentes = db.carregar_slugs(conn)
+        fps_existentes   = db.carregar_fps_imoveis(conn)
 
-    # Construir conjuntos de dedup a partir dos existentes
-    slugs_existentes = set()
-    fps_existentes   = set()
-    for _, row in df.iterrows():
-        obs = (row.get("Observações") or "").strip()
-        if obs:
-            slugs_existentes.add(slug(obs))
-        area_v = row.get("Área (m²)")
-        try:
-            area_f = round(float(area_v), 0) if area_v else 0
-        except (ValueError, TypeError):
-            area_f = 0
-        preco_v = row.get("Preço (R$)")
-        try:
-            preco_i = int(float(preco_v)) if preco_v else 0
-        except (ValueError, TypeError):
-            preco_i = 0
-        bairro_b = (row.get("Bairro / Endereço") or "").lower().strip()[:20]
-        fps_existentes.add((bairro_b, area_f, preco_i))
-
-    # Filtrar novos
-    novos = []
-    slugs_novos = set()
-    fps_novos   = set()
+    novos      = []
+    slugs_vis  = set()
+    fps_vis    = set()
 
     for item in novos_raw:
-        sl = slug(item.get("link", ""))
-        fp = fingerprint(item)
-        if sl in slugs_existentes or sl in slugs_novos:
-            continue
-        if fp[0] and fp in fps_existentes or fp in fps_novos:
-            continue
-        novos.append(item)
-        slugs_novos.add(sl)
-        if fp[0]:
-            fps_novos.add(fp)
+        obs = item.get("obs") or item.get("link", "")
+        sl  = db.slug_from_obs(obs)
+        bairro = (item.get("bairro") or "").lower().strip()[:20]
+        area   = round(item.get("area") or 0, 0)
+        preco  = int(item.get("preco") or 0)
+        fp = (bairro, area, preco)
+        fp_sem = ("", area, preco)
 
-    log.info(f"Imóveis novos encontrados: {len(novos)} (de {len(novos_raw)} coletados)")
+        if sl and (sl in slugs_existentes or sl in slugs_vis):
+            continue
+        if (fp[0] and fp in fps_existentes) or fp_sem in fps_existentes:
+            continue
+        if fp in fps_vis or fp_sem in fps_vis:
+            continue
+
+        novos.append(item)
+        if sl:
+            slugs_vis.add(sl)
+        fps_vis.add(fp)
+        fps_vis.add(fp_sem)
+
+    log.info(f"Imóveis novos: {len(novos)} (de {len(novos_raw)} coletados)")
 
     if not novos:
         return 0
@@ -540,45 +527,38 @@ def atualizar_planilha(novos_raw, dry_run=False):
     if dry_run:
         log.info("[DRY-RUN] Nenhuma alteração salva.")
         for it in novos[:10]:
-            log.info(f"  Novo: {it.get('tipo','')} | {it.get('bairro','')} | {it.get('preco','')} | {it.get('link','')}")
+            log.info(f"  Novo: {it.get('tipo','')} | {it.get('bairro','')} | {it.get('preco','')} | {it.get('obs','')}")
         return len(novos)
 
-    # Inserir novos na planilha
-    wb = openpyxl.load_workbook(PLANILHA)
-    ws = wb["Imóveis"]
-
-    hoje = date.today().isoformat()
     inseridos = 0
+    with db.db_conn() as conn:
+        for item in novos:
+            bairro_end = item.get("bairro") or ""
+            end = item.get("endereco", "")
+            if end:
+                bairro_end = f"{bairro_end} · {end}".strip(" ·")
 
-    for item in novos:
-        bairro_end = item.get("bairro") or ""
-        end = item.get("endereco", "")
-        if end:
-            bairro_end = f"{bairro_end} · {end}".strip(" ·")
+            ok = db.inserir_imovel(conn, {
+                "data_captura":    hoje,
+                "grupo":           item.get("grupo", ""),
+                "corretor":        "",
+                "contato":         "",
+                "tipo":            item.get("tipo", "Imóvel"),
+                "bairro":          bairro_end,
+                "area":            item.get("area"),
+                "quartos":         item.get("quartos"),
+                "suites":          item.get("suites"),
+                "banheiros":       None,
+                "vagas":           item.get("vagas"),
+                "preco":           item.get("preco"),
+                "observacoes":     item.get("obs", ""),
+                "status":          "Novo",
+                "data_publicacao": hoje,
+            })
+            if ok:
+                inseridos += 1
 
-        area = item.get("area")
-        preco = item.get("preco")
-
-        ws.append([
-            hoje,                          # Data Captura
-            item.get("grupo", ""),         # Grupo
-            "",                            # Corretor
-            "",                            # Contato (WhatsApp)
-            item.get("tipo", "Imóvel"),    # Tipo
-            bairro_end,                    # Bairro / Endereço
-            area if area else None,        # Área (m²)
-            item.get("quartos"),           # Quartos
-            item.get("suites"),            # Suítes
-            item.get("vagas"),             # Vagas
-            preco if preco else None,      # Preço (R$)
-            item.get("obs", ""),           # Observações (link)
-            "Novo",                        # Status  ← ETIQUETA NOVO
-            hoje,                          # Data Publicação
-        ])
-        inseridos += 1
-
-    wb.save(PLANILHA)
-    log.info(f"✅ {inseridos} imóveis novos adicionados com Status='Novo' em {PLANILHA.name}")
+    log.info(f"✅ {inseridos} imóveis novos adicionados no SQLite")
     return inseridos
 
 
@@ -596,7 +576,7 @@ def main():
         log.info("** MODO DRY-RUN — nenhuma alteração será salva **")
 
     todos = coletar_todos()
-    inseridos = atualizar_planilha(todos, dry_run=args.dry_run)
+    inseridos = atualizar_db(todos, dry_run=args.dry_run)
 
     log.info(f"Raspagem concluída. Novos inseridos: {inseridos}")
     log.info("=" * 60)

@@ -1,0 +1,649 @@
+[2026-06-29 21:53:12] === Início do ciclo automático ===
+[2026-06-29 21:53:12] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🗺️  '135 MTS construção' → CONDOMINIO: 135 MTS Construção
+
+✅ 4 imóveis inseridos → SQLite imoveis
+🔍 1 demandas inseridas → SQLite demandas
+   ↳ 15 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🔎 Pesquisando condomínio '135 MTS Construção' em Maringá-PR...
+  ✅ Dados obtidos para 'None'
+[2026-06-29 21:53:52] Processamento concluído.
+[2026-06-29 21:53:52] Gerando site...
+Traceback (most recent call last):
+  File "/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py", line 1303, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py", line 1293, in main
+    jj       = carregar_juniorjoda()
+  File "/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py", line 154, in carregar_juniorjoda
+    if nome and bairro and bairro.lower() in nome.lower():
+                                             ^^^^^^^^^^
+AttributeError: 'float' object has no attribute 'lower'
+[2026-06-29 22:23:53] === Início do ciclo automático ===
+[2026-06-29 22:23:54] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 3 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 17 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-29 22:24:15] Processamento concluído.
+[2026-06-29 22:24:15] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 2cd2c7d] 🤖 Auto: 2026-06-29 22:24 — mensagens processadas
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   1967ce7..2cd2c7d  main -> main
+[2026-06-29 22:24:26] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-29 22:24:26] === Ciclo concluído ===
+[2026-06-29 22:56:36] === Início do ciclo automático ===
+[2026-06-29 22:56:36] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-29 22:56:55] Processamento concluído.
+[2026-06-29 22:56:55] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 72e40b0] 🤖 Auto: 2026-06-29 22:57 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   64e24f8..72e40b0  main -> main
+[2026-06-29 22:57:04] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-29 22:57:04] === Ciclo concluído ===
+[2026-06-30 00:05:15] === Início do ciclo automático ===
+[2026-06-30 00:05:15] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 00:05:37] Processamento concluído.
+[2026-06-30 00:05:37] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 00:35:49] === Início do ciclo automático ===
+[2026-06-30 00:35:50] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 00:36:18] Processamento concluído.
+[2026-06-30 00:36:18] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 897d43d] 🤖 Auto: 2026-06-30 00:36 — mensagens processadas
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   997abc4..897d43d  main -> main
+[2026-06-30 00:36:25] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 00:36:25] === Ciclo concluído ===
+[2026-06-30 01:36:28] === Início do ciclo automático ===
+[2026-06-30 01:36:29] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 01:36:49] Processamento concluído.
+[2026-06-30 01:36:49] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 9052ac9] 🤖 Auto: 2026-06-30 01:36 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   897d43d..9052ac9  main -> main
+[2026-06-30 01:36:53] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 01:36:53] === Ciclo concluído ===
+[2026-06-30 02:06:53] === Início do ciclo automático ===
+[2026-06-30 02:06:53] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 19 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 02:07:14] Processamento concluído.
+[2026-06-30 02:07:14] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 702dfe3] 🤖 Auto: 2026-06-30 02:07 — mensagens processadas
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   9052ac9..702dfe3  main -> main
+[2026-06-30 02:07:16] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 02:07:16] === Ciclo concluído ===
+[2026-06-30 03:26:15] === Início do ciclo automático ===
+[2026-06-30 03:26:16] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 03:26:36] Processamento concluído.
+[2026-06-30 03:26:36] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main db1e07b] 🤖 Auto: 2026-06-30 03:26 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   702dfe3..db1e07b  main -> main
+[2026-06-30 03:26:40] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 03:26:40] === Ciclo concluído ===
+[2026-06-30 04:11:39] === Início do ciclo automático ===
+[2026-06-30 04:11:40] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 04:12:03] Processamento concluído.
+[2026-06-30 04:12:03] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main c8bfcb7] 🤖 Auto: 2026-06-30 04:12 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   db1e07b..c8bfcb7  main -> main
+[2026-06-30 04:12:06] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 04:12:06] === Ciclo concluído ===
+[2026-06-30 04:42:06] === Início do ciclo automático ===
+[2026-06-30 04:42:06] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 04:42:24] Processamento concluído.
+[2026-06-30 04:42:24] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 1f7117b] 🤖 Auto: 2026-06-30 04:42 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   c8bfcb7..1f7117b  main -> main
+[2026-06-30 04:42:26] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 04:42:26] === Ciclo concluído ===
+[2026-06-30 06:13:44] === Início do ciclo automático ===
+[2026-06-30 06:13:44] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 20 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 06:14:03] Processamento concluído.
+[2026-06-30 06:14:03] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main ad86030] 🤖 Auto: 2026-06-30 06:14 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   1f7117b..ad86030  main -> main
+[2026-06-30 06:14:06] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 06:14:06] === Ciclo concluído ===
+[2026-06-30 07:11:12] === Início do ciclo automático ===
+[2026-06-30 07:11:12] Processando 69 mensagens pendentes...
+📬 69 mensagens pendentes (total: 145)
+
+📦 27 pacotes agrupados (era 69 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Zona 23 | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 19 duplicatas ignoradas
+   ↳ 7 pacotes sem dados de imóvel
+[2026-06-30 07:11:34] Processamento concluído.
+[2026-06-30 07:11:34] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (801 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 206abb5] 🤖 Auto: 2026-06-30 07:11 — mensagens processadas
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   ad86030..206abb5  main -> main
+[2026-06-30 07:11:37] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 07:11:37] === Ciclo concluído ===
+[2026-06-30 08:41:37] === Início do ciclo automático ===
+[2026-06-30 08:41:37] Processando 83 mensagens pendentes...
+📬 83 mensagens pendentes (total: 159)
+
+📦 35 pacotes agrupados (era 83 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Mirna Ruas]
+     ✅ Casa | Parque das Laranjeiras | R$850000
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🗺️  'Avenida João Paulino' → OUTRO: Avenida João Paulino
+  🗺️  'Vitória' → BAIRRO: Vitória
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 3 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 24 duplicatas ignoradas
+   ↳ 8 pacotes sem dados de imóvel
+[2026-06-30 08:42:03] Processamento concluído.
+[2026-06-30 08:42:03] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (804 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main b79f76a] 🤖 Auto: 2026-06-30 08:42 — mensagens processadas
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   206abb5..b79f76a  main -> main
+[2026-06-30 08:42:07] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 08:42:07] === Ciclo concluído ===
+[2026-06-30 09:12:07] === Início do ciclo automático ===
+[2026-06-30 09:12:07] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 178)
+
+📦 35 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Zona 23 | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🗺️  'Eldorado' → BAIRRO: Eldorado
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 3 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 24 duplicatas ignoradas
+   ↳ 8 pacotes sem dados de imóvel
+[2026-06-30 09:12:34] Processamento concluído.
+[2026-06-30 09:12:34] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (807 imóveis [57 JJ · 502 VR] · 10 demandas)
+[main 8576754] 🤖 Auto: 2026-06-30 09:12 — mensagens processadas
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   b79f76a..8576754  main -> main
+[2026-06-30 09:12:37] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 09:12:37] === Ciclo concluído ===
+[2026-06-30 10:18:43] === Início do ciclo automático ===
+[2026-06-30 10:18:43] Processando 111 mensagens pendentes...
+📬 111 mensagens pendentes (total: 206)
+
+📦 46 pacotes agrupados (era 111 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Adega e Empório Bodega Malbec Ponta Grossa]
+  ⚠️  Claude API: Connection error.
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+  ⚠️  Claude API: Connection error.
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🗺️  'Shopping Catuaí' → CONDOMINIO: Shopping Catuaí Maringá (bairro: Zona 01 (Centro))
+  🗺️  'Avenida Mandacarú' → OUTRO: Avenida Mandacarú
+  🗺️  'clube com área de lazer completa' → OUTRO: Informação insuficiente para identificar
+
+✅ 7 imóveis inseridos → SQLite imoveis
+🔍 2 demandas inseridas → SQLite demandas
+   ↳ 26 duplicatas ignoradas
+   ↳ 11 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🔎 Pesquisando condomínio 'Shopping Catuaí Maringá' em Maringá-PR...
+  ✅ Dados obtidos para 'Catuaí Shopping Maringá'
+  🏗️  Condomínio 'Catuaí Shopping Maringá' cadastrado no SQLite
+[2026-06-30 10:20:24] Processamento concluído.
+[2026-06-30 10:20:24] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+[main 0a62dc3] 🤖 Auto: 2026-06-30 10:20 — mensagens processadas
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   8576754..0a62dc3  main -> main
+[2026-06-30 10:20:27] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 10:20:27] === Ciclo concluído ===
+[2026-06-30 10:50:27] === Início do ciclo automático ===
+[2026-06-30 10:50:27] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 10:50:59] Processamento concluído.
+[2026-06-30 10:50:59] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+[main bbe6fdd] 🤖 Auto: 2026-06-30 10:51 — mensagens processadas
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   0a62dc3..bbe6fdd  main -> main
+[2026-06-30 10:51:03] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 10:51:03] === Ciclo concluído ===
+[2026-06-30 11:21:03] === Início do ciclo automático ===
+[2026-06-30 11:21:04] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 11:21:57] Processamento concluído.
+[2026-06-30 11:21:57] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+[main c7cd71d] 🤖 Auto: 2026-06-30 11:21 — mensagens processadas
+ 1 file changed, 55 insertions(+), 20 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   bbe6fdd..c7cd71d  main -> main
+[2026-06-30 11:22:01] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 11:22:01] === Ciclo concluído ===

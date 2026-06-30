@@ -281,3 +281,4 @@ if __name__ == "__main__":
         nd = conn.execute("SELECT COUNT(*) FROM demandas").fetchone()[0]
         nc = conn.execute("SELECT COUNT(*) FROM condominios").fetchone()[0]
     print(f"✅ imoveis.db OK — {ni} imóveis | {nd} demandas | {nc} condomínios")
+# 2026-06-30

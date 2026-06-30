@@ -533,39 +533,83 @@ def _expandir_abreviaturas(texto):
     t = re.sub(r'\bAV\.\s*', 'Avenida ', t, flags=re.IGNORECASE)
     return t
 
-def extrair_bairro(texto):
-    # Expandir abreviações antes de comparar
+def extrair_bairro(texto, todos=False):
+    """
+    todos=False → retorna o bairro mais relevante (para imóveis).
+    todos=True  → retorna TODOS os bairros/regiões encontrados, separados por ' · ' (para demandas).
+    """
+    # Expandir abreviações e normalizar plural "Zonas" → "Zona"
     texto_exp = _expandir_abreviaturas(texto)
+    texto_exp = re.sub(r'\bZonas\b', 'Zona', texto_exp, flags=re.IGNORECASE)
     tl = texto_exp.lower()
 
-    # 0. Padrão do título: "Tipo à Venda – Bairro | Cidade" (ex: "Casa à Venda – Jardim Fregadoli | Maringá")
+    # 0. Padrão do título: "Tipo à Venda – Bairro | Cidade"
     m_titulo = re.search(
         r'(?:venda|aluguel|locação)\s*[–\-—]+\s*([A-ZÀ-Ú][A-Za-zÀ-ú\s]{2,40}?)\s*\|',
         texto_exp, re.IGNORECASE)
     if m_titulo:
         candidato = m_titulo.group(1).strip()
         if candidato.lower() not in _NAO_BAIRRO and 2 < len(candidato) < 45:
-            # Verificar se está na lista de bairros
-            if candidato.lower() in BAIRROS_LOWER:
-                return BAIRROS_LOWER[candidato.lower()]
-            # Aceitar diretamente como bairro (está no título, alta confiança)
-            return candidato
+            if not todos:
+                return BAIRROS_LOWER.get(candidato.lower(), candidato)
+            # em modo todos: registra mas continua buscando mais
 
-    # 1. Verificar lista de bairros conhecidos (com texto expandido)
+    if todos:
+        # ── Modo demanda: encontrar TODOS os bairros/regiões no texto ──────────
+        encontrados = []
+        vistos = set()
+
+        # Passo 1: "Zona(s) 01, 03, 07 e 08" → cada número vira "Zona XX"
+        for m_z in re.finditer(r'\bZona(?:s)?\s+(\d+(?:\s*[,e]\s*\d+)*)', texto_exp, re.IGNORECASE):
+            for num in re.findall(r'\d+', m_z.group(1)):
+                bl = f"zona {int(num):02d}"
+                if bl in BAIRROS_LOWER and BAIRROS_LOWER[bl] not in vistos:
+                    encontrados.append(BAIRROS_LOWER[bl])
+                    vistos.add(BAIRROS_LOWER[bl])
+
+        # Passo 2: varredura direta por bairros conhecidos (mais longo primeiro)
+        for bl, b in sorted(BAIRROS_LOWER.items(), key=lambda x: -len(x[0])):
+            if bl in tl and b not in vistos:
+                encontrados.append(b)
+                vistos.add(b)
+
+        if encontrados:
+            return ' · '.join(encontrados)
+
+        # Passo 3: padrão contextual "região/bairro do/da NOME"
+        # Captura apenas palavras que começam com maiúscula (para não engolir o resto da frase)
+        for m_ctx in re.finditer(
+            r'(?:região|regiao|bairro)\s+(?:do|da|de|dos|das)\s+'
+            r'([A-ZÀ-Ú][a-zA-ZÀ-ú]+(?:\s+[A-ZÀ-Ú][a-zA-ZÀ-ú]+)*)',
+            texto_exp
+        ):
+            c = m_ctx.group(1).strip()
+            if 2 < len(c) < 40 and c.lower() not in _NAO_BAIRRO:
+                if c.lower() in BAIRROS_LOWER:
+                    return BAIRROS_LOWER[c.lower()]
+                # Tentar prefixo "Jardim X" (ex: "regiao do Dias" → "Jardim Dias")
+                jardim = f"jardim {c.lower()}"
+                if jardim in BAIRROS_LOWER:
+                    return BAIRROS_LOWER[jardim]
+        return ''
+
+    # ── Modo imóvel: retornar primeiro/mais relevante ───────────────────────────
+    # 1. Verificar lista de bairros conhecidos
     for bl, b in BAIRROS_LOWER.items():
-        if bl in tl: return b
-    # 2. Tentar extrair nome por padrão contextual (texto já expandido)
-    m = re.search(r'(?:no|na|em|bairro|condomínio|cond\.?|edifício|ed\.?|residencial|região)\s+([A-ZÀ-Ú0-9][a-zA-ZÀ-ú0-9\s]{2,35}?)(?:\s*[-–,.]|\s*$|\s*\n)', texto_exp)
+        if bl in tl:
+            return b
+    # 2. Padrão contextual
+    m = re.search(
+        r'(?:no|na|em|bairro|condomínio|cond\.?|edifício|ed\.?|residencial|região)\s+'
+        r'([A-ZÀ-Ú0-9][a-zA-ZÀ-ú0-9\s]{2,35}?)(?:\s*[-–,.]|\s*$|\s*\n)',
+        texto_exp)
     if m:
         c = m.group(1).strip()
-        # Filtrar nomes de cidades/estados que não são bairros
         if c.lower() in _NAO_BAIRRO:
             return ''
         if 2 < len(c) < 40:
-            # Verificar se esse nome está na lista de bairros
             if c.lower() in BAIRROS_LOWER:
                 return BAIRROS_LOWER[c.lower()]
-            # Se não, classificar via IA (resultado fica em cache)
             info = classificar_local(c)
             if info['tipo'] == 'bairro':
                 return info.get('nome', c)
@@ -641,11 +685,12 @@ def extrair_edificio(texto):
 
     return None
 
-def extrair_campos(texto, pesquisar_condo_imediato=False):
+def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
     """
     Extrai campos do texto da mensagem.
     pesquisar_condo_imediato=True: se o condomínio não estiver no DB,
     pesquisa na web na hora (usado para demandas, para preencher specs antes de salvar).
+    eh_demanda=True: extrai todos os bairros/regiões mencionados (não só o primeiro).
     """
     edificio = extrair_edificio(texto)
     condo_specs = None
@@ -674,7 +719,7 @@ def extrair_campos(texto, pesquisar_condo_imediato=False):
     # Extração direta da mensagem
     campos = {
         'tipo':      extrair_tipo(texto),
-        'bairro':    extrair_bairro(texto),
+        'bairro':    extrair_bairro(texto, todos=eh_demanda),
         'edificio':  edificio,
         'area':      extrair_area(texto),
         'quartos':   extrair_num(texto, [r'quartos?', r'dormit[oó]rios?', r'dorm\.?']),
@@ -771,9 +816,9 @@ def resolver_pacote(pacote):
     classe = classificar(texto_completo) if texto_completo else 'indefinido'
 
     # Extrair campos do texto
-    # Para demandas: pesquisar condo na web imediatamente para preencher specs
+    # Para demandas: pesquisar condo imediatamente + extrair todos os bairros
     eh_demanda = (classe == 'demanda')
-    campos = extrair_campos(texto_completo, pesquisar_condo_imediato=eh_demanda) if texto_completo else None
+    campos = extrair_campos(texto_completo, pesquisar_condo_imediato=eh_demanda, eh_demanda=eh_demanda) if texto_completo else None
 
     if campos and tem_dados(campos):
         # Texto tem dados suficientes → não precisa analisar imagem

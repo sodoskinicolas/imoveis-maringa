@@ -10,7 +10,7 @@ Uso:
     python3 processar_mensagens.py --ver-fila  # lista mensagens pendentes
 """
 
-import json, re, sys, os, base64
+import json, re, sys, os, base64, unicodedata
 from pathlib import Path
 import db
 
@@ -305,6 +305,176 @@ BAIRROS = [
     'Conjunto Residencial Requião','Jardim Requião',
 ]
 BAIRROS_LOWER = {b.lower(): b for b in BAIRROS}
+
+# ─── Lista oficial de bairros de Maringá (Prefeitura) ────────────────────────
+
+BAIRROS_OFICIAIS_FILE = BASE_DIR / "bairros_maringa.json"
+_BAIRROS_OFICIAIS_LOWER = None   # {normalizado: nome_oficial}
+
+def _normalizar_bairro(s):
+    """Remove acentos e coloca em minúsculas para comparação."""
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', (s or '').lower())
+        if unicodedata.category(c) != 'Mn'
+    ).strip()
+
+def _carregar_bairros_oficiais():
+    global _BAIRROS_OFICIAIS_LOWER
+    if _BAIRROS_OFICIAIS_LOWER is not None:
+        return
+    try:
+        with open(BAIRROS_OFICIAIS_FILE, encoding='utf-8') as f:
+            lista = json.load(f)   # lista plana de strings
+        _BAIRROS_OFICIAIS_LOWER = {_normalizar_bairro(b): b for b in lista}
+    except Exception as e:
+        print(f"  ⚠️  bairros_maringa.json: {e}")
+        _BAIRROS_OFICIAIS_LOWER = {}
+
+CACHE_VALIDACAO_BAIRRO_FILE = BASE_DIR / "cache_validacao_bairro.json"
+_cache_val_bairro = None
+
+def _cv_load():
+    global _cache_val_bairro
+    if _cache_val_bairro is not None:
+        return _cache_val_bairro
+    try:
+        if CACHE_VALIDACAO_BAIRRO_FILE.exists():
+            _cache_val_bairro = json.loads(CACHE_VALIDACAO_BAIRRO_FILE.read_text('utf-8'))
+        else:
+            _cache_val_bairro = {}
+    except:
+        _cache_val_bairro = {}
+    return _cache_val_bairro
+
+def _cv_save():
+    if _cache_val_bairro is not None:
+        CACHE_VALIDACAO_BAIRRO_FILE.write_text(
+            json.dumps(_cache_val_bairro, ensure_ascii=False, indent=2), 'utf-8')
+
+def _match_bairro_oficial(candidato):
+    """Retorna (nome_oficial, score) ou (None, 0.0)."""
+    _carregar_bairros_oficiais()
+    if not candidato or not _BAIRROS_OFICIAIS_LOWER:
+        return None, 0.0
+    # Expandir abreviações antes de comparar (ex: "Jd" → "Jardim")
+    candidato_exp = _expandir_abreviaturas(candidato)
+    nc = _normalizar_bairro(candidato_exp)
+    # 1. Exato
+    if nc in _BAIRROS_OFICIAIS_LOWER:
+        return _BAIRROS_OFICIAIS_LOWER[nc], 1.0
+    # 2. Substring: a) oficial está contido no candidato ("Jardim Alvorada II" → nc contém nl)
+    #              b) candidato está contido no oficial SÓ SE for >= 75% do comprimento
+    #                 (evita "Tuiuti" → "Parque Residencial Tuiuti")
+    for nl, oficial in _BAIRROS_OFICIAIS_LOWER.items():
+        if not nc or not nl:
+            continue
+        if nl in nc:                              # oficial ⊆ candidato
+            return oficial, 0.9
+        if nc in nl and len(nc) >= 0.75 * len(nl):  # candidato ⊆ oficial (próximo em tamanho)
+            return oficial, 0.9
+    # 3. Fuzzy
+    from difflib import SequenceMatcher
+    melhor, best = None, 0.0
+    for nl, oficial in _BAIRROS_OFICIAIS_LOWER.items():
+        s = SequenceMatcher(None, nc, nl).ratio()
+        if s > best:
+            best, melhor = s, oficial
+    if best >= 0.88:
+        return melhor, best
+    return None, best
+
+def _buscar_bairro_web(referencia):
+    """Claude Haiku + web_search para descobrir o bairro. Retorna string ou None."""
+    api_key = _api_key()
+    if not api_key:
+        return None
+    _carregar_bairros_oficiais()
+    exemplos = ', '.join(list(_BAIRROS_OFICIAIS_LOWER.values())[:25])
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        resp = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=80,
+            tools=[{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}],
+            messages=[{"role": "user", "content": (
+                f'Qual é o BAIRRO deste imóvel em Maringá-PR?\n\n'
+                f'REFERÊNCIA: {referencia[:400]}\n\n'
+                f'Pesquise na internet o edifício/endereço e retorne SOMENTE o nome '
+                f'do bairro oficial de Maringá (ex: {exemplos}...). '
+                f'Se não encontrar, retorne NULO.'
+            )}]
+        )
+        texto = ''.join(b.text for b in resp.content if hasattr(b, 'text')).strip()
+        bairro = texto.split('\n')[0].strip().strip('"\'')
+        if bairro and bairro.upper() != 'NULO' and 2 < len(bairro) < 60:
+            return bairro
+    except Exception as e:
+        print(f"  ⚠️  Busca web bairro: {e}")
+    return None
+
+def validar_bairro(bairro_extraido, texto_completo='', edificio=''):
+    """
+    Valida/corrige o bairro extraído contra a lista oficial de Maringá.
+
+    Fluxo:
+      1. Match direto/fuzzy na lista oficial
+      2. Se não encontrar, busca na web usando edifício + texto como referência
+      3. Valida resultado da web também
+      4. Cacheia pelo edifício (chave mais estável) para evitar buscas repetidas
+
+    Retorna o nome oficial ou o candidato original se não confirmar.
+    """
+    _carregar_bairros_oficiais()
+    cache = _cv_load()
+
+    # Chave de cache: edifício tem precedência (mais estável)
+    chave_cache = _normalizar_bairro(edificio or bairro_extraido or '')
+
+    if chave_cache and chave_cache in cache:
+        resultado = cache[chave_cache]
+        if resultado and resultado != bairro_extraido:
+            print(f"  📍 Bairro (cache): '{bairro_extraido}' → '{resultado}'")
+        return resultado or bairro_extraido or ''
+
+    # Passo 1: match contra lista oficial
+    if bairro_extraido:
+        oficial, score = _match_bairro_oficial(bairro_extraido)
+        if oficial:
+            if score < 1.0:
+                print(f"  📍 Bairro corrigido: '{bairro_extraido}' → '{oficial}' ({score:.0%})")
+            if chave_cache:
+                cache[chave_cache] = oficial
+            cache[_normalizar_bairro(bairro_extraido)] = oficial
+            _cv_save()
+            return oficial
+
+    # Passo 2: sem bairro reconhecido → busca web se houver referência de edifício ou endereço
+    referencia = None
+    if edificio and len(edificio.strip()) > 3:
+        referencia = f"Edifício/condomínio: {edificio}. Cidade: Maringá-PR."
+        if texto_completo:
+            referencia += f"\nTexto: {texto_completo[:300]}"
+    elif not bairro_extraido and texto_completo and len(texto_completo.strip()) > 10:
+        referencia = texto_completo
+
+    if referencia:
+        print(f"  🔎 Bairro '{bairro_extraido or '?'}' não reconhecido — buscando via web...")
+        bairro_web = _buscar_bairro_web(referencia)
+        if bairro_web:
+            oficial, score = _match_bairro_oficial(bairro_web)
+            resultado = oficial if oficial else bairro_web
+            print(f"  📍 Bairro via web: '{bairro_extraido}' → '{resultado}'")
+            if chave_cache:
+                cache[chave_cache] = resultado
+            _cv_save()
+            return resultado
+
+    # Não confirmado — manter original e cachear para não buscar de novo
+    if chave_cache:
+        cache[chave_cache] = bairro_extraido or ''
+        _cv_save()
+    return bairro_extraido or ''
 
 # ─── Cache de locais (bairro vs condomínio) ──────────────────────────────────
 CACHE_LOCAIS_FILE = BASE_DIR / "cache_locais.json"
@@ -786,6 +956,22 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
         if not campos['vagas'] and condo_specs.get('vagas'):
             campos['vagas'] = condo_specs['vagas']
             print(f"  🏗️  Vagas do condo '{edificio}': {condo_specs['vagas']}")
+
+    # ── Validar / corrigir bairro contra lista oficial de Maringá ──────────────
+    # Para demandas com múltiplos bairros (separados por ' · '), valida cada um
+    if campos.get('bairro') and ' · ' in str(campos['bairro']):
+        partes = [p.strip() for p in campos['bairro'].split(' · ') if p.strip()]
+        validados = []
+        for p in partes:
+            v = validar_bairro(p, texto_completo=texto, edificio='')
+            validados.append(v)
+        campos['bairro'] = ' · '.join(dict.fromkeys(validados))  # deduplica mantendo ordem
+    else:
+        campos['bairro'] = validar_bairro(
+            campos.get('bairro', ''),
+            texto_completo=texto,
+            edificio=campos.get('edificio', '') or ''
+        )
 
     return campos
 

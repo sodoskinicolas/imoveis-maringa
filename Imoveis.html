@@ -213,7 +213,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="topbar">
   <span class="logo">Imóveis Maringá</span>
-  <span class="topbar-meta">Atualizado 30/06/2026 10:51</span>
+  <span class="topbar-meta">Atualizado 30/06/2026 11:21</span>
 </div>
 
 <!-- Tab nav -->
@@ -240,23 +240,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <input type="text" id="busca-i" class="search-input" placeholder="Buscar por nome, bairro, corretor…" autocomplete="off">
     </div>
     <div class="filterbar">
+      <select class="fsel" id="bairro-i">
+        <option value="">Bairro</option>
+      </select>
       <select class="fsel" id="quartos-i">
         <option value="">Quartos</option>
-        <option value="1">1 quarto</option><option value="2">2 quartos</option>
-        <option value="3">3 quartos</option><option value="4">4+</option>
+        <option value="1">1+</option><option value="2">2+</option>
+        <option value="3">3+</option><option value="4">4+</option>
+      </select>
+      <select class="fsel" id="banheiros-i">
+        <option value="">Banheiros</option>
+        <option value="1">1+</option><option value="2">2+</option>
+        <option value="3">3+</option><option value="4">4+</option>
       </select>
       <select class="fsel" id="vagas-i">
         <option value="">Vagas</option>
-        <option value="1">1 vaga</option><option value="2">2 vagas</option><option value="3">3+</option>
+        <option value="1">1+</option><option value="2">2+</option><option value="3">3+</option>
       </select>
-      <select class="fsel" id="preco-i">
-        <option value="">Preço até</option>
+      <select class="fsel" id="preco-min-i">
+        <option value="">Preço de</option>
+        <option value="100000">R$ 100 mil</option><option value="200000">R$ 200 mil</option>
+        <option value="300000">R$ 300 mil</option><option value="500000">R$ 500 mil</option>
+        <option value="700000">R$ 700 mil</option><option value="1000000">R$ 1 milhão</option>
+      </select>
+      <select class="fsel" id="preco-max-i">
+        <option value="">até</option>
         <option value="300000">R$ 300 mil</option><option value="400000">R$ 400 mil</option>
         <option value="500000">R$ 500 mil</option><option value="700000">R$ 700 mil</option>
         <option value="1000000">R$ 1 milhão</option><option value="2000000">R$ 2 milhões</option>
       </select>
       <select class="fsel" id="fonte-i">
         <option value="">Todas as fontes</option>
+        <option value="grupos">Grupos WhatsApp</option>
         <option value="Junior Joda">Junior Joda</option>
         <option value="VivaReal">VivaReal</option>
       </select>
@@ -540,22 +555,32 @@ function cardI(im){
   '</div>';
 }
 
+function baseBairro(b){return(b||'').split('·')[0].split(',')[0].trim();}
+function totalBanheiros(im){return(im.banheiros||0)+(im.suites||0);}
+
 function filtrarI(){
-  var b  = document.getElementById('busca-i').value.toLowerCase();
-  var q  = document.getElementById('quartos-i').value;
-  var vg = document.getElementById('vagas-i').value;
-  var pm = parseFloat(document.getElementById('preco-i').value)||Infinity;
-  var fn = document.getElementById('fonte-i').value;
-  var st = document.getElementById('status-i').value;
-  var dp = parseInt(document.getElementById('datapub-i').value)||0;
+  var b   = document.getElementById('busca-i').value.toLowerCase();
+  var br  = document.getElementById('bairro-i').value;
+  var q   = document.getElementById('quartos-i').value;
+  var bnh = document.getElementById('banheiros-i').value;
+  var vg  = document.getElementById('vagas-i').value;
+  var pmn = parseFloat(document.getElementById('preco-min-i').value)||0;
+  var pmx = parseFloat(document.getElementById('preco-max-i').value)||Infinity;
+  var fn  = document.getElementById('fonte-i').value;
+  var st  = document.getElementById('status-i').value;
+  var dp  = parseInt(document.getElementById('datapub-i').value)||0;
   var hoje = new Date(); hoje.setHours(0,0,0,0);
   return IMOVEIS.filter(function(im){
     var hay=[im.obs,im.bairro,im.corretor,im.grupo,im.tipo].join(' ').toLowerCase();
     if(b&&hay.indexOf(b)===-1) return false;
-    if(q){var n=parseInt(q);if(q==='4'){if(!im.quartos||im.quartos<4)return false;}else{if(!im.quartos||im.quartos<n)return false;}}
-    if(vg){var n2=parseInt(vg);if(vg==='3'){if(!im.vagas||im.vagas<3)return false;}else{if(!im.vagas||im.vagas<n2)return false;}}
-    if(im.preco&&im.preco>pm) return false;
-    if(fn&&im.fonte!==fn) return false;
+    if(br&&baseBairro(im.bairro)!==br) return false;
+    if(q){var n=parseInt(q);if(!im.quartos||im.quartos<n)return false;}
+    if(bnh){var nb=parseInt(bnh);if(totalBanheiros(im)<nb)return false;}
+    if(vg){var n2=parseInt(vg);if(!im.vagas||im.vagas<n2)return false;}
+    if(pmn&&im.preco&&im.preco<pmn) return false;
+    if(im.preco&&im.preco>pmx) return false;
+    if(fn==='grupos'){if(im.fonte&&im.fonte!=='')return false;}
+    else if(fn&&im.fonte!==fn) return false;
     if(st&&im.status!==st) return false;
     if(dp&&im.data_publicacao){
       var pub=new Date(im.data_publicacao); pub.setHours(0,0,0,0);
@@ -577,7 +602,7 @@ function ordenarI(l){
 
 function aplicarI(){
   var lista=ordenarI(filtrarI());
-  ['quartos-i','vagas-i','preco-i','fonte-i','status-i','datapub-i'].forEach(selActive);
+  ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i'].forEach(selActive);
   var cp=lista.filter(function(i){return i.preco;});
   var med=cp.length?Math.round(cp.reduce(function(s,i){return s+i.preco;},0)/cp.length):0;
   var novos=lista.filter(function(i){return i.status==='Novo';}).length;
@@ -605,11 +630,21 @@ function toggleExpand(el){
 
 function resetarI(){
   document.getElementById('busca-i').value='';
-  ['quartos-i','vagas-i','preco-i','fonte-i','status-i','datapub-i'].forEach(function(id){document.getElementById(id).value='';});
+  ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i'].forEach(function(id){document.getElementById(id).value='';});
   aplicarI();
 }
 
-['busca-i','quartos-i','vagas-i','preco-i','fonte-i','status-i','datapub-i'].forEach(function(id){
+// Popular dropdown de bairros dinamicamente
+(function(){
+  var bairros={};
+  IMOVEIS.forEach(function(im){var b=baseBairro(im.bairro);if(b)bairros[b]=(bairros[b]||0)+1;});
+  var sel=document.getElementById('bairro-i');
+  Object.keys(bairros).sort().forEach(function(b){
+    var o=document.createElement('option');o.value=b;o.textContent=b+' ('+bairros[b]+')';sel.appendChild(o);
+  });
+})();
+
+['busca-i','bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i'].forEach(function(id){
   document.getElementById(id).addEventListener('input',aplicarI);
 });
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 gerar_site.py
-Lê Imoveis_Grupos.xlsx + Demandas_Grupos.xlsx + JuniorJoda_Imoveis.xlsx e gera Imoveis.html.
-Chamado automaticamente pelo bot_grupos_wa.py e bot_demandas_wa.py após cada inserção.
+Lê imoveis.db (SQLite) + JuniorJoda_Imoveis.xlsx + VivaReal_Imoveis.xlsx e gera Imoveis.html.
+Chamado automaticamente após cada inserção no banco de dados.
 
 Uso manual:
   python gerar_site.py
@@ -20,8 +20,8 @@ except ImportError:
     print("Erro: pandas não instalado. Execute: pip install pandas openpyxl")
     raise
 
-PLANILHA   = Path(__file__).parent / "Imoveis_Grupos.xlsx"
-DEMANDAS   = Path(__file__).parent / "Demandas_Grupos.xlsx"
+import db
+
 JUNIORJODA = Path(__file__).parent / "JuniorJoda_Imoveis.xlsx"
 VIVAREAL   = Path(__file__).parent / "VivaReal_Imoveis.xlsx"
 SITE       = Path(__file__).parent / "Imoveis.html"
@@ -70,53 +70,48 @@ def _extrair_url(texto):
     return m.group(0).rstrip('.,)') if m else ""
 
 def carregar_imoveis():
-    df = pd.read_excel(PLANILHA, sheet_name="Imóveis", dtype=str)
-    df = df.where(pd.notnull(df), None)
+    """Lê imóveis do SQLite, excluindo grupos que têm fonte própria (JJ, VR)."""
+    db.init_db()
+    with db.db_conn() as conn:
+        registros = db.listar_imoveis(
+            conn,
+            excluir_grupos=["juniorjoda.com.br", "vivareal.com.br"]
+        )
+
     rows = []
-    vistos = set()   # deduplicação: corretor + preço + data
-    for _, r in df.iterrows():
-        if not r.get("Data Captura"): continue
-        # JJ and VR entries are loaded separately — skip to avoid duplicates
-        grupo = (r.get("Grupo", "") or "").strip()
-        if grupo == "juniorjoda.com.br": continue
-        if grupo == "vivareal.com.br": continue
-        def toint(x):
-            try: return int(float(x)) if x else None
-            except: return None
-        def tofloat(x):
-            try: return float(x) if x else None
-            except: return None
+    vistos = set()
+    for r in registros:
+        if not r.get("data_captura"):
+            continue
+        obs  = r.get("observacoes") or ""
+        link = _extrair_url(obs)
 
-        obs = r.get("Observações", "") or ""
-        link = _extrair_url(obs)  # extrai URL da mensagem do WhatsApp
-
-        # Deduplicar: mesma mensagem enviada para vários grupos ou capturada 2x
-        corretor = r.get("Corretor", "") or ""
-        preco    = r.get("Preço (R$)", "") or ""
-        data     = r.get("Data Captura", "") or ""
-        area     = r.get("Área (m²)", "") or ""
-        chave_dup = f"{corretor}|{preco}|{area}|{data[:16]}"  # data até minuto
+        corretor = r.get("corretor") or ""
+        preco    = r.get("preco") or ""
+        data     = r.get("data_captura") or ""
+        area     = r.get("area") or ""
+        chave_dup = f"{corretor}|{preco}|{area}|{str(data)[:16]}"
         if chave_dup in vistos:
             continue
         vistos.add(chave_dup)
 
         rows.append({
-            "data":     data,
-            "grupo":    grupo,
-            "corretor": corretor,
-            "contato":  r.get("Contato (WhatsApp)", "") or "",
-            "tipo":     normalizar_tipo(r.get("Tipo", ""), obs),
-            "bairro":   r.get("Bairro / Endereço", "") or "",
-            "area":     tofloat(r.get("Área (m²)")),
-            "quartos":  toint(r.get("Quartos")),
-            "suites":   toint(r.get("Suítes")),
-            "vagas":    toint(r.get("Vagas")),
-            "preco":    toint(r.get("Preço (R$)")),
-            "obs":      obs,
-            "status":           r.get("Status", "Novo") or "Novo",
-            "data_publicacao":  r.get("Data Publicação", "") or "",
-            "link":     link,
-            "fonte":    "",
+            "data":            data,
+            "grupo":           r.get("grupo") or "",
+            "corretor":        corretor,
+            "contato":         r.get("contato") or "",
+            "tipo":            normalizar_tipo(r.get("tipo") or "", obs),
+            "bairro":          r.get("bairro") or "",
+            "area":            r.get("area"),
+            "quartos":         r.get("quartos"),
+            "suites":          r.get("suites"),
+            "vagas":           r.get("vagas"),
+            "preco":           r.get("preco"),
+            "obs":             obs,
+            "status":          r.get("status") or "Novo",
+            "data_publicacao": r.get("data_publicacao") or "",
+            "link":            link,
+            "fonte":           "",
         })
     return rows
 
@@ -156,6 +151,8 @@ def carregar_juniorjoda():
             cidade_display = cidade_clean if cidade_clean.lower() not in ('maringá', 'maringa', '') else ''
             # Se bairro é o mesmo que empreendimento (ou contido nele), não repetir
             bairro_final = bairro
+            nome  = str(nome  or "")
+            bairro = str(bairro or "")
             if nome and bairro and bairro.lower() in nome.lower():
                 bairro_final = cidade_display  # só cidade diferente, se houver
             elif cidade_display:
@@ -234,79 +231,39 @@ def carregar_vivareal():
 
 
 def carregar_demandas():
-    """Lê demandas do WhatsApp (Imoveis_Grupos.xlsx aba Demandas) + arquivo legado."""
-    def toint(x):
-        try: return int(float(x)) if x and str(x).strip() not in ("","None") else None
-        except: return None
+    """Lê demandas do SQLite."""
+    db.init_db()
+    with db.db_conn() as conn:
+        registros = db.listar_demandas(conn)
 
     rows = []
     vistos = set()
-
-    # 1. Demandas do bot WhatsApp (Imoveis_Grupos.xlsx aba "Demandas")
-    if PLANILHA.exists():
-        try:
-            df = pd.read_excel(PLANILHA, sheet_name="Demandas", dtype=str)
-            df = df.where(pd.notnull(df), None)
-            for _, r in df.iterrows():
-                if not r.get("Data"): continue
-                corretor = r.get("Corretor","") or ""
-                orc = r.get("Orçamento Máx","") or ""
-                data = r.get("Data","") or ""
-                chave = f"{corretor}|{orc}|{data[:16]}"
-                if chave in vistos: continue
-                vistos.add(chave)
-                rows.append({
-                    "data":      data,
-                    "grupo":     r.get("Grupo","") or "",
-                    "corretor":  corretor,
-                    "contato":   r.get("Contato","") or "",
-                    "tipo":      r.get("Tipo Buscado","") or "Apartamento",
-                    "regiao":    r.get("Bairro/Região","") or "",
-                    "area_min":  toint(r.get("Área Mín")),
-                    "quartos":   toint(r.get("Quartos")),
-                    "suites":    toint(r.get("Suítes")),
-                    "banheiros": toint(r.get("Banheiros")),
-                    "vagas":     toint(r.get("Vagas")),
-                    "orcamento": toint(r.get("Orçamento Máx")),
-                    "obs":       r.get("Observações","") or "",
-                    "status":    r.get("Status","Novo") or "Novo",
-                })
-        except Exception as e:
-            print(f"  ⚠️  Demandas WA: {e}")
-
-    # 2. Arquivo legado Demandas_Grupos.xlsx (se existir e tiver dados reais)
-    if DEMANDAS.exists():
-        try:
-            df2 = pd.read_excel(DEMANDAS, sheet_name="Demandas", dtype=str)
-            df2 = df2.where(pd.notnull(df2), None)
-            for _, r in df2.iterrows():
-                corretor = r.get("Corretor","") or ""
-                if not r.get("Data") or "Exemplo" in corretor or "Desconhecido" in corretor:
-                    continue  # pular entradas de exemplo/dummy
-                orc = r.get("Orçamento Máx (R$)","") or ""
-                data = r.get("Data","") or ""
-                chave = f"{corretor}|{orc}|{data[:16]}"
-                if chave in vistos: continue
-                vistos.add(chave)
-                rows.append({
-                    "data":      data,
-                    "grupo":     r.get("Grupo","") or "",
-                    "corretor":  corretor,
-                    "contato":   r.get("Contato (WhatsApp)","") or "",
-                    "tipo":      r.get("Tipo Buscado","") or "Apartamento",
-                    "regiao":    r.get("Bairro / Região","") or "",
-                    "area_min":  toint(r.get("Área Mín (m²)")),
-                    "quartos":   toint(r.get("Quartos")),
-                    "suites":    toint(r.get("Suítes")),
-                    "banheiros": toint(r.get("Banheiros")),
-                    "vagas":     toint(r.get("Vagas")),
-                    "orcamento": toint(r.get("Orçamento Máx (R$)")),
-                    "obs":       r.get("Observações","") or "",
-                    "status":    r.get("Status","Novo") or "Novo",
-                })
-        except Exception as e:
-            print(f"  ⚠️  Demandas legado: {e}")
-
+    for r in registros:
+        if not r.get("data"):
+            continue
+        corretor = r.get("corretor") or ""
+        orc      = r.get("orcamento_max") or ""
+        data     = r.get("data") or ""
+        chave    = f"{corretor}|{orc}|{str(data)[:16]}"
+        if chave in vistos:
+            continue
+        vistos.add(chave)
+        rows.append({
+            "data":      data,
+            "grupo":     r.get("grupo") or "",
+            "corretor":  corretor,
+            "contato":   r.get("contato") or "",
+            "tipo":      r.get("tipo_buscado") or "Apartamento",
+            "regiao":    r.get("bairro_regiao") or "",
+            "area_min":  r.get("area_min"),
+            "quartos":   r.get("quartos"),
+            "suites":    r.get("suites"),
+            "banheiros": r.get("banheiros"),
+            "vagas":     r.get("vagas"),
+            "orcamento": r.get("orcamento_max"),
+            "obs":       r.get("observacoes") or "",
+            "status":    r.get("status") or "Ativo",
+        })
     return rows
 
 
@@ -494,7 +451,36 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .im-modal-btns a:hover{{opacity:.85}}
 .im-btn-wa{{background:#25d366;color:#fff}}
 .im-btn-link{{background:#1a4f8a;color:#fff}}
-
+/* ── Toggle vista ── */
+.view-toggle{{display:flex;gap:4px}}
+.btn-view{{padding:5px 12px;border:1.5px solid #e0e0db;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;background:#fff;color:#666;transition:all .15s;line-height:1.4}}
+.btn-view.active{{background:#6b21a8;color:#fff;border-color:#6b21a8}}
+/* ── Vista lista ── */
+.grid.list-view{{display:flex;flex-direction:column;gap:5px}}
+.grid.list-view .card{{flex-direction:row;align-items:center;padding:10px 14px;gap:14px;border-radius:9px}}
+.grid.list-view .card-header{{flex:1;min-width:0;margin:0}}
+.grid.list-view .card-name{{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}}
+.grid.list-view .card-loc{{display:none}}
+.grid.list-view .chips{{flex:0 0 auto;flex-wrap:nowrap}}
+.grid.list-view .card-desc{{display:none}}
+.grid.list-view .card-foot{{border-top:none;padding-top:0;margin-top:0;flex-shrink:0}}
+.grid.list-view .card-who{{display:none}}
+.grid.list-view .card-expand{{display:none!important}}
+/* ── Expandir card inline ── */
+.card-expand{{display:none;padding-top:12px;border-top:1px solid #f0f0ec;margin-top:8px}}
+.card.expanded .card-expand{{display:block}}
+.card.expanded{{box-shadow:0 4px 22px rgba(107,33,168,.13)!important;border-color:#c4a9e8!important}}
+.ce-specs{{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}}
+.ce-spec{{background:#f5f2fc;border-radius:7px;padding:5px 11px;font-size:12px;font-weight:600;color:#5a35a0}}
+.ce-obs{{font-size:13px;color:#555;line-height:1.65;background:#faf8fe;border-radius:8px;padding:10px 12px;margin-bottom:10px;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto}}
+.ce-origem{{font-size:11.5px;color:#aaa;margin-bottom:10px}}
+.ce-btns{{display:flex;gap:8px;flex-wrap:wrap}}
+.ce-btns a{{flex:1;min-width:110px;text-align:center;padding:9px 14px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;transition:opacity .15s}}
+.ce-btns a:hover{{opacity:.85}}
+.ce-btn-wa{{background:#25d366;color:#fff}}
+.ce-btn-link{{background:#1a4f8a;color:#fff}}
+.card-expand-arrow{{font-size:11px;color:#9c72c8;margin-left:4px;transition:transform .2s;display:inline-block;opacity:.5}}
+.card.expanded .card-expand-arrow{{transform:rotate(180deg);opacity:1}}
 
 @media(max-width:640px){{
   .topbar,.hero,.statsbar,.content{{padding-left:16px;padding-right:16px}}
@@ -575,12 +561,18 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   <div class="content">
     <div class="results-row">
       <span class="results-txt" id="rtxt-i"></span>
-      <select class="sort-sel" id="ord-i" onchange="aplicarI()">
-        <option value="data_desc">Mais recentes</option>
-        <option value="preco_asc">Menor preço</option>
-        <option value="preco_desc">Maior preço</option>
-        <option value="area_desc">Maior área</option>
-      </select>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="view-toggle">
+          <button class="btn-view active" id="btn-cards-i" onclick="setViewI('cards')">⊞ Cards</button>
+          <button class="btn-view" id="btn-lista-i" onclick="setViewI('lista')">☰ Lista</button>
+        </div>
+        <select class="sort-sel" id="ord-i" onchange="aplicarI()">
+          <option value="data_desc">Mais recentes</option>
+          <option value="preco_asc">Menor preço</option>
+          <option value="preco_desc">Maior preço</option>
+          <option value="area_desc">Maior área</option>
+        </select>
+      </div>
     </div>
     <div class="grid" id="grid-i"></div>
   </div>
@@ -708,7 +700,7 @@ function pillCls(s){{
 
 function btnWa(num){{
   if(!num) return '';
-  var n=num.replace(/\D/g,'');
+  var n=num.replace(/\\D/g,'');
   // Rejeitar LIDs (>13 dígitos) e strings muito curtas
   if(n.length<8||n.length>13) return '';
   return '<a class="btn-wa" href="https://wa.me/'+n+'" target="_blank">'+
@@ -728,8 +720,8 @@ function mudarAba(aba,el){{
 function extrairEdificio(obs) {{
   // Extrai nome do edifício/condomínio do texto da obs
   if (!obs) return null;
-  var m = obs.match(/(?:edif[íi]cio|ed\.|condom[íi]nio|cond\.|residencial)\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\s]{{2,30}}?)(?:\s*[·\-,\.\d]|$)/i);
-  if (m) return m[1].trim().replace(/\s+/g, ' ');
+  var m = obs.match(/(?:edif[íi]cio|ed\\.|condom[íi]nio|cond\\.|residencial)\\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\\s]{{2,30}}?)(?:\\s*[·\\-,\\.\\d]|$)/i);
+  if (m) return m[1].trim().replace(/\\s+/g, ' ');
   return null;
 }}
 
@@ -753,11 +745,11 @@ function cardNome(im){{
   // Remover prefixo "Cond." do bairro se presente, pois já é o nome do condomínio
   var edificio = extrairEdificio(im.obs);
   if (!edificio && im.bairro && im.bairro.startsWith('Cond. ')) {{
-    edificio = im.bairro.replace(/^Cond\.\s*/, '').split('·')[0].trim();
+    edificio = im.bairro.replace(/^Cond\\.\\s*/, '').split('·')[0].trim();
     bairro = im.bairro.split('·')[1] ? im.bairro.split('·')[1].trim() : '';
   }}
   if (edificio && bairro) {{
-    var bl = bairro.toLowerCase().replace(/^cond\.?\s*/i, '').trim();
+    var bl = bairro.toLowerCase().replace(/^cond\\.?\\s*/i, '').trim();
     var el = edificio.toLowerCase().trim();
     // Se o bairro já contém o nome do edifício → não repetir
     if (bl.includes(el) || el.includes(bl)) {{
@@ -765,8 +757,8 @@ function cardNome(im){{
     }}
     // Se o bairro está no final do nome do edifício → remover do edifício
     if (el.endsWith(bl)) {{
-      edificio = edificio.slice(0, edificio.length - bairro.replace(/^Cond\.?\s*/i,'').length)
-                         .replace(/[\s·\-,]+$/, '').trim();
+      edificio = edificio.slice(0, edificio.length - bairro.replace(/^Cond\\.?\\s*/i,'').length)
+                         .replace(/[\\s·\\-,]+$/, '').trim();
     }}
     if (!edificio) return tipo + ' · ' + bairro;
     return tipo + ' · ' + edificio + ' · ' + bairro;
@@ -796,10 +788,26 @@ function cardI(im){{
     : (im.obs || '');
   var imIdx = IMOVEIS.indexOf(im);
   var cardCls = isJJ ? ' card-jj' : isVR ? ' card-vr' : isNovo ? ' card-novo' : '';
-  var onclick = imIdx >= 0 ? ' onclick="abrirModalIm('+imIdx+')"' : '';
-  return '<div class="card'+cardCls+'"'+onclick+'>'+
+  // Seção expandida com specs completos e botões
+  var ceSpecs=[];
+  if(im.area)      ceSpecs.push(im.area+' m²');
+  if(im.quartos)   ceSpecs.push(im.quartos+(im.quartos===1?' quarto':' quartos'));
+  if(im.suites)    ceSpecs.push(im.suites+(im.suites===1?' suíte':' suítes'));
+  if(im.banheiros) ceSpecs.push(im.banheiros+(im.banheiros===1?' banheiro':' banheiros'));
+  if(im.vagas)     ceSpecs.push(im.vagas+(im.vagas===1?' vaga':' vagas'));
+  var ceBtns='';
+  if(im.contato){{var nc=String(im.contato).replace(/\\D/g,'');if(nc.length>=8&&nc.length<=13)ceBtns+='<a class="ce-btn-wa" href="https://wa.me/'+nc+'" target="_blank">💬 WhatsApp</a>';}}
+  if(im.link) ceBtns+='<a class="ce-btn-link" href="'+im.link+'" target="_blank">🔗 Ver anúncio</a>';
+  var ceOrigem=(im.corretor||'')+(im.grupo?' · '+im.grupo:'')+(im.data?' · '+im.data:'');
+  var expandHtml='<div class="card-expand">'+
+    (ceSpecs.length?'<div class="ce-specs">'+ceSpecs.map(function(s){{return'<span class="ce-spec">'+s+'</span>';}}).join('')+'</div>':'')+
+    (im.obs?'<div class="ce-obs">'+im.obs.replace(/</g,'&lt;')+'</div>':'')+
+    (ceOrigem?'<div class="ce-origem">'+ceOrigem+'</div>':'')+
+    (ceBtns?'<div class="ce-btns">'+ceBtns+'</div>':'<div style="color:#bbb;font-size:12px">Sem contato disponível</div>')+
+  '</div>';
+  return '<div class="card'+cardCls+'" onclick="toggleExpand(this)">'+
     '<div class="card-header">'+
-      '<div><div class="card-name">'+cardNome(im)+'</div>'+(im.bairro?'<div class="card-loc">'+im.bairro+'</div>':'')+' </div>'+
+      '<div><div class="card-name">'+cardNome(im)+' <span class="card-expand-arrow">▾</span></div>'+(im.bairro?'<div class="card-loc">'+im.bairro+'</div>':'')+' </div>'+
       (im.preco?'<div class="card-price">'+fmtP(im.preco)+'</div>':'<div class="card-price-na">Consultar</div>')+
     '</div>'+
     (chips?'<div class="chips">'+chips+'</div>':'')+
@@ -808,6 +816,7 @@ function cardI(im){{
       '<div class="card-who">'+(im.corretor||'—')+'<br>'+(im.grupo||'')+(im.data?' · '+im.data:'')+' </div>'+
       '<div class="foot-right" onclick="event.stopPropagation()">'+btnWa(im.contato)+linkBtn+'<span class="'+pillCls(im.status||'Novo')+'">'+(im.status||'Novo')+'</span></div>'+
     '</div>'+
+    expandHtml+
   '</div>';
 }}
 
@@ -857,8 +866,21 @@ function aplicarI(){{
     '<div class="stat"><strong>'+novos+'</strong> novos</div>'+
     (med?'<div class="stat"><strong>'+fmtP(med)+'</strong> preço médio</div>':'');
   document.getElementById('rtxt-i').textContent=lista.length+' de '+IMOVEIS.length;
-  document.getElementById('grid-i').innerHTML=lista.length?lista.map(cardI).join(''):
+  var grid=document.getElementById('grid-i');
+  grid.className=(_viewI==='lista')?'grid list-view':'grid';
+  grid.innerHTML=lista.length?lista.map(cardI).join(''):
     '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhum imóvel encontrado.</p></div>';
+}}
+
+var _viewI='cards';
+function setViewI(v){{
+  _viewI=v;
+  document.getElementById('btn-cards-i').className='btn-view'+(v==='cards'?' active':'');
+  document.getElementById('btn-lista-i').className='btn-view'+(v==='lista'?' active':'');
+  aplicarI();
+}}
+function toggleExpand(el){{
+  el.classList.toggle('expanded');
 }}
 
 function resetarI(){{
@@ -1021,7 +1043,7 @@ function canonicBairro(str){{
 function ehVizinho(demRegiao, imBairro){{
   if(!demRegiao||!imBairro) return false;
   var imB = canonicBairro(imBairro);
-  var demWords = demRegiao.toLowerCase().split(/\W+/).filter(function(w){{return w.length>3;}});
+  var demWords = demRegiao.toLowerCase().split(/\\W+/).filter(function(w){{return w.length>3;}});
   // Encontrar qual bairro do mapa corresponde à região da demanda
   var demBairro = null;
   Object.keys(VIZINHOS).forEach(function(b){{
@@ -1118,7 +1140,7 @@ function missedCriteria(dm, im){{
   if(dm.vagas&&!(im.vagas&&im.vagas>=dm.vagas))           missed.push(dm.vagas+' vagas');
   if(dm.area_min&&!(im.area&&im.area>=dm.area_min*0.8)) missed.push('área < '+Math.round(dm.area_min*0.8)+' m²');
   if(dm.orcamento&&!(im.preco&&im.preco>=dm.orcamento*0.8&&im.preco<=dm.orcamento*1.2)){{var pct=im.preco?Math.round((im.preco/dm.orcamento-1)*100):null;missed.push(pct!==null?(pct>20?'+'+pct+'% do orçamento':pct<-20?pct+'% abaixo do orçamento':'fora ±20%'):'sem preço');}}
-  if(dm.regiao){{var words=dm.regiao.toLowerCase().split(/\W+/).filter(function(w){{return w.length>3;}});var bl=(im.bairro||'').toLowerCase();if(!(words.length&&words.some(function(w){{return bl.indexOf(w)!==-1;}}))){{var viz=ehVizinho(dm.regiao,im.bairro||'');missed.push(viz?'bairro vizinho':'região');}}}}
+  if(dm.regiao){{var words=dm.regiao.toLowerCase().split(/\\W+/).filter(function(w){{return w.length>3;}});var bl=(im.bairro||'').toLowerCase();if(!(words.length&&words.some(function(w){{return bl.indexOf(w)!==-1;}}))){{var viz=ehVizinho(dm.regiao,im.bairro||'');missed.push(viz?'bairro vizinho':'região');}}}}
   return missed;
 }}
 
@@ -1136,7 +1158,7 @@ function cardMatchIm(entry, dm, isNear){{
   var badge=isNear
     ? '<span class="match-score mscore-mid">Falta: '+missedCriteria(dm,im).join(', ')+'</span>'
     : '<span class="match-score mscore-high">✓ todos critérios</span>';
-  var onclick=imIdx>=0?(' onclick="abrirModalIm('+imIdx+');event.stopPropagation()"'):'';
+  var onclick=imIdx>=0?' onclick="abrirModalPorIdx('+imIdx+');event.stopPropagation()"':'';
   return '<div class="match-row-item'+(isJJ?' match-row-jj':'')+(isNear?' match-row-near':'')+'"'+onclick+'>'+
     '<div class="mri-main">'+
       '<div class="mri-title">'+nome+'</div>'+
@@ -1221,6 +1243,9 @@ aplicarD();
   overlay.addEventListener('click',function(e){{if(e.target===overlay)fecharModalIm();}});
 }})();
 
+function abrirModalPorIdx(idx){{
+  abrirModalIm(idx);
+}}
 function abrirModalIm(idx){{
   var im=IMOVEIS[idx];
   if(!im) return;
@@ -1239,7 +1264,7 @@ function abrirModalIm(idx){{
     : '';
   var origem=(im.corretor?im.corretor:'')+(im.grupo?' · '+im.grupo:'')+(im.data?' · '+im.data:'');
   var btns='';
-  if(im.contato){{var n=String(im.contato).replace(/\D/g,'');if(n.length>=8&&n.length<=13) btns+='<a class="im-btn-wa" href="https://wa.me/'+n+'" target="_blank">💬 WhatsApp</a>';}}
+  if(im.contato){{var n=String(im.contato).replace(/\\D/g,'');if(n.length>=8&&n.length<=13) btns+='<a class="im-btn-wa" href="https://wa.me/'+n+'" target="_blank">💬 WhatsApp</a>';}}
   if(im.link) btns+='<a class="im-btn-link" href="'+im.link+'" target="_blank">🔗 Ver anúncio</a>';
   document.getElementById('im-modal-body').innerHTML=
     '<div class="im-modal-tipo">'+(im.tipo||'Imóvel')+'</div>'+
@@ -1265,8 +1290,7 @@ document.addEventListener('keydown',function(e){{if(e.key==='Escape')fecharModal
 
 
 def main():
-    if not PLANILHA.exists():
-        print(f"Planilha não encontrada: {PLANILHA}"); return
+    db.init_db()
     imoveis  = carregar_imoveis()
     jj       = carregar_juniorjoda()
     vr       = carregar_vivareal()

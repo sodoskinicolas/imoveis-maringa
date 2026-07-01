@@ -126,10 +126,14 @@ def montar_nos(stats):
             todo dia às 3h, e <code>gerar_site.py</code> todo dia às 8h (ou a cada push no banco).</p>
         """),
         dict(id="site", lane="pipeline", titulo="Site Público", sub="gerar_site.py → GitHub Pages", detalhe="""
-            <p><strong>gerar_site.py</strong> lê o <code>imoveis.db</code> (excluindo os grupos com planilha própria)
-            + <code>JuniorJoda_Imoveis.xlsx</code> + <code>VivaReal_Imoveis.xlsx</code>, e monta um único arquivo
-            HTML estático (<code>Imoveis.html</code>) com abas de Imóveis e Demandas, busca e filtros — tudo em
-            JavaScript puro, sem servidor.</p>
+            <p><strong>gerar_site.py</strong> lê só o <code>imoveis.db</code> (fonte única de dados) e monta um único
+            arquivo HTML estático (<code>Imoveis.html</code>) com abas de Imóveis e Demandas, busca e filtros — tudo
+            em JavaScript puro, sem servidor.</p>
+            <p><strong>VivaReal e Junior Joda</strong> não são mais lidos de planilha na hora de gerar o site: são
+            sincronizados pro banco via upsert (<code>scrape_vivareal.py</code> / <code>importar_vivareal.py</code> /
+            <code>importar_juniorjoda.py</code>), identificados por <code>fonte</code> + <code>ref_externa</code>.
+            Isso permite rastrear <strong>histórico de preço</strong> por imóvel/edifício em <code>preco_historico</code>
+            e marcar automaticamente como <code>Removido</code> quem sai do catálogo de uma fonte.</p>
             <p><strong>Publicação:</strong> o GitHub Actions copia esse HTML pro GitHub Pages. Site final:
             <a href="https://sodoskinicolas.github.io/imoveis-maringa/" target="_blank">sodoskinicolas.github.io/imoveis-maringa</a></p>
         """),

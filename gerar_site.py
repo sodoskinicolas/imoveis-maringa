@@ -151,6 +151,11 @@ def carregar_demandas():
         if chave in vistos:
             continue
         vistos.add(chave)
+        obs_d = r.get("observacoes") or ""
+        try:
+            edificio_d = pm.extrair_edificio(obs_d) or "" if obs_d else ""
+        except Exception:
+            edificio_d = ""
         rows.append({
             "data":      data,
             "grupo":     r.get("grupo") or "",
@@ -158,13 +163,14 @@ def carregar_demandas():
             "contato":   r.get("contato") or "",
             "tipo":      r.get("tipo_buscado") or "Apartamento",
             "regiao":    r.get("bairro_regiao") or "",
+            "edificio":  edificio_d,
             "area_min":  r.get("area_min"),
             "quartos":   r.get("quartos"),
             "suites":    r.get("suites"),
             "banheiros": r.get("banheiros"),
             "vagas":     r.get("vagas"),
             "orcamento": r.get("orcamento_max"),
-            "obs":       r.get("observacoes") or "",
+            "obs":       obs_d,
             "status":    r.get("status") or "Ativo",
         })
     return rows
@@ -907,14 +913,17 @@ function cardD(dm){{
     dm.area_min?('<span class="chip">Mín '+dm.area_min+' m²</span>'):null,
     dm.quartos?(dm.quartos+(dm.quartos===1?' quarto':' quartos')):null,
     dm.suites?(dm.suites+(dm.suites===1?' suíte':' suítes')):null,
+    dm.banheiros?(dm.banheiros+(dm.banheiros===1?' banheiro':' banheiros')):null,
     dm.vagas?(dm.vagas+(dm.vagas===1?' vaga':' vagas')):null
   ].filter(Boolean).map(function(c){{return typeof c==='string'&&c.indexOf('class="chip')===-1?'<span class="chip">'+c+'</span>':c;}}).join('');
   // Título descreve O QUE É BUSCADO, não quem busca
-  var tipo   = dm.tipo   || '';
-  var regiao = dm.regiao || '';
+  var tipo    = dm.tipo    || '';
+  var edificio= dm.edificio|| '';
+  var regiao  = dm.regiao  || '';
   var tituloParts = [];
-  if (tipo)   tituloParts.push(tipo);
-  if (regiao) tituloParts.push(regiao);
+  if (tipo)    tituloParts.push(tipo);
+  if (edificio)tituloParts.push(edificio);
+  if (regiao)  tituloParts.push(regiao);
   var titulo = tituloParts.length ? 'Busca ' + tituloParts.join(' · ') : 'Demanda';
   return '<div class="card card-dem">'+
     '<div class="card-header">'+

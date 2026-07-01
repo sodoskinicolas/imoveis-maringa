@@ -1060,6 +1060,8 @@ _EDIFICIO_GENERICO = {
     'aluguel', 'ótima', 'lindo', 'excelente', 'bom', 'boa', 'oportunidade',
     'imóvel', 'imovel', 'sobrado', 'cobertura', 'studio', 'cliente', 'comprador',
     'área', 'quartos', 'suítes', 'vaga', 'preferência', 'piscina', 'lazer',
+    'pessoal', 'galera', 'turma', 'amigos', 'alguém', 'alguem', 'atenção', 'atencao',
+    'disponível', 'disponivel', 'urgente', 'procuro', 'preciso', 'buscando', 'busco',
 }
 # "da Avenida X", "na Rua Y" — é endereço, não nome de prédio
 _EDIFICIO_PALAVRA_ENDERECO = {

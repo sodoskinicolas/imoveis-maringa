@@ -28,6 +28,9 @@ except ImportError:
     print("Instale: pip install openpyxl")
     sys.exit(1)
 
+import db
+
+FONTE       = "VivaReal"
 PASTA       = Path(__file__).parent
 JSON_FILE   = PASTA / "vivareal_maringa.json"
 VR_XLSX     = PASTA / "VivaReal_Imoveis.xlsx"
@@ -108,7 +111,43 @@ for r in raw:
 
 print(f"✅ {len(listings)} imóveis válidos")
 
-# ─── Criar VivaReal_Imoveis.xlsx ────────────────────────────────────────────
+# ─── Sincronizar com imoveis.db (upsert por ID VivaReal) ───────────────────
+db.init_db()
+_novos = _atualizados = _precos_mudaram = 0
+_refs_vistas = []
+with db.db_conn() as conn:
+    for im in listings:
+        _refs_vistas.append(im["id"])
+        bairro_end = f"{im['bairro']} · {im['rua']}".strip(" ·") if im["rua"] else im["bairro"]
+        item = {
+            "ref_externa":     im["id"],
+            "data_captura":    HOJE,
+            "grupo":           FONTE,
+            "corretor":        im["corretor"] or "VivaReal",
+            "contato":         "",
+            "tipo":            im["tipo"],
+            "bairro":          bairro_end,
+            "area":            im["area"],
+            "quartos":         im["quartos"],
+            "banheiros":       im["banheiros"],
+            "vagas":           im["vagas"],
+            "preco":           im["preco"],
+            "observacoes":     f"id:{im['id']}",
+            "status":          "Venda",
+            "data_publicacao": im["dataPub"],
+            "link":            im["link"],
+        }
+        acao, _ = db.upsert_imovel_externo(conn, item, FONTE)
+        if acao == "novo":
+            _novos += 1
+        elif acao == "preco_mudou":
+            _precos_mudaram += 1
+        elif acao == "atualizado":
+            _atualizados += 1
+    _removidos = db.marcar_ausentes(conn, FONTE, _refs_vistas)
+print(f"🗄️  Banco: {_novos} novos · {_atualizados} atualizados · {_precos_mudaram} com preço alterado · {_removidos} marcados como Removido")
+
+# ─── Criar VivaReal_Imoveis.xlsx (mantido como backup/inspeção manual) ─────
 wb = Workbook()
 ws = wb.active
 ws.title = "VivaReal Maringá"

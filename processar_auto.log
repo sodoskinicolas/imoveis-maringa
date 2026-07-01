@@ -1580,3 +1580,145 @@ To https://github.com/sodoskinicolas/imoveis-maringa.git
    980684d..ace2292  main -> main
 [2026-06-30 22:31:22] ✅ Push feito ao GitHub. Site será atualizado em instantes.
 [2026-06-30 22:31:22] === Ciclo concluído ===
+[2026-06-30 23:01:22] === Início do ciclo automático ===
+[2026-06-30 23:01:23] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🗺️  'Casa Jardim Olímpico' → CONDOMINIO: Casa Jardim Olímpico (bairro: Jardim Olímpico)
+  🔎 'Casa Jardim Olímpico' não cadastrado — pesquisando na web...
+  🔎 Pesquisando condomínio 'Casa Jardim Olímpico' em Maringá-PR...
+  ✅ Dados obtidos para 'Casa no Jardim Olímpico'
+  🏗️  Condomínio 'Casa no Jardim Olímpico' cadastrado no SQLite
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+  🗺️  'INFINITY CLUB RESIDENCE' → CONDOMINIO: Infinity Club Residence (bairro: Zona 7)
+  🔎 'Infinity Club Residence' não cadastrado — pesquisando na web...
+  🔎 Pesquisando condomínio 'Infinity Club Residence' em Maringá-PR...
+  ✅ Dados obtidos para 'Infinity Club Residence'
+  🏗️  Condomínio 'Infinity Club Residence' cadastrado no SQLite
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 2 condomínio(s) novo(s)...
+  🏗️  'Casa Jardim Olímpico' já pesquisado anteriormente (cache)
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 23:02:31] Processamento concluído.
+[2026-06-30 23:02:31] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 15 demandas)
+[main ee61e9a] 🤖 Auto: 2026-06-30 23:02 — mensagens processadas
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   bdbc6fe..ee61e9a  main -> main
+[2026-06-30 23:02:39] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 23:02:39] === Ciclo concluído ===
+[2026-06-30 23:32:39] === Início do ciclo automático ===
+[2026-06-30 23:32:39] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🗺️  'LOTE 200 METROS' → CONDOMINIO: Lote 200 Metros (bairro: Zona 1)
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🔎 Pesquisando condomínio 'Lote 200 Metros' em Maringá-PR...
+  ✅ Dados obtidos para 'None'
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🗺️  'Procuro apartamento no SKY' → CONDOMINIO: Sky Maringá (bairro: Zona 01)
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🔎 Pesquisando condomínio 'Sky Maringá' em Maringá-PR...
+  ✅ Dados obtidos para 'Sky Parque do Ingá'
+  🏗️  Condomínio 'Sky Parque do Ingá' completado no SQLite (estava incompleto)
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 1 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 3 condomínio(s) novo(s)...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 23:33:59] Processamento concluído.
+[2026-06-30 23:33:59] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+[main 83d95e7] 🤖 Auto: 2026-06-30 23:34 — mensagens processadas
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   ee61e9a..83d95e7  main -> main
+[2026-06-30 23:34:07] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 23:34:07] === Ciclo concluído ===

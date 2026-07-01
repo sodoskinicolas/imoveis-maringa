@@ -30,7 +30,10 @@ except ImportError:
     print("Instale com: pip install openpyxl")
     sys.exit(1)
 
+import db
+
 # ── Configuração ─────────────────────────────────────────────────────────────
+FONTE      = "VivaReal"
 PLANILHA   = Path(__file__).parent / "Imoveis_Grupos.xlsx"
 VIVAREAL_XLSX = Path(__file__).parent / "VivaReal_Imoveis.xlsx"
 BASE_SEARCH = "https://www.vivareal.com.br/venda/parana/maringa/?pagina={}"
@@ -289,6 +292,44 @@ def salvar_vivareal_xlsx(listings):
     wb.save(VIVAREAL_XLSX)
     print(f"✅ {len(listings)} imóveis salvos em {VIVAREAL_XLSX}")
 
+# ── Sincronizar com imoveis.db (upsert por ID VivaReal) ───────────────────────
+def sincronizar_db(listings):
+    db.init_db()
+    novos = atualizados = precos_mudaram = 0
+    refs_vistas = []
+    with db.db_conn() as conn:
+        for im in listings:
+            refs_vistas.append(im["id"])
+            bairro = f"{im.get('bairro','')} · {im.get('rua','')}".strip(" ·") if im.get("rua") else im.get("bairro", "")
+            item = {
+                "ref_externa":     im["id"],
+                "data_captura":    im.get("data_captura") or datetime.now().strftime("%Y-%m-%d"),
+                "grupo":           FONTE,
+                "corretor":        im.get("corretor") or "VivaReal",
+                "contato":         "",
+                "tipo":            im.get("tipo", ""),
+                "bairro":          bairro,
+                "area":            im.get("area"),
+                "quartos":         im.get("quartos"),
+                "suites":          im.get("suites"),
+                "banheiros":       im.get("banheiros"),
+                "vagas":           im.get("vagas"),
+                "preco":           im.get("preco"),
+                "observacoes":     f"id:{im['id']}",
+                "status":          "Venda",
+                "data_publicacao": im.get("data_publicacao", ""),
+                "link":            im.get("link", ""),
+            }
+            acao, _ = db.upsert_imovel_externo(conn, item, FONTE)
+            if acao == "novo":
+                novos += 1
+            elif acao == "preco_mudou":
+                precos_mudaram += 1
+            elif acao == "atualizado":
+                atualizados += 1
+        removidos = db.marcar_ausentes(conn, FONTE, refs_vistas)
+    print(f"🗄️  Banco: {novos} novos · {atualizados} atualizados · {precos_mudaram} com preço alterado · {removidos} marcados como Removido")
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scrape VivaReal Maringá")
@@ -304,4 +345,5 @@ if __name__ == "__main__":
     print(f"\n✅ {len(listings)} imóveis extraídos\n")
     salvar_vivareal_xlsx(listings)
     salvar_planilha_padrao(listings)
+    sincronizar_db(listings)
     print("\nPronto! Rode python gerar_site.py para atualizar o site.")

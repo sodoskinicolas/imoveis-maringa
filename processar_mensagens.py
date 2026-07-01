@@ -410,7 +410,8 @@ def extrair_tipo(texto):
     if tem_habitacao and re.search(r'\blote\b|\bárea\s+do\s+lote\b', t): return 'Casa'
     if re.search(r'\bsala\s+comercial|\bloja\b|\bescritório\b', t): return 'Sala Comercial'
     if re.search(r'\bgalpão\b', t):                            return 'Galpão'
-    if re.search(r'\bedifício|\bed\.\s*[a-zA-Z]|\bandar\b', t): return 'Apartamento'
+    if re.search(r'\bedifício|\bed\.\s*[a-zà-ú]|\bed\s+[a-zà-ú]{3,}|\bandar\b|'
+                 r'\belevador\b|🏢', t): return 'Apartamento'
     return 'Imóvel'
 
 BAIRROS = [
@@ -1024,33 +1025,102 @@ def extrair_bairro(texto, todos=False):
                 return f"Cond. {info.get('nome', c)}"
     return ''
 
+# Palavras que nunca são nome de edifício, mesmo capitalizadas / batendo o padrão
+_EDIFICIO_GENERICO = {
+    'clube', 'fechado', 'residencial', 'novo', 'nova', 'vertical', 'horizontal',
+    'completo', 'completa', 'apartamento', 'apto', 'casa', 'terreno', 'venda',
+    'aluguel', 'ótima', 'lindo', 'excelente', 'bom', 'boa', 'oportunidade',
+    'imóvel', 'imovel', 'sobrado', 'cobertura', 'studio', 'cliente', 'comprador',
+    'área', 'quartos', 'suítes', 'vaga', 'preferência', 'piscina', 'lazer',
+}
+# "da Avenida X", "na Rua Y" — é endereço, não nome de prédio
+_EDIFICIO_PALAVRA_ENDERECO = {
+    'avenida', 'rua', 'alameda', 'praça', 'praca', 'rodovia',
+    'travessa', 'estrada', 'via',
+}
+
+_cache_nomes_condos_por_lower = None
+
+def _nomes_condos_por_lower():
+    """Carrega (e cacheia por processo) {nome em minúscula: nome com a grafia oficial do banco}."""
+    global _cache_nomes_condos_por_lower
+    if _cache_nomes_condos_por_lower is None:
+        try:
+            with db.db_conn() as conn:
+                nomes = db.listar_condominios_nomes(conn)
+            _cache_nomes_condos_por_lower = {
+                str(n).strip().lower(): str(n).strip() for n in nomes if n
+            }
+        except Exception:
+            _cache_nomes_condos_por_lower = {}
+    return _cache_nomes_condos_por_lower
+
+def _validar_candidato_edificio(candidato):
+    """
+    Decide se um candidato extraído por regex é mesmo nome de prédio, e
+    devolve a grafia final a usar.
+
+    Aceita se: (a) bate com um condomínio já cadastrado no banco — mesmo se
+    a mensagem foi digitada em minúscula —, devolvendo a grafia oficial do
+    cadastro; ou (b) começa com maiúscula no texto original (parece nome
+    próprio) e não é uma palavra genérica/endereço, devolvendo como foi digitado.
+
+    Retorna (aceito: bool, nome_final: str).
+    """
+    if not candidato:
+        return False, candidato
+    primeira = candidato.split(' ', 1)[0].lower()
+    if primeira in _EDIFICIO_GENERICO or primeira in _EDIFICIO_PALAVRA_ENDERECO:
+        return False, candidato
+    if candidato[0].isupper():
+        # Já foi digitado com maiúscula — parece nome próprio, mantém como está
+        # (a grafia de quem escreveu costuma ser melhor que o import em bloco).
+        return True, candidato
+    # Minúsculo: só aceita se confirmar contra o banco, e usa a grafia de lá
+    # (é a única forma de saber que não é uma frase genérica qualquer).
+    conhecido = _nomes_condos_por_lower().get(candidato.lower())
+    if conhecido:
+        return True, conhecido
+    return False, candidato
+
 def extrair_edificio(texto):
-    """Extrai nome de edifício/condomínio mencionado explicitamente no texto."""
+    """
+    Extrai nome de edifício/condomínio mencionado explicitamente no texto.
+
+    Gera candidatos com vários padrões (prefixo "edifício/condomínio X", nome
+    no início da mensagem, código de empreendimento, contexto "com/busco X")
+    e só aceita um candidato se ele bater com um condomínio já cadastrado no
+    banco (então funciona mesmo se a mensagem foi digitada em minúscula) OU
+    se parecer um nome próprio (começa com maiúscula) e não for uma palavra
+    genérica/endereço.
+    """
+    candidatos = []
+
     # 1. Padrão com prefixo: "edifício X", "condomínio X", "residencial X"
     m = re.search(
-        r'(?:edifício|ed\.|condomínio|cond\.|residencial)\s+([A-ZÀ-Ú][A-Za-zÀ-ú\s]{2,35}?)(?:\s*[·\-,\.]|\s*\d+[oOºª]|\s*$|\n)',
+        r'(?:edifício|ed\.|condomínio|cond\.|residencial)\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\s]{2,35}?)(?:\s*[·\-,\.]|\s*\d+[oOºª]|\s*$|\n)',
         texto, re.IGNORECASE
     )
     if m:
         nome = m.group(1).strip().rstrip('·-.,')
         if 2 < len(nome) < 40:
-            return nome
+            candidatos.append(nome)
 
-    # 2. Nome de edifício no início do texto sem prefixo (ex: "Urban Yticon, 23º andar...")
-    #    Captura 1-4 palavras capitalizadas antes de vírgula, traço ou número de andar
+    # 2. Nome de edifício no início do texto sem prefixo (ex: "Urban Yticon, 23º andar...",
+    #    "🏢 ED MARIA CANDIDA"). Remove emoji/símbolos do início antes — sem isso o "^"
+    #    nunca bate quando a mensagem começa com um emoji.
+    texto_sem_emoji_inicio = re.sub(r'^[^\wÀ-ÿ]+', '', texto.strip())
     m2 = re.match(
-        r'^([A-ZÀ-Ú][A-Za-zÀ-ú]+(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú]+){0,3})\s*(?:,|\.|[–\-]|\d+[oOºª])',
-        texto.strip()
+        r'^([A-Za-zÀ-ú][A-Za-zÀ-ú]+(?:\s+[A-Za-zÀ-ú]+){0,3})\s*(?:,|\.|[–\-]|\d+[oOºª]|\n|$)',
+        texto_sem_emoji_inicio
     )
     if m2:
         nome = m2.group(1).strip()
-        _nao_edificio = {'apartamento', 'apto', 'casa', 'terreno', 'venda', 'aluguel',
-                         'ótima', 'lindo', 'excelente', 'bom', 'boa', 'oportunidade',
-                         'imóvel', 'imovel', 'sobrado', 'cobertura', 'studio'}
-        if nome.lower() not in _nao_edificio and 3 < len(nome) < 45:
-            return nome
+        if 3 < len(nome) < 45:
+            candidatos.append(nome)
 
     # 2b. Código de empreendimento: 3+ letras maiúsculas + dígitos (ex: NEST635, PARK900, MRV123)
+    #     Já é maiúsculo por definição — não precisa de validação de capitalização.
     m3 = re.search(r'\b([A-Z]{3,}\d+[A-Z0-9]*)\b', texto)
     if m3:
         nome = m3.group(1)
@@ -1061,24 +1131,25 @@ def extrair_edificio(texto):
     #     Ex: "alguém com Vista Bela", "busco Residencial das Flores"
     m4 = re.search(
         r'(?:\bcom\b|\bbusco\b|\bbusca\b|\bquero\b|\bdo\b|\bda\b)\s+'
-        r'([A-ZÀ-Ú][A-Za-zÀ-ú0-9]+(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú0-9]+){0,3})'
+        r'([A-Za-zÀ-ú][A-Za-zÀ-ú0-9]+(?:\s+[A-Za-zÀ-ú0-9]+){0,3})'
         r'(?:\s+de\s|\s+com\s|\s*[,\.\n]|$)',
-        texto
+        texto, re.IGNORECASE
     )
     if m4:
         candidato = m4.group(1).strip()
-        _nao_edificio_ctx = {
-            'apartamento', 'apto', 'casa', 'imóvel', 'imovel', 'terreno',
-            'cliente', 'comprador', 'área', 'quartos', 'suítes', 'vaga',
-            'preferência', 'piscina', 'lazer',
-        }
-        if candidato.lower() not in _nao_edificio_ctx and 3 < len(candidato) < 40:
-            return candidato
+        if 3 < len(candidato) < 40:
+            candidatos.append(candidato)
 
-    # 3. Fallback: verificar se algum condomínio cadastrado no DB aparece no texto.
-    #    Exclui nomes curtos demais e nomes iguais a cidade/estado (ex: existe um
-    #    condomínio chamado literalmente "MARINGÁ" no import do GeoMaringá — sem
-    #    esse filtro, toda mensagem que menciona a cidade "casava" com ele).
+    for candidato in candidatos:
+        aceito, nome_final = _validar_candidato_edificio(candidato)
+        if aceito:
+            return nome_final
+
+    # 3. Último recurso: procurar por qualquer condomínio cadastrado que apareça
+    #    no texto, em qualquer posição (não só nos padrões acima). Exclui nomes
+    #    curtos demais e nomes iguais a cidade/estado (ex: existe um condomínio
+    #    chamado literalmente "MARINGÁ" no import do GeoMaringá — sem esse
+    #    filtro, toda mensagem que menciona a cidade "casava" com ele).
     try:
         with db.db_conn() as conn:
             nomes_condos = db.listar_condominios_nomes(conn)
@@ -1090,7 +1161,7 @@ def extrair_edificio(texto):
                 continue
             if nl in tl:
                 return n
-    except:
+    except Exception:
         pass
 
     return None

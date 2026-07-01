@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """
 gerar_site.py
-Lê imoveis.db (SQLite) + JuniorJoda_Imoveis.xlsx + VivaReal_Imoveis.xlsx e gera Imoveis.html.
+Lê imoveis.db (SQLite) e gera Imoveis.html.
 Chamado automaticamente após cada inserção no banco de dados.
+
+Fontes externas (VivaReal, Junior Joda) não são mais lidas de planilhas
+separadas aqui — elas são sincronizadas pro imoveis.db por
+importar_vivareal.py / scrape_vivareal.py / importar_juniorjoda.py, e este
+script lê tudo direto do banco (colunas fonte/ref_externa/nome/link).
 
 Uso manual:
   python gerar_site.py
@@ -14,18 +19,11 @@ import re
 from pathlib import Path
 from datetime import datetime
 
-try:
-    import pandas as pd
-except ImportError:
-    print("Erro: pandas não instalado. Execute: pip install pandas openpyxl")
-    raise
-
 import db
+import processar_mensagens as pm
 
-JUNIORJODA = Path(__file__).parent / "JuniorJoda_Imoveis.xlsx"
-VIVAREAL   = Path(__file__).parent / "VivaReal_Imoveis.xlsx"
-SITE       = Path(__file__).parent / "Imoveis.html"
-WA_JJ      = "5544988132965"   # WhatsApp Junior Joda Soluções Imobiliárias
+SITE  = Path(__file__).parent / "Imoveis.html"
+WA_JJ = "5544988132965"   # WhatsApp Junior Joda Soluções Imobiliárias
 
 
 def limpar(val):
@@ -70,30 +68,47 @@ def _extrair_url(texto):
     return m.group(0).rstrip('.,)') if m else ""
 
 def carregar_imoveis():
-    """Lê imóveis do SQLite, excluindo grupos que têm fonte própria (JJ, VR)."""
+    """
+    Lê todos os imóveis do SQLite: mensagens de grupos de WhatsApp e também os
+    imóveis de fontes externas (VivaReal, Junior Joda), sincronizados por
+    upsert_imovel_externo() e já deduplicados no próprio banco por
+    (fonte, ref_externa).
+    """
     db.init_db()
     with db.db_conn() as conn:
-        registros = db.listar_imoveis(
-            conn,
-            excluir_grupos=["juniorjoda.com.br", "vivareal.com.br"]
-        )
+        registros = db.listar_imoveis(conn)
 
     rows = []
     vistos = set()
     for r in registros:
         if not r.get("data_captura"):
             continue
-        obs  = r.get("observacoes") or ""
-        link = _extrair_url(obs)
+        obs   = r.get("observacoes") or ""
+        fonte = r.get("fonte") or ""
+        link  = r.get("link") or _extrair_url(obs)
 
         corretor = r.get("corretor") or ""
         preco    = r.get("preco") or ""
         data     = r.get("data_captura") or ""
         area     = r.get("area") or ""
-        chave_dup = f"{corretor}|{preco}|{area}|{str(data)[:16]}"
-        if chave_dup in vistos:
-            continue
-        vistos.add(chave_dup)
+
+        # Deduplicação por conteúdo só se aplica a capturas de grupos de
+        # WhatsApp — imóveis de fonte externa já são únicos no banco por
+        # (fonte, ref_externa), então não precisam (e não devem) passar por
+        # essa checagem de novo.
+        if not fonte:
+            chave_dup = f"{corretor}|{preco}|{area}|{str(data)[:16]}"
+            if chave_dup in vistos:
+                continue
+            vistos.add(chave_dup)
+
+        # Edifício pré-calculado com a mesma lógica testada de processar_mensagens.py
+        # (mais confiável que reextrair no JS do site — evita pegar pedaço de frase
+        # truncada como se fosse nome de prédio, ex: "Condomínio clube com ár...")
+        try:
+            edificio = pm.extrair_edificio(obs) if obs else None
+        except Exception:
+            edificio = None
 
         rows.append({
             "data":            data,
@@ -101,6 +116,7 @@ def carregar_imoveis():
             "corretor":        corretor,
             "contato":         r.get("contato") or "",
             "tipo":            normalizar_tipo(r.get("tipo") or "", obs),
+            "nome":            r.get("nome") or "",
             "bairro":          r.get("bairro") or "",
             "area":            r.get("area"),
             "quartos":         r.get("quartos"),
@@ -108,124 +124,11 @@ def carregar_imoveis():
             "vagas":           r.get("vagas"),
             "preco":           r.get("preco"),
             "obs":             obs,
+            "edificio":        edificio,
             "status":          r.get("status") or "Novo",
             "data_publicacao": r.get("data_publicacao") or "",
             "link":            link,
-            "fonte":           "",
-        })
-    return rows
-
-
-def carregar_juniorjoda():
-    """Lê JuniorJoda_Imoveis.xlsx (abas Venda e Locação) e retorna no mesmo formato de carregar_imoveis()."""
-    if not JUNIORJODA.exists(): return []
-    rows = []
-    vistos_jj = set()  # deduplicação por tipo+bairro+preço+área
-    for sheet_name, modalidade in [("📋 Venda", "Venda"), ("🔑 Locação", "Locação")]:
-        try:
-            df = pd.read_excel(JUNIORJODA, sheet_name=sheet_name, dtype=str, header=1)
-        except Exception:
-            continue
-        df = df.where(pd.notnull(df), None)
-        for _, r in df.iterrows():
-            ref = r.get("Ref.", "") or ""
-            if not ref: continue
-            def tof(x):
-                try: return float(x) if x and str(x).strip() not in ("", "None") else None
-                except: return None
-            def toi(x):
-                try: return int(float(x)) if x and str(x).strip() not in ("", "0", "None") else None
-                except: return None
-            preco_raw = r.get("Preço (R$)", "") or ""
-            try:
-                preco_num = int(float(preco_raw)) if preco_raw and str(preco_raw).strip() not in ("", "None", "Consulte") else None
-            except:
-                preco_num = None
-            nome  = r.get("Empreendimento", "") or ""
-            tipo  = r.get("Tipo", "") or ""
-            bairro = r.get("Bairro / Localização", "") or ""
-            cidade = r.get("Cidade", "") or ""
-            # Limpar cidade: remover sufixo "- PR", "- SP" etc.
-            cidade_clean = re.sub(r'\s*[-–]\s*[A-Z]{2}$', '', cidade).strip()
-            # Não mostrar cidade se for Maringá (óbvio no contexto)
-            cidade_display = cidade_clean if cidade_clean.lower() not in ('maringá', 'maringa', '') else ''
-            # Se bairro é o mesmo que empreendimento (ou contido nele), não repetir
-            bairro_final = bairro
-            nome  = str(nome  or "")
-            bairro = str(bairro or "")
-            if nome and bairro and bairro.lower() in nome.lower():
-                bairro_final = cidade_display  # só cidade diferente, se houver
-            elif cidade_display:
-                bairro_final = f"{bairro} · {cidade_display}".strip(" ·") if bairro else cidade_display
-            area_priv = tof(r.get("Área Priv. (m²)"))
-            area_tot  = tof(r.get("Área Total (m²)"))
-            area = area_priv or area_tot
-            label_mod = "Aluguel" if modalidade == "Locação" else "Venda"
-            obs_final = f"Ref. {ref}"
-            # Deduplicar entradas idênticas (mesmo imóvel listado duas vezes)
-            chave_jj = f"{tipo}|{bairro}|{preco_num}|{area}"
-            if chave_jj in vistos_jj:
-                continue
-            vistos_jj.add(chave_jj)
-            rows.append({
-                "data":     datetime.now().strftime("%Y-%m-%d"),
-                "grupo":    "juniorjoda.com.br",
-                "corretor": "Junior Joda Soluções Imobiliárias",
-                "contato":  WA_JJ,
-                "tipo":     normalizar_tipo(tipo, nome),
-                "nome":     nome,   # empreendimento — used directly for card title
-                "bairro":   bairro_final,
-                "area":     area,
-                "quartos":  toi(r.get("Quartos")),
-                "suites":   toi(r.get("Suítes")),
-                "vagas":    toi(r.get("Vagas")),
-                "preco":    preco_num,
-                "obs":      obs_final,
-                "status":   label_mod,
-                "link":     f"https://juniorjoda.com.br/imovel/{ref}/",
-                "fonte":    "Junior Joda",
-            })
-    return rows
-
-
-def carregar_vivareal():
-    """Lê VivaReal_Imoveis.xlsx e retorna no mesmo formato de carregar_imoveis()."""
-    if not VIVAREAL.exists(): return []
-    rows = []
-    try:
-        df = pd.read_excel(VIVAREAL, sheet_name="VivaReal Maringá", dtype=str)
-    except Exception:
-        return []
-    df = df.where(pd.notnull(df), None)
-    for _, r in df.iterrows():
-        id_ = r.get("ID VivaReal", "") or ""
-        if not id_: continue
-        def tof(x):
-            try: return float(x.replace(",",".")) if x and str(x).strip() not in ("","None") else None
-            except: return None
-        def toi(x):
-            try: return int(float(x)) if x and str(x).strip() not in ("","None","0") else None
-            except: return None
-        link = r.get("Link", "") or ""
-        bairro = r.get("Bairro", "") or ""
-        rua    = r.get("Endereço", "") or ""
-        rows.append({
-            "data":             r.get("Data Captura", "") or "",
-            "grupo":            "vivareal.com.br",
-            "corretor":         r.get("Corretor", "") or "VivaReal",
-            "contato":          "",
-            "tipo":             normalizar_tipo(r.get("Tipo", "") or "", r.get("Observações", "") or ""),
-            "bairro":           f"{bairro} · {rua}".strip(" ·") if rua else bairro,
-            "area":             tof(r.get("Área (m²)")),
-            "quartos":          toi(r.get("Quartos")),
-            "suites":           toi(r.get("Suítes")),
-            "vagas":            toi(r.get("Vagas")),
-            "preco":            toi(r.get("Preço (R$)")),
-            "obs":              f"id:{id_}",
-            "status":           "Venda",
-            "data_publicacao":  r.get("Data Publicação", "") or "",
-            "link":             link,
-            "fonte":            "VivaReal",
+            "fonte":           fonte,
         })
     return rows
 
@@ -572,8 +475,8 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
       <select class="fsel" id="status-i">
         <option value="">Status</option>
         <option>Novo</option><option>Verificado</option>
-        <option>Em Contato</option><option>Vendido</option><option>Venda</option>
-        <option>Aluguel</option><option>Descartado</option>
+        <option>Em Contato</option><option>Vendido</option><option>Removido</option>
+        <option>Venda</option><option>Aluguel</option><option>Descartado</option>
       </select>
       <select class="fsel" id="datapub-i">
         <option value="">Data publicação</option>
@@ -722,6 +625,7 @@ function pillCls(s){{
     'Novo':'novo','Verificado':'verificado','Em Contato':'contato',
     'Encaminhado':'encaminhado','Fechado':'fechado',
     'Vendido':'vendido','Cancelado':'cancelado','Descartado':'descartado',
+    'Removido':'cancelado',
     'Venda':'venda','Aluguel':'aluguel'
   }};
   return 'pill pill-'+(m[s]||'novo');
@@ -772,7 +676,9 @@ function cardNome(im){{
   // WhatsApp: Tipo · Edifício · Bairro (quando tem nome de edifício no obs)
   var bairro = im.bairro ? im.bairro.split(',')[0].trim() : '';
   // Remover prefixo "Cond." do bairro se presente, pois já é o nome do condomínio
-  var edificio = extrairEdificio(im.obs);
+  // Edifício vem pré-calculado do Python (mesma lógica testada de processar_mensagens.py) —
+  // evita repetir uma extração menos confiável aqui no JS.
+  var edificio = im.edificio || null;
   if (!edificio && im.bairro && im.bairro.startsWith('Cond. ')) {{
     edificio = im.bairro.replace(/^Cond\\.\\s*/, '').split('·')[0].trim();
     bairro = im.bairro.split('·')[1] ? im.bairro.split('·')[1].trim() : '';
@@ -1107,7 +1013,7 @@ function ehVizinho(demRegiao, imBairro){{
 }}
 
 function matchImoveis(dm){{
-  var excl=['Vendido','Cancelado','Descartado'];
+  var excl=['Vendido','Removido','Cancelado','Descartado'];
   var demBairroCanon=dm.regiao?canonicBairro(dm.regiao):null;
   var scored=[];
   IMOVEIS.forEach(function(im){{
@@ -1341,13 +1247,12 @@ document.addEventListener('keydown',function(e){{if(e.key==='Escape')fecharModal
 def main():
     db.init_db()
     imoveis  = carregar_imoveis()
-    jj       = carregar_juniorjoda()
-    vr       = carregar_vivareal()
-    imoveis  = imoveis + jj + vr
     demandas = carregar_demandas()
+    n_jj = sum(1 for i in imoveis if i.get("fonte") == "Junior Joda")
+    n_vr = sum(1 for i in imoveis if i.get("fonte") == "VivaReal")
     html = gerar_html(imoveis, demandas)
     SITE.write_text(html, encoding="utf-8")
-    print(f"✅ Site gerado: {SITE} ({len(imoveis)} imóveis [{len(jj)} JJ · {len(vr)} VR] · {len(demandas)} demandas)")
+    print(f"✅ Site gerado: {SITE} ({len(imoveis)} imóveis [{n_jj} JJ · {n_vr} VR] · {len(demandas)} demandas)")
 
 
 if __name__ == "__main__":

@@ -1072,6 +1072,10 @@ _EDIFICIO_GENERICO = {
     # Termos geográficos/estruturais — nunca são nome de prédio isolados
     'zona', 'setor', 'parque', 'jardim', 'conjunto', 'bairro', 'região', 'regiao',
     'andar', 'bloco', 'torre', 'predio', 'prédio',
+    # Prefixos de condomínio — a extração do nome vai para extrair_condominio()
+    'condomínio', 'condominio', 'cond',
+    # Tipos de imóvel que às vezes iniciam mensagem antes do nome do prédio
+    'kitnet',
 }
 # "da Avenida X", "na Rua Y" — é endereço, não nome de prédio
 _EDIFICIO_PALAVRA_ENDERECO = {
@@ -1123,24 +1127,45 @@ def _validar_candidato_edificio(candidato):
         return True, conhecido
     return False, candidato
 
+_RE_PREFIX_EDIFICIO    = re.compile(
+    r'(?:edif[íi]cio|ed\.)\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\s]{2,35}?)(?:\s*[·\-,\.]|\s*\d+[oOºª]|\s*$|\n)',
+    re.IGNORECASE
+)
+_RE_PREFIX_CONDOMINIO  = re.compile(
+    r'(?:condom[íi]nio|cond\.|residencial)\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\s]{2,35}?)(?:\s*[·\-,\.]|\s*\d+[oOºª]|\s*$|\n)',
+    re.IGNORECASE
+)
+
+def extrair_condominio(texto):
+    """
+    Extrai nome de CONDOMÍNIO (horizontal ou conjunto residencial) quando
+    mencionado com prefixo explícito: "condomínio X", "cond. X", "residencial X".
+    Retorna str ou None.
+    """
+    m = _RE_PREFIX_CONDOMINIO.search(texto)
+    if m:
+        nome = m.group(1).strip().rstrip('·-.,')
+        if 2 < len(nome) < 40:
+            aceito, nome_final = _validar_candidato_edificio(nome)
+            if aceito:
+                return nome_final
+            # Mesmo sem validação no banco, aceita se parecer nome próprio
+            if nome[0].isupper():
+                return nome
+    return None
+
 def extrair_edificio(texto):
     """
-    Extrai nome de edifício/condomínio mencionado explicitamente no texto.
+    Extrai nome de EDIFÍCIO (torre/prédio vertical) mencionado no texto.
 
-    Gera candidatos com vários padrões (prefixo "edifício/condomínio X", nome
-    no início da mensagem, código de empreendimento, contexto "com/busco X")
-    e só aceita um candidato se ele bater com um condomínio já cadastrado no
-    banco (então funciona mesmo se a mensagem foi digitada em minúscula) OU
-    se parecer um nome próprio (começa com maiúscula) e não for uma palavra
-    genérica/endereço.
+    Padrões: prefixo "edifício/ed.", nome no início da mensagem,
+    código de empreendimento (NEST635, SKY), nome após gatilho ("no Vision").
+    Para "condomínio X" / "residencial X" use extrair_condominio().
     """
     candidatos = []
 
-    # 1. Padrão com prefixo: "edifício X", "condomínio X", "residencial X"
-    m = re.search(
-        r'(?:edifício|ed\.|condomínio|cond\.|residencial)\s+([A-Za-zÀ-ú][A-Za-zÀ-ú\s]{2,35}?)(?:\s*[·\-,\.]|\s*\d+[oOºª]|\s*$|\n)',
-        texto, re.IGNORECASE
-    )
+    # 1. Prefixo explícito de edifício: "edifício X", "ed. X"
+    m = _RE_PREFIX_EDIFICIO.search(texto)
     if m:
         nome = m.group(1).strip().rstrip('·-.,')
         if 2 < len(nome) < 40:
@@ -1225,7 +1250,11 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
     pesquisa na web na hora (usado para demandas, para preencher specs antes de salvar).
     eh_demanda=True: extrai todos os bairros/regiões mencionados (não só o primeiro).
     """
-    edificio = extrair_edificio(texto)
+    edificio   = extrair_edificio(texto)
+    condominio = extrair_condominio(texto)
+    # Se ambos extraíram o mesmo nome → é condomínio, não edifício
+    if edificio and condominio and edificio.lower() == condominio.lower():
+        edificio = None
     condo_specs = None
 
     # Se achou nome de edifício → buscar specs direto no DB (rápido)
@@ -1267,10 +1296,11 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
 
     # Extração direta da mensagem
     campos = {
-        'tipo':      extrair_tipo(texto),
-        'bairro':    extrair_bairro(texto, todos=eh_demanda),
-        'edificio':  edificio,
-        'area':      extrair_area(texto),
+        'tipo':       extrair_tipo(texto),
+        'bairro':     extrair_bairro(texto, todos=eh_demanda),
+        'edificio':   edificio,
+        'condominio': condominio,
+        'area':       extrair_area(texto),
         'quartos':   extrair_num(texto, [r'quartos?', r'dormit[oó]rios?', r'dorm\.?']),
         'suites':    extrair_num(texto, [r'su[íi]tes?']),
         'banheiros': extrair_num(texto, [r'banheiros?', r'\bwc\b', r'lavabo']),

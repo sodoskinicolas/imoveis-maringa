@@ -134,15 +134,17 @@ def _migrar_schema(conn):
         "nome":        "TEXT",
         "link":        "TEXT",
         "data_venda":  "TEXT",
-        "edificio":    "TEXT",   # nome do edifício/condomínio extraído do obs
+        "edificio":    "TEXT",   # nome do edifício (torre/prédio vertical)
+        "condominio":  "TEXT",   # nome do condomínio/residencial (conjunto horizontal ou complex)
     }
     for col, tipo in novas_i.items():
         if col not in cols_i:
             conn.execute(f"ALTER TABLE imoveis ADD COLUMN {col} {tipo}")
 
     cols_d = _colunas_existentes(conn, "demandas")
-    if "edificio" not in cols_d:
-        conn.execute("ALTER TABLE demandas ADD COLUMN edificio TEXT")
+    for col in ("edificio", "condominio"):
+        if col not in cols_d:
+            conn.execute(f"ALTER TABLE demandas ADD COLUMN {col} TEXT")
 
 def _backfill_fonte_legado(conn):
     """
@@ -408,8 +410,8 @@ def inserir_imovel(conn, item):
         INSERT OR IGNORE INTO imoveis
             (data_captura, grupo, corretor, contato, tipo, bairro, area,
              quartos, suites, banheiros, vagas, preco, observacoes,
-             status, data_publicacao, slug, edificio)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+             status, data_publicacao, slug, edificio, condominio)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, (
         item.get("data_captura"),
         item.get("grupo"),
@@ -428,6 +430,7 @@ def inserir_imovel(conn, item):
         item.get("data_publicacao"),
         sl,
         item.get("edificio"),
+        item.get("condominio"),
     ))
     return cur.rowcount > 0
 
@@ -449,8 +452,8 @@ def inserir_demanda(conn, item, fp):
         INSERT OR IGNORE INTO demandas
             (data, grupo, corretor, contato, tipo_buscado, bairro_regiao,
              area_min, quartos, suites, banheiros, vagas, orcamento_max,
-             observacoes, status, fingerprint, edificio)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+             observacoes, status, fingerprint, edificio, condominio)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     """, (
         item.get("data"),
         item.get("grupo"),
@@ -468,6 +471,7 @@ def inserir_demanda(conn, item, fp):
         item.get("status", "Ativo"),
         fp,
         item.get("edificio"),
+        item.get("condominio"),
     ))
     return cur.rowcount > 0
 

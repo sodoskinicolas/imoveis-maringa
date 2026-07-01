@@ -141,19 +141,25 @@ def _extrair_edificio_seguro(obs):
     except Exception:
         return None
 
+def _extrair_condominio_seguro(obs):
+    try:
+        return pm.extrair_condominio(obs) if obs else None
+    except Exception:
+        return None
+
 # ── Verificar e corrigir tabela imóveis ───────────────────────────────────────
 
 def verificar_imoveis(conn):
     cur = conn.cursor()
     # Inclui edificio na query (coluna pode não existir em bancos antigos — já migrado acima)
     rows = cur.execute(
-        "SELECT id, tipo, bairro, preco, observacoes, edificio FROM imoveis"
+        "SELECT id, tipo, bairro, preco, observacoes, edificio, condominio FROM imoveis"
     ).fetchall()
 
     corrigidos = 0
     alertas    = []
 
-    for rid, tipo, bairro, preco, obs, edificio_atual in rows:
+    for rid, tipo, bairro, preco, obs, edificio_atual, condominio_atual in rows:
         fixes = {}
 
         # ① Limpar markdown WhatsApp no obs
@@ -175,26 +181,51 @@ def verificar_imoveis(conn):
         if _preco_invalido(preco):
             alertas.append(f"  ⚠️  [imoveis #{rid}] preço suspeito: {preco!r}")
 
-        # ⑥ Verificar/popular edificio
+        # ⑥a Verificar/popular edificio
         motivo = _edificio_invalido(edificio_atual)
         if motivo:
-            # Edificio atual é inválido → reextrai do obs
             novo = _extrair_edificio_seguro(obs_limpo)
             if novo and not _edificio_invalido(novo):
                 fixes['edificio'] = novo
                 if VERBOSE:
                     print(f"    [imoveis #{rid}] edificio: {edificio_atual!r} ({motivo}) → {novo!r}")
             else:
-                fixes['edificio'] = None   # melhor vazio do que errado
+                fixes['edificio'] = None
                 if VERBOSE:
                     print(f"    [imoveis #{rid}] edificio: {edificio_atual!r} ({motivo}) → limpo")
         elif not edificio_atual:
-            # Coluna vazia → tenta extrair do obs
             novo = _extrair_edificio_seguro(obs_limpo)
             if novo and not _edificio_invalido(novo):
                 fixes['edificio'] = novo
                 if VERBOSE:
                     print(f"    [imoveis #{rid}] edificio: (vazio) → {novo!r}")
+
+        # ⑥b Verificar/popular condominio
+        motivo_c = _edificio_invalido(condominio_atual)
+        if motivo_c:
+            novo_c = _extrair_condominio_seguro(obs_limpo)
+            if novo_c and not _edificio_invalido(novo_c):
+                fixes['condominio'] = novo_c
+                if VERBOSE:
+                    print(f"    [imoveis #{rid}] condominio: {condominio_atual!r} ({motivo_c}) → {novo_c!r}")
+            else:
+                fixes['condominio'] = None
+                if VERBOSE:
+                    print(f"    [imoveis #{rid}] condominio: {condominio_atual!r} ({motivo_c}) → limpo")
+        elif not condominio_atual:
+            novo_c = _extrair_condominio_seguro(obs_limpo)
+            if novo_c and not _edificio_invalido(novo_c):
+                fixes['condominio'] = novo_c
+                if VERBOSE:
+                    print(f"    [imoveis #{rid}] condominio: (vazio) → {novo_c!r}")
+
+        # Deduplicação: se edificio e condominio ficaram iguais → limpar edificio
+        e_final = fixes.get('edificio', edificio_atual)
+        c_final = fixes.get('condominio', condominio_atual)
+        if e_final and c_final and str(e_final).lower() == str(c_final).lower():
+            fixes['edificio'] = None
+            if VERBOSE:
+                print(f"    [imoveis #{rid}] edificio dedup com condominio → limpo")
 
         if fixes:
             if VERBOSE:
@@ -219,13 +250,13 @@ def verificar_imoveis(conn):
 def verificar_demandas(conn):
     cur = conn.cursor()
     rows = cur.execute(
-        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio FROM demandas"
+        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio, condominio FROM demandas"
     ).fetchall()
 
     corrigidos = 0
     alertas    = []
 
-    for rid, tipo, bairro, orc, obs, edificio_atual in rows:
+    for rid, tipo, bairro, orc, obs, edificio_atual, condominio_atual in rows:
         fixes = {}
 
         # ① Limpar markdown WhatsApp no obs
@@ -243,7 +274,7 @@ def verificar_demandas(conn):
         if tipo_novo != (tipo or ''):
             fixes['tipo_buscado'] = tipo_novo
 
-        # ⑥ Verificar/popular edificio
+        # ⑥a Verificar/popular edificio
         motivo = _edificio_invalido(edificio_atual)
         if motivo:
             novo = _extrair_edificio_seguro(obs_limpo)
@@ -259,6 +290,31 @@ def verificar_demandas(conn):
                 fixes['edificio'] = novo
                 if VERBOSE:
                     print(f"    [demandas #{rid}] edificio: (vazio) → {novo!r}")
+
+        # ⑥b Verificar/popular condominio
+        motivo_c = _edificio_invalido(condominio_atual)
+        if motivo_c:
+            novo_c = _extrair_condominio_seguro(obs_limpo)
+            if novo_c and not _edificio_invalido(novo_c):
+                fixes['condominio'] = novo_c
+                if VERBOSE:
+                    print(f"    [demandas #{rid}] condominio: {condominio_atual!r} ({motivo_c}) → {novo_c!r}")
+            else:
+                fixes['condominio'] = None
+        elif not condominio_atual:
+            novo_c = _extrair_condominio_seguro(obs_limpo)
+            if novo_c and not _edificio_invalido(novo_c):
+                fixes['condominio'] = novo_c
+                if VERBOSE:
+                    print(f"    [demandas #{rid}] condominio: (vazio) → {novo_c!r}")
+
+        # Deduplicação: se edificio e condominio ficaram iguais → limpar edificio
+        e_final = fixes.get('edificio', edificio_atual)
+        c_final = fixes.get('condominio', condominio_atual)
+        if e_final and c_final and str(e_final).lower() == str(c_final).lower():
+            fixes['edificio'] = None
+            if VERBOSE:
+                print(f"    [demandas #{rid}] edificio dedup com condominio → limpo")
 
         if fixes:
             if VERBOSE:

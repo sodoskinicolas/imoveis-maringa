@@ -102,7 +102,7 @@ def carregar_imoveis():
                 continue
             vistos.add(chave_dup)
 
-        # Edifício: usa valor salvo no banco (verificado/corrigido pelo quality gate).
+        # Edifício e condomínio: usa valores salvos no banco (verificados pelo quality gate).
         # Fallback para extração do obs se coluna ainda estiver vazia.
         edificio = r.get("edificio") or None
         if not edificio and obs:
@@ -110,6 +110,15 @@ def carregar_imoveis():
                 edificio = pm.extrair_edificio(obs) or None
             except Exception:
                 edificio = None
+        condominio = r.get("condominio") or None
+        if not condominio and obs:
+            try:
+                condominio = pm.extrair_condominio(obs) or None
+            except Exception:
+                condominio = None
+        # Deduplicação: se ambos extraíram o mesmo nome, é condomínio
+        if edificio and condominio and edificio.lower() == condominio.lower():
+            edificio = None
 
         rows.append({
             "data":            data,
@@ -126,6 +135,7 @@ def carregar_imoveis():
             "preco":           r.get("preco"),
             "obs":             obs,
             "edificio":        edificio,
+            "condominio":      condominio,
             "status":          r.get("status") or "Novo",
             "data_publicacao": r.get("data_publicacao") or "",
             "link":            link,
@@ -153,21 +163,31 @@ def carregar_demandas():
             continue
         vistos.add(chave)
         obs_d = pm.limpar_obs(r.get("observacoes") or "")
-        # Edifício: usa valor salvo pelo quality gate; fallback para extração.
+        # Edifício/condomínio: usa valores salvos pelo quality gate; fallback para extração.
         edificio_d = r.get("edificio") or ""
         if not edificio_d and obs_d:
             try:
                 edificio_d = pm.extrair_edificio(obs_d) or ""
             except Exception:
                 edificio_d = ""
+        condominio_d = r.get("condominio") or ""
+        if not condominio_d and obs_d:
+            try:
+                condominio_d = pm.extrair_condominio(obs_d) or ""
+            except Exception:
+                condominio_d = ""
+        # Deduplicação: se ambos extraíram o mesmo nome, é condomínio
+        if edificio_d and condominio_d and edificio_d.lower() == condominio_d.lower():
+            edificio_d = ""
         rows.append({
-            "data":      data,
-            "grupo":     r.get("grupo") or "",
-            "corretor":  corretor,
-            "contato":   r.get("contato") or "",
-            "tipo":      r.get("tipo_buscado") or "Apartamento",
-            "regiao":    r.get("bairro_regiao") or "",
-            "edificio":  edificio_d,
+            "data":       data,
+            "grupo":      r.get("grupo") or "",
+            "corretor":   corretor,
+            "contato":    r.get("contato") or "",
+            "tipo":       r.get("tipo_buscado") or "Apartamento",
+            "regiao":     r.get("bairro_regiao") or "",
+            "edificio":   edificio_d,
+            "condominio": condominio_d,
             "area_min":  r.get("area_min"),
             "quartos":   r.get("quartos"),
             "suites":    r.get("suites"),
@@ -683,33 +703,22 @@ function cardNome(im){{
     var bairroPrincipal = im.bairro ? im.bairro.split(' · ')[0].trim() : '';
     return bairroPrincipal ? tipo + ' · ' + bairroPrincipal : tipo;
   }}
-  // WhatsApp: Tipo · Edifício · Bairro (quando tem nome de edifício no obs)
-  var bairro = im.bairro ? im.bairro.split(',')[0].trim() : '';
-  // Remover prefixo "Cond." do bairro se presente, pois já é o nome do condomínio
-  // Edifício vem pré-calculado do Python (mesma lógica testada de processar_mensagens.py) —
-  // evita repetir uma extração menos confiável aqui no JS.
-  var edificio = im.edificio || null;
-  if (!edificio && im.bairro && im.bairro.startsWith('Cond. ')) {{
-    edificio = im.bairro.replace(/^Cond\\.\\s*/, '').split('·')[0].trim();
+  // WhatsApp: Tipo · Edifício · Condomínio · Bairro
+  var bairro     = im.bairro     ? im.bairro.split(',')[0].trim() : '';
+  var edificio   = im.edificio   || null;
+  var condominio = im.condominio || null;
+  // Fallback legado: bairro começava com "Cond. X" → extrai como condomínio
+  if (!edificio && !condominio && im.bairro && im.bairro.startsWith('Cond. ')) {{
+    condominio = im.bairro.replace(/^Cond\\.\\s*/, '').split('·')[0].trim();
     bairro = im.bairro.split('·')[1] ? im.bairro.split('·')[1].trim() : '';
   }}
-  if (edificio && bairro) {{
-    var bl = bairro.toLowerCase().replace(/^cond\\.?\\s*/i, '').trim();
-    var el = edificio.toLowerCase().trim();
-    // Se o bairro já contém o nome do edifício → não repetir
-    if (bl.includes(el) || el.includes(bl)) {{
-      return tipo + ' · ' + bairro;
-    }}
-    // Se o bairro está no final do nome do edifício → remover do edifício
-    if (el.endsWith(bl)) {{
-      edificio = edificio.slice(0, edificio.length - bairro.replace(/^Cond\\.?\\s*/i,'').length)
-                         .replace(/[\\s·\\-,]+$/, '').trim();
-    }}
-    if (!edificio) return tipo + ' · ' + bairro;
-    return tipo + ' · ' + edificio + ' · ' + bairro;
-  }}
-  if (edificio && bairro) return tipo + ' · ' + edificio + ' · ' + bairro;
-  if (edificio)           return tipo + ' · ' + edificio;
+  // Deduplicação: não repetir edificio/condomínio se já estiver no bairro
+  var bl = bairro.toLowerCase();
+  if (edificio && bl.includes(edificio.toLowerCase())) edificio = null;
+  if (condominio && bl.includes(condominio.toLowerCase())) condominio = null;
+  var localParts = [edificio, condominio].filter(Boolean);
+  if (localParts.length && bairro) return tipo + ' · ' + localParts.join(' · ') + ' · ' + bairro;
+  if (localParts.length)           return tipo + ' · ' + localParts.join(' · ');
   return bairro ? tipo + ' · ' + bairro : tipo;
 }}
 
@@ -921,13 +930,15 @@ function cardD(dm){{
     dm.vagas?(dm.vagas+(dm.vagas===1?' vaga':' vagas')):null
   ].filter(Boolean).map(function(c){{return typeof c==='string'&&c.indexOf('class="chip')===-1?'<span class="chip">'+c+'</span>':c;}}).join('');
   // Título descreve O QUE É BUSCADO, não quem busca
-  var tipo    = dm.tipo    || '';
-  var edificio= dm.edificio|| '';
-  var regiao  = dm.regiao  || '';
+  var tipo       = dm.tipo       || '';
+  var edificio   = dm.edificio   || '';
+  var condominio = dm.condominio || '';
+  var regiao     = dm.regiao     || '';
   var tituloParts = [];
-  if (tipo)    tituloParts.push(tipo);
-  if (edificio)tituloParts.push(edificio);
-  if (regiao)  tituloParts.push(regiao);
+  if (tipo)       tituloParts.push(tipo);
+  if (edificio)   tituloParts.push(edificio);
+  if (condominio) tituloParts.push(condominio);
+  if (regiao)     tituloParts.push(regiao);
   var titulo = tituloParts.length ? 'Busca ' + tituloParts.join(' · ') : 'Demanda';
   return '<div class="card card-dem">'+
     '<div class="card-header">'+
@@ -952,7 +963,7 @@ function filtrarD(){{
   var om = parseFloat(document.getElementById('orc-d').value)||Infinity;
   var st = document.getElementById('status-d').value;
   return DEMANDAS.filter(function(dm){{
-    var hay=[dm.obs,dm.regiao,dm.corretor,dm.grupo,dm.tipo].join(' ').toLowerCase();
+    var hay=[dm.obs,dm.regiao,dm.corretor,dm.grupo,dm.tipo,dm.edificio,dm.condominio].join(' ').toLowerCase();
     if(b&&hay.indexOf(b)===-1) return false;
     if(q){{var n=parseInt(q);if(q==='4'){{if(!dm.quartos||dm.quartos<4)return false;}}else{{if(dm.quartos&&dm.quartos<n)return false;}}}}
     if(vg){{var n2=parseInt(vg);if(vg==='3'){{if(!dm.vagas||dm.vagas<3)return false;}}else{{if(dm.vagas&&dm.vagas<n2)return false;}}}}

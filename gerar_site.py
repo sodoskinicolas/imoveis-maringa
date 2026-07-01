@@ -1276,7 +1276,7 @@ function renderBairrosList(){{
     var edifs=idx[b];
     var totalI=0,totalD=0;
     Object.values(edifs).forEach(function(e){{totalI+=e.imoveis.length;totalD+=e.demandas.length;}});
-    html+='<div class="bairro-row" onclick="renderEdificiosDoBairro(\''+b.replace(/'/g,"\\'")+'\')">';
+    html+='<div class="bairro-row" data-bairro="'+b.replace(/"/g,'&quot;')+'" onclick="renderEdificiosDoBairro(this.dataset.bairro)">';
     html+='<div class="bairro-name">'+b+'</div>';
     html+='<div class="bairro-badges">';
     if(totalI) html+='<span class="bairro-badge-i">'+totalI+' imóveis</span>';
@@ -1300,7 +1300,7 @@ function renderEdificiosDoBairro(bairro){{
   keys.forEach(function(e){{
     var data=edifs[e];
     var ni=data.imoveis.length, nd=data.demandas.length;
-    html+='<div class="edif-row" onclick="renderImoveisDoEdificio(\''+bairro.replace(/'/g,"\\'")+'\',' + '\''+e.replace(/'/g,"\\'")+'\')">';
+    html+='<div class="edif-row" data-bairro="'+bairro.replace(/"/g,'&quot;')+'" data-edif="'+e.replace(/"/g,'&quot;')+'" onclick="renderImoveisDoEdificio(this.dataset.bairro,this.dataset.edif)">';
     html+='<div class="edif-name">'+(e==='—'?'<span style="color:#bbb">Sem edifício específico</span>':e)+'</div>';
     html+='<div class="bairro-badges">';
     if(ni) html+='<span class="bairro-badge-i">'+ni+'</span>';
@@ -1316,7 +1316,7 @@ function renderImoveisDoEdificio(bairro, edif){{
   var data=(idx[bairro]||{{}})[edif]||{{imoveis:[],demandas:[]}};
   var html='<div class="bairros-breadcrumb">'
     +'<a onclick="renderBairrosList()">🏘️ Bairros</a> › '
-    +'<a onclick="renderEdificiosDoBairro(\''+bairro.replace(/'/g,"\\'")+'\'">'+bairro+'</a> › '
+    +'<a data-bairro="'+bairro.replace(/"/g,'&quot;')+'" onclick="renderEdificiosDoBairro(this.dataset.bairro)">'+bairro+'</a> › '
     +'<strong>'+(edif==='—'?'Sem edifício específico':edif)+'</strong>'
     +'</div>';
   if(data.imoveis.length){{

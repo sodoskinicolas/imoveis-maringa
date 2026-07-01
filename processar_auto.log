@@ -4006,3 +4006,585 @@ an editor opened by 'git commit'. Please make sure all processes
 are terminated then try again. If it still fails, a git process
 may have crashed in this repository earlier:
 remove the file manually to continue.
+[2026-07-01 14:15:42] === Início do ciclo automático ===
+[2026-07-01 14:15:43] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 34 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 14:16:21] Processamento concluído.
+[2026-07-01 14:16:21] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 3 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 11 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=3038  'Jardim Dias II' → 'Jardim Dias'
+
+  ✅ imoveis: 1 bairros corrigidos
+  ✅ bairros: 1 corrigido(s)
+
+✅ 4 correção(ões) automática(s) · 11 alerta(s) para revisão manual
+[2026-07-01 14:16:37] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1624: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (1431 imóveis [57 JJ · 526 VR] · 29 demandas)
+[main 059ba0d] 🤖 Auto: 2026-07-01 14:16 — mensagens + sites descobertos
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   d1d5118..059ba0d  main -> main
+[2026-07-01 14:16:56] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 14:16:56] === Ciclo concluído ===
+[2026-07-01 14:46:56] === Início do ciclo automático ===
+[2026-07-01 14:46:56] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 14:47:39] Processamento concluído.
+[2026-07-01 14:47:39] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 4 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 11 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=3039  'Jardim Dias II' → 'Jardim Dias'  (edif: Pietrobon)
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=3040  'Jardim Paulista 3' → 'Jardim Paulista'
+
+  ✅ imoveis: 2 bairros corrigidos
+  ✅ bairros: 2 corrigido(s)
+
+✅ 6 correção(ões) automática(s) · 11 alerta(s) para revisão manual
+[2026-07-01 14:47:54] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1624: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (1431 imóveis [57 JJ · 526 VR] · 29 demandas)
+[main 2134307] 🤖 Auto: 2026-07-01 14:48 — mensagens + sites descobertos
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   059ba0d..2134307  main -> main
+[2026-07-01 14:48:11] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 14:48:11] === Ciclo concluído ===
+[2026-07-01 15:18:11] === Início do ciclo automático ===
+[2026-07-01 15:18:12] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 34 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 15:18:54] Processamento concluído.
+[2026-07-01 15:18:54] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 4 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 11 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=3041  'Jardim Dias II' → 'Jardim Dias'  (edif: Pietrobon)
+
+  ✅ imoveis: 1 bairros corrigidos
+  ✅ bairros: 1 corrigido(s)
+
+✅ 5 correção(ões) automática(s) · 11 alerta(s) para revisão manual
+[2026-07-01 15:19:09] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1624: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (1431 imóveis [57 JJ · 526 VR] · 29 demandas)
+[main 65fb9c8] 🤖 Auto: 2026-07-01 15:19 — mensagens + sites descobertos
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   2134307..65fb9c8  main -> main
+[2026-07-01 15:19:28] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 15:19:28] === Ciclo concluído ===
+[2026-07-01 15:49:28] === Início do ciclo automático ===
+[2026-07-01 15:49:28] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 15:49:59] Processamento concluído.
+[2026-07-01 15:49:59] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 3 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 11 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=3042  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=3043  'Jardim Paulista 3' → 'Jardim Paulista'
+
+  ✅ imoveis: 2 bairros corrigidos
+  ✅ bairros: 2 corrigido(s)
+
+✅ 5 correção(ões) automática(s) · 11 alerta(s) para revisão manual
+[2026-07-01 15:50:14] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1624: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (1431 imóveis [57 JJ · 526 VR] · 29 demandas)
+[main ad022f6] 🤖 Auto: 2026-07-01 15:50 — mensagens + sites descobertos
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   10b49b9..ad022f6  main -> main
+[2026-07-01 15:50:34] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 15:50:34] === Ciclo concluído ===
+[2026-07-01 16:20:34] === Início do ciclo automático ===
+[2026-07-01 16:20:35] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 16:21:15] Processamento concluído.
+[2026-07-01 16:21:15] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 3 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 11 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=3044  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=3045  'Jardim Paulista 3' → 'Jardim Paulista'
+
+  ✅ imoveis: 2 bairros corrigidos
+  ✅ bairros: 2 corrigido(s)
+
+✅ 5 correção(ões) automática(s) · 11 alerta(s) para revisão manual
+[2026-07-01 16:21:29] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1624: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (1431 imóveis [57 JJ · 526 VR] · 29 demandas)
+[main 22b23a2] 🤖 Auto: 2026-07-01 16:21 — mensagens + sites descobertos
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   ad022f6..22b23a2  main -> main
+[2026-07-01 16:21:48] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 16:21:48] === Ciclo concluído ===
+[2026-07-01 16:51:48] === Início do ciclo automático ===
+[2026-07-01 16:51:48] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 34 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 16:52:19] Processamento concluído.
+[2026-07-01 16:52:19] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 3 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 11 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=3046  'Jardim Dias II' → 'Jardim Dias'
+
+  ✅ imoveis: 1 bairros corrigidos
+  ✅ bairros: 1 corrigido(s)
+
+✅ 4 correção(ões) automática(s) · 11 alerta(s) para revisão manual
+[2026-07-01 16:52:33] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1624: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (1431 imóveis [57 JJ · 526 VR] · 29 demandas)
+[main 0f7db1f] 🤖 Auto: 2026-07-01 16:52 — mensagens + sites descobertos
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   22b23a2..0f7db1f  main -> main
+[2026-07-01 16:52:51] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 16:52:51] === Ciclo concluído ===

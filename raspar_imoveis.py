@@ -19,6 +19,7 @@ import logging
 import argparse
 from datetime import datetime, date
 from pathlib import Path
+from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -404,7 +405,291 @@ def scrape_sub100(cfg):
     return items
 
 
+# ── Lélo Imóveis (plataforma CasaSoft) ────────────────────────────────────────
+#
+# Site diferente do Sub100 — plataforma "CasaSoft" (rodapé "Sistema CasaSoft -
+# Feito pela Paper"). Totalmente renderizado no servidor (HTML puro já traz
+# tudo), sem AJAX/JS necessário. Paginação é por path, não por query string:
+# /imoveis/venda-pagina-{N} (confirmado no link real "Próxima página" da
+# página 1, via Chrome — não é um parâmetro adivinhado).
+#
+# Cada card é um <a href="https://www.leloimoveis.com.br/imovel/{slug}/{id-
+# empresa}/{ref}">conteúdo do card inteiro</a> — usamos a própria tag como
+# delimitador de card, o que é mais confiável que tentar adivinhar um texto
+# de botão (como fizemos pro Sub100).
+#
+# O título de cada card segue um padrão bem consistente (é o alt-text das
+# fotos, repetido 2-3x por card): "{Tipo} para venda no {Bairro} em {Cidade}
+# com {area}m² por R$ {preco}" — dá pra extrair tipo/bairro/cidade/área/preço
+# de uma vez só com uma regex, em vez de vários campos separados feito no
+# Sub100. Cobre Maringá e cidades vizinhas (Sarandi, Mandaguaçu, Marialva) —
+# filtramos só Maringá aqui pra manter o escopo do projeto.
+LELO_BASE = "https://www.leloimoveis.com.br"
+
+_LELO_TITULO_RE = re.compile(
+    r'([\wÀ-ÿ ]+?)\s+para venda no\s+([\wÀ-ÿ.\'° ]+?)\s+em\s+(\w+)\s+'
+    r'com\s+([\d.,]+)\s*m[²2]\s+por\s+R\$\s*([\d.,]+)',
+    re.I,
+)
+
+def parse_lelo_card(html_block, href):
+    ref = href.rstrip("/").rsplit("/", 1)[-1]
+    slug_path = href.split("/imovel/", 1)[-1].split("/")[0] if "/imovel/" in href else ""
+    tipo = infer_tipo(slug_path)
+
+    bairro = cidade = ""
+    area = preco = None
+    m_tit = _LELO_TITULO_RE.search(html_block)
+    if m_tit:
+        if tipo == "Imóvel":
+            tipo = infer_tipo(m_tit.group(1))
+        bairro = m_tit.group(2).strip()
+        cidade = m_tit.group(3).strip()
+        area = parse_area(m_tit.group(4) + "m2")
+        preco = parse_preco("R$ " + m_tit.group(5))
+
+    # Fallback caso o padrão do título não bata (ex: card sem foto/alt-text)
+    if area is None:
+        area_m = re.search(r'([\d.,]+)\s*m[²2]', html_block)
+        area = parse_area(area_m.group(0)) if area_m else None
+    if preco is None:
+        preco_m = re.search(r'R\$\s*[\d.,]+', html_block)
+        preco = parse_preco(preco_m.group(0)) if preco_m else None
+
+    qtos_m = re.search(r'(\d+)\s*quartos?', html_block, re.I)
+    suite_m = re.search(r'(\d+)\s*su[ií]tes?', html_block, re.I)
+    vaga_m = re.search(r'(\d+)\s*vagas?', html_block, re.I)
+
+    return {
+        "ref": ref,
+        "link": href,
+        "tipo": tipo,
+        "bairro": bairro,
+        "cidade": cidade,
+        "area": area,
+        "quartos": parse_int(qtos_m.group(1)) if qtos_m else None,
+        "suites": parse_int(suite_m.group(1)) if suite_m else None,
+        "banheiros": None,
+        "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
+        "preco": preco,
+        "obs": href,
+    }
+
+
+def scrape_lelo(max_paginas=60):
+    items = []
+    seen = set()
+    page = 1
+    while page <= max_paginas:
+        url = f"{LELO_BASE}/imoveis/venda" if page == 1 else f"{LELO_BASE}/imoveis/venda-pagina-{page}"
+        r = get_page(url)
+        if not r:
+            break
+        html = r.text
+        matches = list(re.finditer(
+            r'<a\s+href="(https://www\.leloimoveis\.com\.br/imovel/[^"]+)"[^>]*>', html
+        ))
+        if not matches:
+            break
+
+        novos_pagina = 0
+        for i, m in enumerate(matches):
+            href = m.group(1)
+            start = m.end()
+            end = matches[i + 1].start() if i + 1 < len(matches) else start + 4000
+            item = parse_lelo_card(html[start:end], href)
+            if not item["ref"] or item["ref"] in seen:
+                continue
+            seen.add(item["ref"])
+            novos_pagina += 1
+            if item.get("cidade") and "maring" not in item["cidade"].lower():
+                continue
+            items.append(item)
+
+        log.info(f"[Lélo Imóveis] página {page}: {novos_pagina} imóveis novos")
+        if novos_pagina == 0:
+            break
+        page += 1
+        time.sleep(1.0)
+
+    log.info(f"[Lélo Imóveis] Total: {len(items)} imóveis (Maringá)")
+    return items
+
+
+# ── Opção Imóveis (plataforma Flip CRM / Next.js) ─────────────────────────────
+#
+# Site em Next.js — os cards são renderizados via JS (botões sem href, não dá
+# pra raspar como HTML estático comum), MAS a página 1 vem com todos os dados
+# já embutidos como JSON dentro de <script id="__NEXT_DATA__"> no HTML puro
+# (confirmado via requests simples, sem precisar de navegador). Isso cobre 30
+# dos ~349 imóveis à venda em Maringá.
+#
+# Páginas seguintes: o site pagina via um endpoint interno
+# (imobiliariasiteapi.eurekalabs.com.br/search-imoveis) que exige um
+# parâmetro de "tenant" que não é passado na URL nem em headers óbvios — é
+# injetado pelo bundle JS do próprio site de um jeito que não consegui
+# extrair de forma limpa (e não persegui isso mais a fundo: seria efetivamente
+# extrair uma credencial/token embutido só pra contornar uma validação de
+# acesso, o que preferi não fazer). Também tentei achar um endpoint
+# "/_next/data/{buildId}/..." com parâmetros de página alternativos
+# (pagina, offset, skip) sem sucesso. Por ora só cobrimos a página 1 — dá pra
+# revisitar se aparecer uma forma legítima de paginar (ex: API pública
+# documentada, ou mudança no site que exponha os links de paginação como
+# href normal).
+OPCAO_BASE = "https://www.opcaoimoveis.com.br"
+
+def scrape_opcao():
+    items = []
+    url = f"{OPCAO_BASE}/buscar/maringa-pr-brasil/venda"
+    r = get_page(url)
+    if not r:
+        return items
+
+    m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', r.text, re.S)
+    if not m:
+        log.warning("[Opção Imóveis] __NEXT_DATA__ não encontrado na página")
+        return items
+    try:
+        data = json.loads(m.group(1))
+        imoveis = data["props"]["pageProps"]["initialBuscarData"]["imoveis"]
+    except Exception as e:
+        log.warning(f"[Opção Imóveis] Erro ao ler __NEXT_DATA__: {e}")
+        return items
+
+    for it in imoveis:
+        ref = it.get("codigo") or ""
+        if not ref:
+            continue
+        det = it.get("detalhes") or {}
+        preco = it.get("precoVenda")
+        imovel_url = it.get("imovelUrl") or ""
+        items.append({
+            "ref": ref,
+            "link": urljoin(OPCAO_BASE + "/imovel/", imovel_url) if imovel_url else url,
+            "tipo": infer_tipo(it.get("tipoImovel", "")),
+            "bairro": it.get("bairro", ""),
+            "cidade": it.get("cidade", ""),
+            "area": det.get("areaConstruida"),
+            "quartos": det.get("dormitorios"),
+            "suites": det.get("suites"),
+            "banheiros": None,
+            "vagas": det.get("vagas"),
+            "preco": int(preco) if preco else None,
+            "obs": it.get("titulo", ""),
+        })
+
+    log.info(
+        f"[Opção Imóveis] {len(items)} imóveis coletados (só página 1 de ~12 — "
+        f"ver nota no código sobre a limitação de paginação)"
+    )
+    return items
+
+
+# ── Patrimônio Imóveis Prontos (plataforma Kurole) ────────────────────────────
+#
+# Mesma plataforma do CRM que o Nicolas já usa internamente (Kurole), mas
+# esta é a instalação pública de um concorrente — raspamos como fonte externa
+# normal. Cobre Maringá E Londrina misturados na mesma listagem; filtramos só
+# Maringá. Paginação confirmada via clique real no link "2" da página (não
+# adivinhada): query string "&pag={N}" — outros nomes de parâmetro tentados
+# antes ("pagina", "page") não tinham efeito nenhum.
+PATRIMONIO_BASE = "https://www.patrimonioimoveisprontos.com.br"
+PATRIMONIO_SEARCH = (
+    f"{PATRIMONIO_BASE}/pesquisa-de-imoveis/"
+    "?locacao_venda=V&finalidade=&dormitorio=&garagem=&vmi=&vma=&ordem=3"
+)
+
+def parse_patrimonio_card(html_block, href):
+    ref_m = re.search(r'/(\d+)$', href)
+    ref = ref_m.group(1) if ref_m else ""
+
+    # URL: comprar/{Cidade}/{Tipo}/{SubTipo}/{Bairro}/{codigo}
+    partes = [p for p in href.split("/") if p]
+    tipo_raw = ""
+    for i, p in enumerate(partes):
+        if p.lower() == "comprar" and i + 2 < len(partes):
+            tipo_raw = partes[i + 2]
+            break
+    tipo = infer_tipo(tipo_raw)
+
+    loc_m = re.search(r'([A-ZÀ-Ú][^\n\-]{1,45}?)\s*-\s*([A-ZÀ-Ú][a-zà-ÿ]+)/PR', html_block)
+    bairro = loc_m.group(1).strip() if loc_m else ""
+    cidade = loc_m.group(2).strip() if loc_m else ""
+
+    preco_m = re.search(r'R\$\s*[\d.,]+', html_block)
+    quartos_m = re.search(r'(\d+)\s*Dorm', html_block, re.I)
+    suites_m = re.search(r'(\d+)\s*Su[ií]te', html_block, re.I)
+    banho_m = re.search(r'(\d+)\s*Banho', html_block, re.I)
+    vaga_m = re.search(r'(\d+)\s*Garage', html_block, re.I)
+    area_m = re.search(r'([\d.,]+)\s*m[²2]', html_block)
+
+    return {
+        "ref": ref,
+        "link": href,
+        "tipo": tipo,
+        "bairro": bairro,
+        "cidade": cidade,
+        "area": parse_area(area_m.group(0)) if area_m else None,
+        "quartos": parse_int(quartos_m.group(1)) if quartos_m else None,
+        "suites": parse_int(suites_m.group(1)) if suites_m else None,
+        "banheiros": parse_int(banho_m.group(1)) if banho_m else None,
+        "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
+        "preco": parse_preco(preco_m.group(0)) if preco_m else None,
+        "obs": href,
+    }
+
+
+def scrape_patrimonio(max_paginas=15):
+    items = []
+    seen = set()
+    page = 1
+    while page <= max_paginas:
+        url = PATRIMONIO_SEARCH + (f"&pag={page}" if page > 1 else "")
+        r = get_page(url)
+        if not r:
+            break
+        html = r.text
+        matches = list(re.finditer(r'href="(/?comprar/[^"]+/\d+)"', html))
+        if not matches:
+            break
+
+        novos_pagina = 0
+        for i, m in enumerate(matches):
+            href = urljoin(r.url, m.group(1))
+            ref_probe = href.rstrip("/").rsplit("/", 1)[-1]
+            if ref_probe in seen:
+                continue
+            seen.add(ref_probe)
+            start = m.end()
+            end = matches[i + 1].start() if i + 1 < len(matches) else start + 3000
+            item = parse_patrimonio_card(html[start:end], href)
+            novos_pagina += 1
+            if item.get("cidade") and "maring" not in item["cidade"].lower():
+                continue
+            items.append(item)
+
+        log.info(f"[Patrimônio Imóveis Prontos] página {page}: {novos_pagina} imóveis novos")
+        if novos_pagina == 0:
+            break
+        page += 1
+        time.sleep(1.0)
+
+    log.info(f"[Patrimônio Imóveis Prontos] Total: {len(items)} imóveis (Maringá)")
+    return items
+
+
 # ── Coletar todos ─────────────────────────────────────────────────────────────
+
+# Sites com scraper próprio (fora do padrão Sub100) — cada um com plataforma
+# e estrutura de URL completamente diferentes entre si (CasaSoft, Next.js/
+# Flip CRM, Kurole). "grupo" aqui é o mesmo domínio usado como `fonte` no
+# banco, seguindo a convenção já usada pros 5 sites Sub100.
+OUTRAS_FONTES = [
+    {"grupo": "leloimoveis.com.br",              "func": scrape_lelo},
+    {"grupo": "opcaoimoveis.com.br",              "func": scrape_opcao},
+    {"grupo": "patrimonioimoveisprontos.com.br",  "func": scrape_patrimonio},
+]
+
 
 def coletar_todos():
     todos = []
@@ -414,6 +699,16 @@ def coletar_todos():
             items = scrape_sub100(cfg)
             for it in items:
                 it["grupo"] = cfg["domain"]
+            todos.extend(items)
+        except Exception as e:
+            log.error(f"[{cfg['grupo']}] Erro na raspagem: {e}", exc_info=True)
+        time.sleep(2)
+
+    for cfg in OUTRAS_FONTES:
+        try:
+            items = cfg["func"]()
+            for it in items:
+                it["grupo"] = cfg["grupo"]
             todos.extend(items)
         except Exception as e:
             log.error(f"[{cfg['grupo']}] Erro na raspagem: {e}", exc_info=True)

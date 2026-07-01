@@ -83,7 +83,7 @@ def carregar_imoveis():
     for r in registros:
         if not r.get("data_captura"):
             continue
-        obs   = r.get("observacoes") or ""
+        obs   = pm.limpar_obs(r.get("observacoes") or "")
         fonte = r.get("fonte") or ""
         link  = r.get("link") or _extrair_url(obs)
 
@@ -151,7 +151,7 @@ def carregar_demandas():
         if chave in vistos:
             continue
         vistos.add(chave)
-        obs_d = r.get("observacoes") or ""
+        obs_d = pm.limpar_obs(r.get("observacoes") or "")
         try:
             edificio_d = pm.extrair_edificio(obs_d) or "" if obs_d else ""
         except Exception:

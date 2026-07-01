@@ -1,0 +1,17 @@
+[
+  {
+    "url_listagem": "https://www.sympla.com.br/",
+    "pagina_param": null,
+    "seletor_card": null,
+    "seletor_link": null,
+    "seletor_titulo": null,
+    "seletor_preco": null,
+    "seletor_bairro": null,
+    "seletor_area": null,
+    "usa_ajax": false,
+    "nome_imobiliaria": "Sympla",
+    "observacoes": "ATENÇÃO: sympla.com.br NÃO é um site imobiliário. Trata-se de uma plataforma brasileira de venda de ingressos e gestão de eventos (similar ao Eventbrite). A URL de exemplo fornecida refere-se a um evento chamado 'Minha Venda Minha Vida', que é um evento/congresso voltado para corretores de imóveis, mas o site em si não lista imóveis à venda. Não há cards de imóveis, preços de propriedades, bairros ou áreas de imóveis para raspar. Os seletores CSS relevantes seriam para eventos (nome do evento, data, local, preço do ingresso), não para imóveis. Raspagem imobiliária não é aplicável a este domínio.",
+    "domain": "sympla.com.br",
+    "_tipo": "generico"
+  }
+]

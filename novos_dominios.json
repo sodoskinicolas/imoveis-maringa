@@ -1,0 +1,14 @@
+{
+  "pr.olx.com.br": {
+    "url_exemplo": "https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct",
+    "descoberto_em": "2026-07-01",
+    "analisado": true,
+    "config_gerada": false
+  },
+  "sympla.com.br": {
+    "url_exemplo": "https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915",
+    "descoberto_em": "2026-07-01",
+    "analisado": true,
+    "config_gerada": true
+  }
+}

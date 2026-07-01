@@ -1062,6 +1062,12 @@ _EDIFICIO_GENERICO = {
     'área', 'quartos', 'suítes', 'vaga', 'preferência', 'piscina', 'lazer',
     'pessoal', 'galera', 'turma', 'amigos', 'alguém', 'alguem', 'atenção', 'atencao',
     'disponível', 'disponivel', 'urgente', 'procuro', 'preciso', 'buscando', 'busco',
+    # Verbos/saudações que iniciam frases no WhatsApp
+    'busca', 'busco', 'tenho', 'procura', 'vendo', 'alugo', 'ofereço', 'ofereço',
+    'bom', 'boa', 'olá', 'ola', 'oi', 'prezados', 'corretor', 'corretores',
+    # Termos geográficos/estruturais — nunca são nome de prédio isolados
+    'zona', 'setor', 'parque', 'jardim', 'conjunto', 'bairro', 'região', 'regiao',
+    'andar', 'bloco', 'torre', 'predio', 'prédio',
 }
 # "da Avenida X", "na Rua Y" — é endereço, não nome de prédio
 _EDIFICIO_PALAVRA_ENDERECO = {
@@ -1149,25 +1155,37 @@ def extrair_edificio(texto):
         if 3 < len(nome) < 45:
             candidatos.append(nome)
 
-    # 2b. Código de empreendimento: 3+ letras maiúsculas + dígitos (ex: NEST635, PARK900, MRV123)
-    #     Já é maiúsculo por definição — não precisa de validação de capitalização.
-    m3 = re.search(r'\b([A-Z]{3,}\d+[A-Z0-9]*)\b', texto)
+    # 2b. Código de empreendimento: 3+ letras maiúsculas + dígitos (ex: NEST635, PARK900, MRV123).
+    #     Também captura siglas sem dígitos (ex: SKY, VLP) se estiverem no banco de condomínios.
+    m3 = re.search(r'\b([A-Z]{3,}\d*[A-Z0-9]*)\b', texto)
     if m3:
         nome = m3.group(1)
-        if 4 <= len(nome) <= 20:
-            return nome
+        if 3 <= len(nome) <= 20:
+            if re.search(r'\d', nome):
+                # Tem dígito → código de empreendimento, retorna direto
+                return nome
+            # Sem dígito: só retorna se confirmado no banco (evita siglas comuns)
+            conhecido = _nomes_condos_por_lower().get(nome.lower())
+            if conhecido:
+                return conhecido
 
-    # 2c. Nome próprio após "com", "busco", "busca" em contexto de demanda
-    #     Ex: "alguém com Vista Bela", "busco Residencial das Flores"
+    # 2c. Nome próprio após gatilhos de demanda
+    #     Ex: "no SKY", "com um Vision", "para permutar Maison Constantine"
+    #     Palavras do prédio DEVEM começar com maiúscula — isso evita capturar
+    #     frases comuns que vêm depois ("tem que ser", "de preferência", etc.).
+    #     Palavras de preenchimento minúsculas entre o gatilho e o nome são
+    #     permitidas (ex: "com um VISION" → filler="um", nome="VISION").
     m4 = re.search(
-        r'(?:\bcom\b|\bbusco\b|\bbusca\b|\bquero\b|\bdo\b|\bda\b)\s+'
-        r'([A-Za-zÀ-ú][A-Za-zÀ-ú0-9]+(?:\s+[A-Za-zÀ-ú0-9]+){0,3})'
-        r'(?:\s+de\s|\s+com\s|\s*[,\.\n]|$)',
-        texto, re.IGNORECASE
+        r'(?i:(?:\bcom\b|\bbusco\b|\bbusca\b|\bquero\b'
+        r'|\bno\b|\bna\b|\bnum\b|\bnuma\b|\bpermutar\b|\bcomprar\b))'
+        r'(?:\s+[a-záàâãéêèíìîóòôõúùûç]+){0,1}\s+'   # pular até 1 filler minúsculo (ex: "um")
+        r'([A-ZÀ-Ú][A-Za-zÀ-ú0-9]*'                   # 1ª palavra: começa c/ maiúscula
+        r'(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú0-9]*){0,3})',      # mais até 3 palavras c/ maiúscula
+        texto
     )
     if m4:
         candidato = m4.group(1).strip()
-        if 3 < len(candidato) < 40:
+        if 3 <= len(candidato) < 40:
             candidatos.append(candidato)
 
     for candidato in candidatos:

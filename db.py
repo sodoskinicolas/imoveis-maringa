@@ -146,6 +146,12 @@ def _migrar_schema(conn):
         if col not in cols_d:
             conn.execute(f"ALTER TABLE demandas ADD COLUMN {col} TEXT")
 
+    # condominios: coluna plantas para múltiplas plantas/tipos por edifício
+    cols_c = _colunas_existentes(conn, "condominios")
+    if "plantas" not in cols_c:
+        # JSON: [{"area": 119, "quartos": 3, "suites": 3, "vagas": 2, "descricao": "Planta 119m²"}, ...]
+        conn.execute("ALTER TABLE condominios ADD COLUMN plantas TEXT")
+
 def _backfill_fonte_legado(conn):
     """
     Preenche fonte/ref_externa em linhas legadas que foram inseridas direto no
@@ -495,27 +501,46 @@ def listar_demandas(conn):
     ).fetchall()
     return [dict(r) for r in rows]
 
+def _norm_nome(s):
+    """Normaliza nome para comparação: lowercase, remove espaços e não-alfanuméricos.
+    Ex: 'NEST 635 VERTICAL HOUSES' → 'nest635verticalhouses'
+        'NEST635'                   → 'nest635'
+    Permite que 'nest635' case parcialmente em 'nest635verticalhouses'.
+    """
+    return re.sub(r'[^a-z0-9]', '', (s or '').lower())
+
+
 def buscar_specs_condo(conn, nome):
     """
-    Busca specs de condomínio pelo nome (match parcial).
-    Quando há múltiplos matches, prefere o que tem mais dados preenchidos
-    (area_min, construtora, padrao, andares, bairro) — evita retornar
-    registros importados em bloco sem dados reais.
+    Busca specs de condomínio pelo nome (match parcial, case-insensitive).
+    Usa duas estratégias de match:
+      1. Substring literal: 'nest 635' in 'nest 635 vertical houses'
+      2. Substring normalizado: 'nest635' in 'nest635verticalhouses'
+         (captura variações de espaçamento, ex: NEST635 vs NEST 635)
+    Quando há múltiplos matches, prefere o que tem mais dados preenchidos.
     """
     if not nome:
         return None
-    nome_low = nome.strip().lower()
+    nome_low  = nome.strip().lower()
+    nome_norm = _norm_nome(nome)
     rows = conn.execute("SELECT * FROM condominios").fetchall()
     candidatos = []
     for r in rows:
         n = (r["nome"] or "").strip().lower()
         if not n:
             continue
-        if nome_low in n or n in nome_low:
-            # Score: quantos campos de dados estão preenchidos
-            score = sum(1 for col in ("area_min", "construtora", "padrao", "andares", "bairro", "quartos")
-                        if r[col])
-            candidatos.append((score, dict(r)))
+        n_norm = _norm_nome(n)
+        # Match literal OU normalizado (sem espaços/pontuação)
+        match_literal = nome_low in n or n in nome_low
+        match_norm    = bool(nome_norm) and (nome_norm in n_norm or n_norm in nome_norm)
+        if not (match_literal or match_norm):
+            continue
+        # Score: quantos campos de dados estão preenchidos
+        score = sum(1 for col in ("area_min", "construtora", "padrao", "andares", "bairro", "quartos", "plantas")
+                    if r[col])
+        # Priorizar match literal exato sobre match normalizado parcial
+        bonus = 1 if match_literal else 0
+        candidatos.append((score + bonus, dict(r)))
     if not candidatos:
         return None
     # Retorna o candidato com mais dados; em empate, o mais específico (nome mais curto = match mais exato)

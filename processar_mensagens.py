@@ -810,16 +810,51 @@ def pesquisar_condominio(nome, cidade="Maringá-PR"):
     return None
 
 
-def trim_specs_condo(row):
-    """Reduz a linha COMPLETA da tabela condominios às specs usadas pra preencher imóveis."""
+def trim_specs_condo(row, area=None):
+    """
+    Reduz a linha COMPLETA da tabela condominios às specs usadas pra preencher imóveis.
+    Quando o edifício tem múltiplas plantas (coluna 'plantas' JSON) e 'area' é fornecido,
+    retorna as specs da planta mais próxima daquela área (±20%).
+    """
+    import json as _json
     if not row:
         return None
-    quartos_raw = str(row.get('quartos') or '')
-    nums_q = re.findall(r'\d+', quartos_raw)
-    quartos = int(nums_q[0]) if nums_q else None
     def toint(v):
         try: return int(float(v)) if v else None
         except: return None
+
+    # Tentar usar plantas específicas quando area é fornecida
+    plantas_raw = row.get('plantas')
+    if plantas_raw and area:
+        try:
+            plantas = _json.loads(plantas_raw) if isinstance(plantas_raw, str) else plantas_raw
+            if isinstance(plantas, list) and plantas:
+                # Ordenar por distância de área em relação ao pedido
+                def dist(p):
+                    pa = p.get('area') or 0
+                    return abs(pa - area) if pa else 9999
+                melhor = min(plantas, key=dist)
+                pa = melhor.get('area') or 0
+                # Só usa a planta se estiver a ≤25% de diferença
+                if pa and abs(pa - area) / max(pa, area) <= 0.25:
+                    return {
+                        'nome':     row.get('nome'),
+                        'bairro':   row.get('bairro') or None,
+                        'area_min': toint(pa),
+                        'quartos':  toint(melhor.get('quartos')),
+                        'suites':   toint(melhor.get('suites')),
+                        'vagas':    toint(melhor.get('vagas')),
+                        'padrao':   row.get('padrao') or None,
+                        'planta':   melhor.get('descricao') or f"{pa}m²",
+                        'tipo':     melhor.get('tipo') or None,
+                    }
+        except Exception:
+            pass
+
+    # Fallback: usar specs gerais do edifício (sem plantas ou planta não encontrada)
+    quartos_raw = str(row.get('quartos') or '')
+    nums_q = re.findall(r'\d+', quartos_raw)
+    quartos = int(nums_q[0]) if nums_q else None
     return {
         'nome':     row.get('nome'),
         'bairro':   row.get('bairro') or None,
@@ -850,9 +885,12 @@ def condo_incompleto(row):
         return True
     return not (row.get('area_min') or row.get('construtora') or row.get('padrao') or row.get('andares'))
 
-def buscar_specs_condo(nome):
-    """Busca specs resumidas (area_min, quartos, vagas, bairro, padrao) de um condomínio. Ou None."""
-    return trim_specs_condo(buscar_condo_completo(nome))
+def buscar_specs_condo(nome, area=None):
+    """
+    Busca specs resumidas (area_min, quartos, vagas, bairro, padrao) de um condomínio. Ou None.
+    Quando 'area' é fornecido e o edifício tem plantas múltiplas, retorna specs da planta mais próxima.
+    """
+    return trim_specs_condo(buscar_condo_completo(nome), area=area)
 
 # ── Prédio/edifício vertical vs condomínio residencial horizontal (casas) ────
 #

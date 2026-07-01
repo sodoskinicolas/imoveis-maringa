@@ -1361,9 +1361,16 @@ function ehVizinho(demRegiao, imBairro){{
   }});
 }}
 
+function _normEdif(s){{
+  // Normaliza nome de edifício para comparação: lowercase, sem espaços/pontuação
+  return (s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+}}
+
 function matchImoveis(dm){{
   var excl=['Vendido','Removido','Cancelado','Descartado'];
   var demBairroCanon=dm.regiao?canonicBairro(dm.regiao):null;
+  // Normaliza edifício da demanda para match fuzzy (NEST635 == NEST 635)
+  var demEdifNorm=_normEdif(dm.edificio||dm.condominio||'');
   var scored=[];
   IMOVEIS.forEach(function(im){{
     if(excl.indexOf(im.status)!==-1) return;
@@ -1373,13 +1380,26 @@ function matchImoveis(dm){{
       var mesmoBairro=!!(imBC&&(imBC.toLowerCase().indexOf(demBairroCanon.toLowerCase())!==-1||demBairroCanon.toLowerCase().indexOf(imBC.toLowerCase())!==-1));
       if(!mesmoBairro&&!ehVizinho(dm.regiao,im.bairro||'')) return;
     }}
+    // Filtro hard: quando há edifício na demanda, só mostrar imóveis do mesmo edifício
+    var edificioOk=true;
+    if(demEdifNorm){{
+      var imEdifNorm=_normEdif(im.edificio||im.condominio||im.nome||'');
+      var mesmoEdif=!!(imEdifNorm&&(imEdifNorm.indexOf(demEdifNorm)!==-1||demEdifNorm.indexOf(imEdifNorm)!==-1));
+      if(!mesmoEdif) return;  // descarta hard: pediu edifício específico
+      edificioOk=true;
+    }}
     var score=0,total=0;
     var tipoOk=true;
-    // tipo
+    // edificio — quando coincide, conta como ponto bônus (já filtrado hard acima)
+    if(demEdifNorm){{total++;score++;}}  // se chegou até aqui, edificio coincide
+    // tipo — 'Imóvel' é wildcard (aceita qualquer tipo sem penalizar)
     if(dm.tipo){{
-      total++;
-      var dt=dm.tipo.toLowerCase(),it=(im.tipo||'').toLowerCase();
-      if(it&&(it.indexOf(dt)!==-1||dt.indexOf(it)!==-1)){{score++;}}else{{tipoOk=false;}}
+      var dt=dm.tipo.toLowerCase();
+      if(dt!=='imóvel'&&dt!=='imovel'){{
+        total++;
+        var it=(im.tipo||'').toLowerCase();
+        if(it&&(it.indexOf(dt)!==-1||dt.indexOf(it)!==-1)){{score++;}}else{{tipoOk=false;}}
+      }}
     }}
     // quartos
     if(dm.quartos){{total++;if(im.quartos&&im.quartos>=dm.quartos)score++;}}
@@ -1418,8 +1438,8 @@ function matchImoveis(dm){{
   var near=scored.filter(function(e){{
     if(e.score!==e.total-1||e.total<=1) return false;
     if(exactSet[e.im.obs||e.im.id]) return false;
-    // tipo deve sempre coincidir no "quase lá"
-    if(dm.tipo&&!e.tipoOk) return false;
+    // tipo deve sempre coincidir no "quase lá" (exceto wildcard 'Imóvel')
+    if(dm.tipo&&dm.tipo.toLowerCase()!=='imóvel'&&dm.tipo.toLowerCase()!=='imovel'&&!e.tipoOk) return false;
     // preço deve estar dentro de ±20% do orçamento
     if(dm.orcamento&&!e.precoOk&&!e.precoDentro20) return false;
     // região: se o critério falhou, só aceitar bairro vizinho (não qualquer lugar)

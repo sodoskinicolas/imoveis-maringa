@@ -323,11 +323,12 @@ def verificar_demandas(conn):
                 print(f"    [demandas #{rid}] edificio dedup com condominio → limpo")
 
         # ⑦ Completar specs da demanda a partir do banco de condomínios
-        #    Quando edificio ou condomínio é conhecido mas campos-chave estão vazios
+        #    Quando edificio ou condomínio é conhecido mas campos-chave estão vazios.
+        #    Passa area_min para selecionar a planta correta em edifícios multi-planta.
         local_nome = e_final or c_final
         if local_nome and (not area_min or not bairro or not quartos):
             try:
-                specs = pm.buscar_specs_condo(local_nome)
+                specs = pm.buscar_specs_condo(local_nome, area=area_min)
                 if specs:
                     if not bairro and specs.get('bairro'):
                         fixes['bairro_regiao'] = specs['bairro']
@@ -345,6 +346,12 @@ def verificar_demandas(conn):
                         fixes['vagas'] = specs['vagas']
                         if VERBOSE:
                             print(f"    [demandas #{rid}] vagas de '{local_nome}': {specs['vagas']}")
+                    # ⑦b Se tipo_buscado é genérico ('Imóvel') e a planta tem tipo, corrigir
+                    tipo_atual = fixes.get('tipo_buscado', tipo)
+                    if (not tipo_atual or tipo_atual == 'Imóvel') and specs.get('tipo'):
+                        fixes['tipo_buscado'] = specs['tipo']
+                        if VERBOSE:
+                            print(f"    [demandas #{rid}] tipo de '{local_nome}': {specs['tipo']!r}")
             except Exception as ex:
                 if VERBOSE:
                     print(f"    [demandas #{rid}] ⚠️  buscar specs '{local_nome}': {ex}")

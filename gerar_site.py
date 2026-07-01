@@ -140,7 +140,53 @@ def carregar_imoveis():
             "data_publicacao": r.get("data_publicacao") or "",
             "link":            link,
             "fonte":           fonte,
+            "sem_excl":        False,  # preenchido abaixo
         })
+
+    # ── Detectar imóveis sem exclusividade ───────────────────────────────────
+    # Um imóvel é "sem exclusividade" quando o mesmo imóvel aparece em 2+
+    # fontes distintas (ex: VivaReal + massaruimoveis.com.br).
+    from collections import defaultdict
+
+    def _ab(a):
+        return round(a / 5) * 5 if a else None  # bucket de 5m²
+
+    fontes_por_chave = defaultdict(set)
+    idxs_por_chave   = defaultdict(list)
+
+    for idx, im in enumerate(rows):
+        fonte_im = im.get("fonte") or ""
+        if not fonte_im:
+            continue  # grupos WA não participam da detecção
+        edif = (im.get("edificio") or im.get("condominio") or "").strip().lower()
+        bairro_im = (im.get("bairro") or "").strip().lower()
+        preco_im  = im.get("preco")
+        ab        = _ab(im.get("area"))
+
+        chaves = []
+        if edif and len(edif) > 3:
+            if ab:
+                chaves.append(("E_A", edif, ab))
+            if preco_im:
+                chaves.append(("E_P", edif, preco_im))
+        if bairro_im and preco_im:
+            chaves.append(("B_P", bairro_im, preco_im))
+        if bairro_im and im.get("quartos") and ab:
+            chaves.append(("B_Q_A", bairro_im, im.get("quartos"), ab))
+
+        for chave in chaves:
+            fontes_por_chave[chave].add(fonte_im)
+            idxs_por_chave[chave].append(idx)
+
+    excl_idxs = set()
+    for chave, fontes_set in fontes_por_chave.items():
+        if len(fontes_set) >= 2:
+            for idx in idxs_por_chave[chave]:
+                excl_idxs.add(idx)
+
+    for idx in excl_idxs:
+        rows[idx]["sem_excl"] = True
+
     return rows
 
 
@@ -300,6 +346,32 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .card-vr:hover{{border-color:#f5c166}}
 .chip-vr{{background:#fff3e0;color:#a06000;font-weight:600}}
 
+/* Sem exclusividade */
+.chip-sem-excl{{background:#fff0e8;color:#c05c00;font-weight:700;border:1px solid #f7c89a}}
+.card-sem-excl{{border-left:3px solid #e07020}}
+
+/* Agrupamento por edifício */
+.grupo-header{{grid-column:1/-1;margin:20px 0 4px;padding:10px 14px;background:#f7f6f3;border-radius:8px;font-size:13px;font-weight:700;color:#444;display:flex;align-items:center;justify-content:space-between}}
+.grupo-header-cnt{{font-size:12px;font-weight:500;color:#999;margin-left:8px}}
+
+/* Bairros panel */
+.bairros-search{{max-width:400px;width:100%;padding:12px 14px 12px 42px;border:1.5px solid #e0e0db;border-radius:10px;font-size:15px;background:#f7f7f5;outline:none;transition:border-color .15s}}
+.bairros-search:focus{{border-color:#111;background:#fff}}
+.bairros-list{{display:flex;flex-direction:column;gap:6px;max-width:800px}}
+.bairro-row{{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#fff;border:1.5px solid #e8e8e4;border-radius:10px;cursor:pointer;transition:box-shadow .15s,border-color .15s}}
+.bairro-row:hover{{box-shadow:0 2px 12px rgba(0,0,0,.07);border-color:#c5c5bf}}
+.bairro-name{{font-size:15px;font-weight:600;color:#111}}
+.bairro-badges{{display:flex;gap:6px;align-items:center}}
+.bairro-badge-i{{background:#e8f4fd;color:#1a6fb5;font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px}}
+.bairro-badge-d{{background:#f0eafb;color:#6b21a8;font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px}}
+.bairros-breadcrumb{{font-size:13px;color:#888;margin-bottom:16px;display:flex;align-items:center;gap:6px}}
+.bairros-breadcrumb a{{color:#111;font-weight:600;cursor:pointer;text-decoration:none}}
+.bairros-breadcrumb a:hover{{text-decoration:underline}}
+.edif-row{{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#faf9f7;border:1.5px solid #e8e8e4;border-radius:9px;cursor:pointer;transition:background .15s,border-color .15s}}
+.edif-row:hover{{background:#f0eeeb;border-color:#c5c5bf}}
+.edif-name{{font-size:14px;font-weight:600;color:#333}}
+.bairros-imoveis-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;margin-top:12px}}
+
 /* Card — demandas (borda roxa) */
 .card-dem{{border-color:#e4d8f5}}
 .card-dem:hover{{border-color:#c4a9e8}}
@@ -443,6 +515,9 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   <div class="tab" onclick="mudarAba('match',this);renderMatch()">
     🎯 Match <span class="tab-badge" id="badge-match">—</span>
   </div>
+  <div class="tab" onclick="mudarAba('bairros',this);initBairros()">
+    🏘️ Bairros
+  </div>
 </nav>
 
 <!-- ═══ PAINEL IMÓVEIS ═══ -->
@@ -515,6 +590,11 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
         <option value="180">Últimos 6 meses</option>
         <option value="365">Último ano</option>
       </select>
+      <select class="fsel" id="excl-i">
+        <option value="">Exclusividade</option>
+        <option value="sem">Sem exclusividade</option>
+        <option value="com">Com exclusividade</option>
+      </select>
       <div class="filter-sep"></div>
       <button class="btn-clear" onclick="resetarI()">Limpar</button>
     </div>
@@ -527,6 +607,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
         <div class="view-toggle">
           <button class="btn-view active" id="btn-cards-i" onclick="setViewI('cards')">⊞ Cards</button>
           <button class="btn-view" id="btn-lista-i" onclick="setViewI('lista')">☰ Lista</button>
+          <button class="btn-view" id="btn-edif-i" onclick="setViewI('edificio')">🏢 Edifício</button>
         </div>
         <select class="sort-sel" id="ord-i" onchange="aplicarI()">
           <option value="data_desc">Mais recentes</option>
@@ -594,6 +675,19 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   </div>
 </div>
 
+<!-- ═══ PAINEL BAIRROS ═══ -->
+<div class="panel" id="panel-bairros">
+  <div class="hero">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="busca-bairros" class="search-input" placeholder="Filtrar bairros…" autocomplete="off" oninput="filtrarBairros()">
+    </div>
+  </div>
+  <div class="content" id="content-bairros">
+    <div class="empty"><p>Carregando…</p></div>
+  </div>
+</div>
+
 <!-- ═══ PAINEL DEMANDAS ═══ -->
 <div class="panel" id="panel-demandas">
   <div class="hero">
@@ -647,11 +741,17 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   <div class="content">
     <div class="results-row">
       <span class="results-txt" id="rtxt-d"></span>
-      <select class="sort-sel" id="ord-d" onchange="aplicarD()">
-        <option value="data_desc">Mais recentes</option>
-        <option value="orc_desc">Maior orçamento</option>
-        <option value="orc_asc">Menor orçamento</option>
-      </select>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="view-toggle">
+          <button class="btn-view active" id="btn-cards-d" onclick="setViewD('cards')">⊞ Cards</button>
+          <button class="btn-view" id="btn-edif-d" onclick="setViewD('edificio')">🏢 Edifício</button>
+        </div>
+        <select class="sort-sel" id="ord-d" onchange="aplicarD()">
+          <option value="data_desc">Mais recentes</option>
+          <option value="orc_desc">Maior orçamento</option>
+          <option value="orc_asc">Menor orçamento</option>
+        </select>
+      </div>
     </div>
     <div class="grid" id="grid-d"></div>
   </div>
@@ -751,6 +851,7 @@ function cardI(im){{
   if(isNovo) chips='<span class="chip chip-novo">🆕 Novo</span>'+chips;
   if(isVR)   chips='<span class="chip chip-vr">VivaReal</span>'+chips;
   if(isJJ)   chips='<span class="chip chip-jj">JJ</span>'+chips;
+  if(im.sem_excl) chips+='<span class="chip chip-sem-excl">⚡ Sem excl.</span>';
   var linkBtn = im.link ? '<a class="btn-link" href="'+im.link+'" target="_blank">Ver ↗</a>' : '';
   // Para JJ: obs já contém apenas "Ref. XXXXX" — exibe direto no corpo
   // Para VR: mostra data de publicação
@@ -758,7 +859,7 @@ function cardI(im){{
     ? (im.data_publicacao ? 'Publicado em '+im.data_publicacao : '')
     : (im.obs || '');
   var imIdx = IMOVEIS.indexOf(im);
-  var cardCls = isJJ ? ' card-jj' : isVR ? ' card-vr' : isNovo ? ' card-novo' : '';
+  var cardCls = (im.sem_excl ? ' card-sem-excl' : '') + (isJJ ? ' card-jj' : isVR ? ' card-vr' : isNovo ? ' card-novo' : '');
   // Seção expandida com specs completos e botões
   var ceSpecs=[];
   if(im.area)      ceSpecs.push(im.area+' m²');
@@ -805,6 +906,7 @@ function filtrarI(){{
   var fn  = document.getElementById('fonte-i').value;
   var st  = document.getElementById('status-i').value;
   var dp  = parseInt(document.getElementById('datapub-i').value)||0;
+  var ex  = document.getElementById('excl-i').value;
   var hoje = new Date(); hoje.setHours(0,0,0,0);
   return IMOVEIS.filter(function(im){{
     var hay=[im.obs,im.bairro,im.corretor,im.grupo,im.tipo].join(' ').toLowerCase();
@@ -818,6 +920,8 @@ function filtrarI(){{
     if(fn==='grupos'){{if(im.fonte&&im.fonte!=='')return false;}}
     else if(fn&&im.fonte!==fn) return false;
     if(st&&im.status!==st) return false;
+    if(ex==='sem'&&!im.sem_excl) return false;
+    if(ex==='com'&&im.sem_excl) return false;
     if(dp&&im.data_publicacao){{
       var pub=new Date(im.data_publicacao); pub.setHours(0,0,0,0);
       var diff=Math.round((hoje-pub)/(1000*60*60*24));
@@ -836,21 +940,49 @@ function ordenarI(l){{
   return l;
 }}
 
+function _renderEdificioGrupos(lista, gridEl, cardFn){{
+  // Agrupa lista por edificio/condominio, renderiza com cabeçalhos
+  var grupos={{}};
+  lista.forEach(function(im){{
+    var g = im.edificio || im.condominio || im.regiao || '—';
+    if(!grupos[g]) grupos[g]=[];
+    grupos[g].push(im);
+  }});
+  var keys = Object.keys(grupos).sort(function(a,b){{
+    if(a==='—') return 1; if(b==='—') return -1;
+    return a.localeCompare(b,'pt-BR');
+  }});
+  var html='';
+  keys.forEach(function(g){{
+    var items=grupos[g];
+    html+='<div class="grupo-header">'+g+'<span class="grupo-header-cnt">'+items.length+(items.length===1?' imóvel':' imóveis')+'</span></div>';
+    html+=items.map(cardFn).join('');
+  }});
+  gridEl.className='grid';
+  gridEl.innerHTML=html||'<div class="empty"><p>Nenhum resultado.</p></div>';
+}}
+
 function aplicarI(){{
   var lista=ordenarI(filtrarI());
-  ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i'].forEach(selActive);
+  ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i','excl-i'].forEach(selActive);
   var cp=lista.filter(function(i){{return i.preco;}});
   var med=cp.length?Math.round(cp.reduce(function(s,i){{return s+i.preco;}},0)/cp.length):0;
   var novos=lista.filter(function(i){{return i.status==='Novo';}}).length;
+  var semExcl=lista.filter(function(i){{return i.sem_excl;}}).length;
   document.getElementById('stats-i').innerHTML=
     '<div class="stat"><strong>'+lista.length+'</strong> imóveis</div>'+
     '<div class="stat"><strong>'+novos+'</strong> novos</div>'+
+    (semExcl?'<div class="stat"><strong>'+semExcl+'</strong> ⚡ sem excl.</div>':'')+
     (med?'<div class="stat"><strong>'+fmtP(med)+'</strong> preço médio</div>':'');
   document.getElementById('rtxt-i').textContent=lista.length+' de '+IMOVEIS.length;
   var grid=document.getElementById('grid-i');
-  grid.className=(_viewI==='lista')?'grid list-view':'grid';
-  grid.innerHTML=lista.length?lista.map(cardI).join(''):
-    '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhum imóvel encontrado.</p></div>';
+  if(_viewI==='edificio'){{
+    _renderEdificioGrupos(lista, grid, cardI);
+  }} else {{
+    grid.className=(_viewI==='lista')?'grid list-view':'grid';
+    grid.innerHTML=lista.length?lista.map(cardI).join(''):
+      '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhum imóvel encontrado.</p></div>';
+  }}
 }}
 
 var _viewI='cards';
@@ -858,6 +990,7 @@ function setViewI(v){{
   _viewI=v;
   document.getElementById('btn-cards-i').className='btn-view'+(v==='cards'?' active':'');
   document.getElementById('btn-lista-i').className='btn-view'+(v==='lista'?' active':'');
+  document.getElementById('btn-edif-i').className='btn-view'+(v==='edificio'?' active':'');
   aplicarI();
 }}
 function toggleExpand(el){{
@@ -866,7 +999,7 @@ function toggleExpand(el){{
 
 function resetarI(){{
   document.getElementById('busca-i').value='';
-  ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i'].forEach(function(id){{document.getElementById(id).value='';}});
+  ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i','excl-i'].forEach(function(id){{document.getElementById(id).value='';}});
   aplicarI();
 }}
 
@@ -880,7 +1013,7 @@ function resetarI(){{
   }});
 }})();
 
-['busca-i','bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i'].forEach(function(id){{
+['busca-i','bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i','excl-i'].forEach(function(id){{
   document.getElementById(id).addEventListener('input',aplicarI);
 }});
 
@@ -1022,6 +1155,14 @@ function ordenarD(l){{
   return l;
 }}
 
+var _viewD='cards';
+function setViewD(v){{
+  _viewD=v;
+  document.getElementById('btn-cards-d').className='btn-view'+(v==='cards'?' active':'');
+  document.getElementById('btn-edif-d').className='btn-view'+(v==='edificio'?' active':'');
+  aplicarD();
+}}
+
 function aplicarD(){{
   var lista=ordenarD(filtrarD());
   ['tipo-d','regiao-d','quartos-d','vagas-d','area-d','orc-d','status-d'].forEach(selActive);
@@ -1035,8 +1176,14 @@ function aplicarD(){{
     (urgentes?'<div class="stat"><strong>'+urgentes+'</strong> 🔥 urgentes</div>':'')+
     (med?'<div class="stat"><strong>'+fmtP(med)+'</strong> orçamento médio</div>':'');
   document.getElementById('rtxt-d').textContent=lista.length+' de '+DEMANDAS.length;
-  document.getElementById('grid-d').innerHTML=lista.length?lista.map(cardD).join(''):
-    '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhuma demanda encontrada.</p></div>';
+  var gridD=document.getElementById('grid-d');
+  if(_viewD==='edificio'){{
+    _renderEdificioGrupos(lista, gridD, cardD);
+  }} else {{
+    gridD.className='grid';
+    gridD.innerHTML=lista.length?lista.map(cardD).join(''):
+      '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhuma demanda encontrada.</p></div>';
+  }}
 }}
 
 function resetarD(){{
@@ -1065,6 +1212,126 @@ function resetarD(){{
 ['busca-d','tipo-d','regiao-d','quartos-d','vagas-d','area-d','orc-d','status-d'].forEach(function(id){{
   document.getElementById(id).addEventListener('input',aplicarD);
 }});
+
+/* ════ BAIRROS ════ */
+var _bairrosInited=false;
+var _bairroAtual=null;
+var _edificioAtual=null;
+
+function initBairros(){{
+  if(_bairrosInited) return;
+  _bairrosInited=true;
+  renderBairrosList();
+}}
+
+function filtrarBairros(){{
+  renderBairrosList();
+}}
+
+function _buildIndex(){{
+  // bairros → edificios → {{imoveis:[], demandas:[]}}
+  var idx={{}};
+  function addIm(bairro, edif, im){{
+    if(!bairro) bairro='Sem bairro';
+    if(!edif) edif='—';
+    if(!idx[bairro]) idx[bairro]={{}};
+    if(!idx[bairro][edif]) idx[bairro][edif]={{imoveis:[],demandas:[]}};
+    idx[bairro][edif].imoveis.push(im);
+  }}
+  function addDm(regiao, edif, dm){{
+    var bairros=(regiao||'Sem bairro').split(' · ');
+    bairros.forEach(function(b){{
+      b=b.trim()||'Sem bairro';
+      if(!edif) edif='—';
+      if(!idx[b]) idx[b]={{}};
+      if(!idx[b][edif]) idx[b][edif]={{imoveis:[],demandas:[]}};
+      idx[b][edif].demandas.push(dm);
+    }});
+  }}
+  var excl=['Vendido','Removido','Cancelado','Descartado'];
+  IMOVEIS.forEach(function(im){{
+    if(excl.indexOf(im.status)!==-1) return;
+    addIm(baseBairro(im.bairro), im.edificio||im.condominio||null, im);
+  }});
+  DEMANDAS.forEach(function(dm){{
+    if(['Fechado','Cancelado'].indexOf(dm.status)!==-1) return;
+    addDm(dm.regiao, dm.edificio||dm.condominio||null, dm);
+  }});
+  return idx;
+}}
+
+var _bairrosIdx=null;
+function getBairrosIdx(){{
+  if(!_bairrosIdx) _bairrosIdx=_buildIndex();
+  return _bairrosIdx;
+}}
+
+function renderBairrosList(){{
+  var idx=getBairrosIdx();
+  var busca=(document.getElementById('busca-bairros').value||'').toLowerCase();
+  var keys=Object.keys(idx).sort(function(a,b){{return a.localeCompare(b,'pt-BR');}});
+  if(busca) keys=keys.filter(function(b){{return b.toLowerCase().indexOf(busca)!==-1;}});
+  var html='<div class="bairros-list">';
+  keys.forEach(function(b){{
+    var edifs=idx[b];
+    var totalI=0,totalD=0;
+    Object.values(edifs).forEach(function(e){{totalI+=e.imoveis.length;totalD+=e.demandas.length;}});
+    html+='<div class="bairro-row" onclick="renderEdificiosDoBairro(\''+b.replace(/'/g,"\\'")+'\')">';
+    html+='<div class="bairro-name">'+b+'</div>';
+    html+='<div class="bairro-badges">';
+    if(totalI) html+='<span class="bairro-badge-i">'+totalI+' imóveis</span>';
+    if(totalD) html+='<span class="bairro-badge-d">'+totalD+' dem.</span>';
+    html+='</div></div>';
+  }});
+  html+='</div>';
+  document.getElementById('content-bairros').innerHTML=html;
+}}
+
+function renderEdificiosDoBairro(bairro){{
+  _bairroAtual=bairro;
+  var idx=getBairrosIdx();
+  var edifs=idx[bairro]||{{}};
+  var keys=Object.keys(edifs).sort(function(a,b){{
+    if(a==='—') return 1; if(b==='—') return -1;
+    return a.localeCompare(b,'pt-BR');
+  }});
+  var html='<div class="bairros-breadcrumb"><a onclick="renderBairrosList()">🏘️ Bairros</a> › <strong>'+bairro+'</strong></div>';
+  html+='<div class="bairros-list">';
+  keys.forEach(function(e){{
+    var data=edifs[e];
+    var ni=data.imoveis.length, nd=data.demandas.length;
+    html+='<div class="edif-row" onclick="renderImoveisDoEdificio(\''+bairro.replace(/'/g,"\\'")+'\',' + '\''+e.replace(/'/g,"\\'")+'\')">';
+    html+='<div class="edif-name">'+(e==='—'?'<span style="color:#bbb">Sem edifício específico</span>':e)+'</div>';
+    html+='<div class="bairro-badges">';
+    if(ni) html+='<span class="bairro-badge-i">'+ni+'</span>';
+    if(nd) html+='<span class="bairro-badge-d">'+nd+' dem.</span>';
+    html+='</div></div>';
+  }});
+  html+='</div>';
+  document.getElementById('content-bairros').innerHTML=html;
+}}
+
+function renderImoveisDoEdificio(bairro, edif){{
+  var idx=getBairrosIdx();
+  var data=(idx[bairro]||{{}})[edif]||{{imoveis:[],demandas:[]}};
+  var html='<div class="bairros-breadcrumb">'
+    +'<a onclick="renderBairrosList()">🏘️ Bairros</a> › '
+    +'<a onclick="renderEdificiosDoBairro(\''+bairro.replace(/'/g,"\\'")+'\'">'+bairro+'</a> › '
+    +'<strong>'+(edif==='—'?'Sem edifício específico':edif)+'</strong>'
+    +'</div>';
+  if(data.imoveis.length){{
+    html+='<div style="font-size:13px;font-weight:700;color:#888;margin:16px 0 8px;letter-spacing:.5px">IMÓVEIS À VENDA ('+data.imoveis.length+')</div>';
+    html+='<div class="bairros-imoveis-grid">'+data.imoveis.map(cardI).join('')+'</div>';
+  }}
+  if(data.demandas.length){{
+    html+='<div style="font-size:13px;font-weight:700;color:#9c72c8;margin:24px 0 8px;letter-spacing:.5px">DEMANDAS ('+data.demandas.length+')</div>';
+    html+='<div class="bairros-imoveis-grid">'+data.demandas.map(cardD).join('')+'</div>';
+  }}
+  if(!data.imoveis.length&&!data.demandas.length){{
+    html+='<div class="empty"><p>Nenhum resultado.</p></div>';
+  }}
+  document.getElementById('content-bairros').innerHTML=html;
+}}
 
 /* ════ MATCH ════ */
 var VIZINHOS={{"Zona 01":["Zona 07"],"Zona 07":["Jardim Alvorada","Vila Morangueira","Zona 01"],"Zona 08":["Jardim Aclimação","Vila Marumby","Vila Morangueira"],"Parque das Bandeiras":["Jardim Alvorada","Jardim Copacabana","Jardim Diamante","Jardim Dias I","Jardim Paris","Parque Palmeiras","Parque das Laranjeiras"],"Parque das Laranjeiras":["Jardim Copacabana","Jardim Diamante","Jardim Dias I","Parque Palmeiras","Parque das Bandeiras"],"Parque Palmeiras":["Jardim Copacabana","Jardim Diamante","Jardim Dias I","Jardim Monte Rei","Jardim Paris","Parque das Bandeiras","Parque das Laranjeiras"],"Jardim Copacabana":["Jardim Diamante","Jardim Dias I","Jardim Monte Rei","Jardim Paris","Parque Palmeiras","Parque das Bandeiras","Parque das Laranjeiras"],"Jardim Diamante":["Jardim Copacabana","Jardim Dias I","Jardim Monte Rei","Jardim Paris","Jardim Rebouças","Parque Palmeiras","Parque das Bandeiras","Parque das Laranjeiras"],"Jardim Dias I":["Jardim Copacabana","Jardim Diamante","Parque Palmeiras","Parque das Bandeiras","Parque das Laranjeiras"],"Jardim Paris":["Jardim Copacabana","Jardim Diamante","Jardim Guairacá","Jardim Monte Rei","Jardim Rebouças","Jardim Tropical","Parque Palmeiras","Parque das Bandeiras","Parque das Laranjeiras"],"Jardim Monte Rei":["Jardim Copacabana","Jardim Diamante","Jardim Guairacá","Jardim Paris","Jardim Rebouças","Parque Palmeiras"],"Jardim Rebouças":["Jardim Diamante","Jardim Guairacá","Jardim Monte Rei","Jardim Paris","Jardim Tropical"],"Jardim Guairacá":["Jardim Monte Rei","Jardim Paris","Jardim Rebouças","Jardim Tropical","Parque Hortência"],"Cidade Universitária":["Jardim Aurora","Jardim Olímpico","Jardim Tropical","Jardim do Carmo","Parque Hortência"],"Parque Hortência":["Cidade Universitária","Jardim Aurora","Jardim Guairacá","Jardim Olímpico","Jardim Tropical","Jardim do Carmo"],"Jardim do Carmo":["Cidade Universitária","Jardim Aurora","Jardim Olímpico","Jardim Tropical","Parque Hortência"],"Jardim Olímpico":["Cidade Universitária","Jardim Aurora","Jardim Tropical","Jardim do Carmo","Parque Hortência"],"Jardim Aurora":["Cidade Universitária","Jardim Olímpico","Jardim do Carmo","Parque Hortência"],"Jardim Tropical":["Cidade Universitária","Jardim Guairacá","Jardim Olímpico","Jardim Paris","Jardim Rebouças","Jardim do Carmo","Parque Hortência"],"Jardim Alvorada":["Jardim Oásis","Parque das Bandeiras","Vila Morangueira","Zona 07"],"Vila Morangueira":["Jardim Alvorada","Jardim Oásis","Jardim Pinheiros","Jardim da Glória","Zona 07","Zona 08"],"Jardim Oásis":["Jardim Alvorada","Jardim Pinheiros","Jardim da Glória","Vila Morangueira"],"Jardim Pinheiros":["Jardim Oásis","Jardim da Glória","Vila Morangueira"],"Jardim da Glória":["Jardim Oásis","Jardim Pinheiros","Vila Morangueira"],"Vila Marumby":["Jardim Aclimação","Jardim Catedral","Jardim Higienópolis","Jardim Ipanema","Jardim Leblon","Jardim Universo","Parque Tarumã","Zona 08"],"Jardim Aclimação":["Jardim Catedral","Jardim Ipanema","Jardim Leblon","Vila Marumby","Zona 08"],"Jardim Catedral":["Jardim Aclimação","Jardim Ipanema","Jardim Leblon","Parque Tarumã","Vila Marumby"],"Jardim Leblon":["Jardim Aclimação","Jardim Catedral","Jardim Ipanema","Parque Tarumã","Vila Marumby"],"Jardim Ipanema":["Jardim Aclimação","Jardim Catedral","Jardim Higienópolis","Jardim Leblon","Jardim Universo","Parque Tarumã","Vila Marumby"],"Parque Tarumã":["Jardim Catedral","Jardim Ipanema","Jardim Leblon","Jardim Universo","Vila Marumby"],"Jardim Higienópolis":["Jardim Espanha","Jardim Iguaçu","Jardim Ipanema","Jardim Universo","Vila Marumby"],"Jardim Universo":["Jardim Espanha","Jardim Higienópolis","Jardim Iguaçu","Jardim Ipanema","Parque Tarumã","Vila Marumby"],"Jardim Iguaçu":["Jardim Espanha","Jardim Europa","Jardim Higienópolis","Jardim Universo"],"Jardim Espanha":["Jardim Barcelona","Jardim Europa","Jardim Higienópolis","Jardim Iguaçu","Jardim Universo"],"Jardim Europa":["Jardim Barcelona","Jardim Espanha","Jardim Iguaçu","Parque Industrial"],"Jardim Barcelona":["Jardim Espanha","Jardim Europa","Parque Industrial"],"Parque Industrial":["Jardim Barcelona","Jardim Europa"]}};

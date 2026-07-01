@@ -496,18 +496,30 @@ def listar_demandas(conn):
     return [dict(r) for r in rows]
 
 def buscar_specs_condo(conn, nome):
-    """Busca specs de condomínio pelo nome (match parcial)."""
+    """
+    Busca specs de condomínio pelo nome (match parcial).
+    Quando há múltiplos matches, prefere o que tem mais dados preenchidos
+    (area_min, construtora, padrao, andares, bairro) — evita retornar
+    registros importados em bloco sem dados reais.
+    """
     if not nome:
         return None
     nome_low = nome.strip().lower()
     rows = conn.execute("SELECT * FROM condominios").fetchall()
+    candidatos = []
     for r in rows:
         n = (r["nome"] or "").strip().lower()
         if not n:
             continue
         if nome_low in n or n in nome_low:
-            return dict(r)
-    return None
+            # Score: quantos campos de dados estão preenchidos
+            score = sum(1 for col in ("area_min", "construtora", "padrao", "andares", "bairro", "quartos")
+                        if r[col])
+            candidatos.append((score, dict(r)))
+    if not candidatos:
+        return None
+    # Retorna o candidato com mais dados; em empate, o mais específico (nome mais curto = match mais exato)
+    return max(candidatos, key=lambda x: (x[0], -len(x[1].get("nome") or "")))[1]
 
 def listar_condominios_nomes(conn):
     """Retorna lista de nomes de condomínios cadastrados."""

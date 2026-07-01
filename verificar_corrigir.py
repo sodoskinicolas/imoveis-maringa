@@ -250,13 +250,14 @@ def verificar_imoveis(conn):
 def verificar_demandas(conn):
     cur = conn.cursor()
     rows = cur.execute(
-        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio, condominio, contato FROM demandas"
+        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio, condominio, contato, "
+        "area_min, quartos, vagas FROM demandas"
     ).fetchall()
 
     corrigidos = 0
     alertas    = []
 
-    for rid, tipo, bairro, orc, obs, edificio_atual, condominio_atual, contato in rows:
+    for rid, tipo, bairro, orc, obs, edificio_atual, condominio_atual, contato, area_min, quartos, vagas in rows:
         fixes = {}
 
         # ① Limpar markdown WhatsApp no obs
@@ -317,8 +318,36 @@ def verificar_demandas(conn):
         c_final = fixes.get('condominio', condominio_atual)
         if e_final and c_final and str(e_final).lower() == str(c_final).lower():
             fixes['edificio'] = None
+            e_final = None
             if VERBOSE:
                 print(f"    [demandas #{rid}] edificio dedup com condominio → limpo")
+
+        # ⑦ Completar specs da demanda a partir do banco de condomínios
+        #    Quando edificio ou condomínio é conhecido mas campos-chave estão vazios
+        local_nome = e_final or c_final
+        if local_nome and (not area_min or not bairro or not quartos):
+            try:
+                specs = pm.buscar_specs_condo(local_nome)
+                if specs:
+                    if not bairro and specs.get('bairro'):
+                        fixes['bairro_regiao'] = specs['bairro']
+                        if VERBOSE:
+                            print(f"    [demandas #{rid}] bairro de '{local_nome}': {specs['bairro']!r}")
+                    if not area_min and specs.get('area_min'):
+                        fixes['area_min'] = specs['area_min']
+                        if VERBOSE:
+                            print(f"    [demandas #{rid}] area_min de '{local_nome}': {specs['area_min']}")
+                    if not quartos and specs.get('quartos'):
+                        fixes['quartos'] = specs['quartos']
+                        if VERBOSE:
+                            print(f"    [demandas #{rid}] quartos de '{local_nome}': {specs['quartos']}")
+                    if not vagas and specs.get('vagas'):
+                        fixes['vagas'] = specs['vagas']
+                        if VERBOSE:
+                            print(f"    [demandas #{rid}] vagas de '{local_nome}': {specs['vagas']}")
+            except Exception as ex:
+                if VERBOSE:
+                    print(f"    [demandas #{rid}] ⚠️  buscar specs '{local_nome}': {ex}")
 
         if fixes:
             if VERBOSE:

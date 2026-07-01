@@ -36,7 +36,7 @@ def validar_tabela(conn, tabela, col_bairro="bairro", col_edificio="edificio"):
     for row in rows:
         rid = row[0]
         bairro_atual = (row[1] or '').strip()
-        edificio = (row[2] if tem_edificio else '').strip() if tem_edificio else ''
+        edificio = ((row[2] or '') if tem_edificio else '').strip() if tem_edificio else ''
 
         # Pular registros onde bairro já está vazio e não há edifício — nada a fazer
         if not bairro_atual and not edificio:

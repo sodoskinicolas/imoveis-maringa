@@ -10,6 +10,11 @@ Correções automáticas:
   ③ Normaliza tipo para valores padronizados (Apartamento, Casa, etc.)
   ④ Limpa bairro/bairro_regiao que contenha texto de IA ou seja inválido
   ⑤ Revalida bairro contra lista oficial de Maringá (326 bairros)
+  ⑥ Extrai/verifica edificio nos cards de imóveis e demandas:
+       - Popula edificio vazio quando obs menciona um prédio
+       - Limpa edificio com endereço embutido (Rua, Av., nº)
+       - Limpa edificio que é palavra genérica ou texto de IA
+       - Corrige capitalização contra banco de condomínios
 
 Uso:
     python3 verificar_corrigir.py           # corrige no banco
@@ -89,8 +94,48 @@ def _preco_invalido(preco):
     limpo = re.sub(r'[r$\s.,]', '', str(preco).lower())
     return bool(limpo) and not limpo.isdigit()
 
-# ── Verificação de edificio em demandas (somente log) ─────────────────────────
-def _checar_edificio(obs):
+# ── Validação de edificio ─────────────────────────────────────────────────────
+_RE_ENDERECO = re.compile(
+    r'\b(rua|av\.|avenida|travessa|alameda|estrada|rod\.|rodovia|n[oº°]\.?\s*\d)',
+    re.IGNORECASE
+)
+# Palavras que aparecem em frases mas nunca em nomes de prédio
+_PALAVRAS_FRASE = {
+    'ou', 'ok', 'ser', 'não', 'nao', 'sim', 'mas', 'até', 'ate',
+    'deixar', 'locado', 'locados', 'financiamento', 'documentação',
+    'documentacao', 'mobiliado', 'mobiliada', 'semi', 'reformado',
+    'aceita', 'aceito', 'pretende', 'térreo', 'terreo',
+}
+
+def _edificio_invalido(edificio):
+    """
+    Retorna motivo de invalidade (str) ou None se parece OK.
+    Inválido quando:
+    - Contém padrão de endereço (Rua X, Av. Y, nº 123)
+    - Tem mais de 50 chars (frases longas, não nome de prédio)
+    - Contém palavra típica de frase ("ou", "ok", "aceita", etc.)
+    - Primeira palavra é genérica (blocklist de processar_mensagens)
+    - Parece texto de IA
+    """
+    if not edificio:
+        return None
+    e = edificio.strip()
+    if _RE_ENDERECO.search(e):
+        return "contém endereço"
+    if len(e) > 50:
+        return "muito longo"
+    if _parece_ia(e):
+        return "parece texto de IA"
+    palavras = e.lower().split()
+    # Qualquer palavra de frase no meio do valor → é uma frase, não nome de prédio
+    if any(p in _PALAVRAS_FRASE for p in palavras):
+        return f"contém palavra de frase ({next(p for p in palavras if p in _PALAVRAS_FRASE)!r})"
+    # Primeira palavra no blocklist genérico de processar_mensagens
+    if palavras and palavras[0] in pm._EDIFICIO_GENERICO:
+        return f"palavra genérica ({palavras[0]!r})"
+    return None
+
+def _extrair_edificio_seguro(obs):
     try:
         return pm.extrair_edificio(obs) if obs else None
     except Exception:
@@ -100,42 +145,60 @@ def _checar_edificio(obs):
 
 def verificar_imoveis(conn):
     cur = conn.cursor()
+    # Inclui edificio na query (coluna pode não existir em bancos antigos — já migrado acima)
     rows = cur.execute(
-        "SELECT id, tipo, bairro, preco, observacoes FROM imoveis"
+        "SELECT id, tipo, bairro, preco, observacoes, edificio FROM imoveis"
     ).fetchall()
 
     corrigidos = 0
     alertas    = []
 
-    for rid, tipo, bairro, preco, obs in rows:
+    for rid, tipo, bairro, preco, obs, edificio_atual in rows:
         fixes = {}
 
         # ① Limpar markdown WhatsApp no obs
         obs_limpo = pm.limpar_obs(obs or '')
         if obs_limpo != (obs or ''):
             fixes['observacoes'] = obs_limpo
-            if VERBOSE:
-                print(f"    [#{rid}] obs: removeu markdown")
 
         # ② Bairro com texto de IA → apaga
         if _parece_ia(bairro or ''):
             fixes['bairro'] = ''
-            alertas.append(f"  ⚠️  [imoveis #{rid}] bairro parecia IA → apagado: {(bairro or '')[:60]!r}")
+            alertas.append(f"  ⚠️  [imoveis #{rid}] bairro parecia IA → apagado")
 
         # ③ Normalizar tipo
         tipo_novo = _normalizar_tipo(tipo or '', obs_limpo)
         if tipo_novo != (tipo or ''):
             fixes['tipo'] = tipo_novo
-            if VERBOSE:
-                print(f"    [#{rid}] tipo: {tipo!r} → {tipo_novo!r}")
 
-        # ④ Preço inválido → só alerta, não apaga (pode ser "consulte")
+        # ④ Preço inválido → só alerta
         if _preco_invalido(preco):
             alertas.append(f"  ⚠️  [imoveis #{rid}] preço suspeito: {preco!r}")
 
+        # ⑥ Verificar/popular edificio
+        motivo = _edificio_invalido(edificio_atual)
+        if motivo:
+            # Edificio atual é inválido → reextrai do obs
+            novo = _extrair_edificio_seguro(obs_limpo)
+            if novo and not _edificio_invalido(novo):
+                fixes['edificio'] = novo
+                if VERBOSE:
+                    print(f"    [imoveis #{rid}] edificio: {edificio_atual!r} ({motivo}) → {novo!r}")
+            else:
+                fixes['edificio'] = None   # melhor vazio do que errado
+                if VERBOSE:
+                    print(f"    [imoveis #{rid}] edificio: {edificio_atual!r} ({motivo}) → limpo")
+        elif not edificio_atual:
+            # Coluna vazia → tenta extrair do obs
+            novo = _extrair_edificio_seguro(obs_limpo)
+            if novo and not _edificio_invalido(novo):
+                fixes['edificio'] = novo
+                if VERBOSE:
+                    print(f"    [imoveis #{rid}] edificio: (vazio) → {novo!r}")
+
         if fixes:
             if VERBOSE:
-                print(f"  [imoveis #{rid}] corrigindo: {list(fixes.keys())}")
+                print(f"  [imoveis #{rid}] fixes: {list(fixes.keys())}")
             if not DRY_RUN:
                 set_clause = ', '.join(f"{k}=?" for k in fixes)
                 cur.execute(f"UPDATE imoveis SET {set_clause} WHERE id=?",
@@ -156,43 +219,50 @@ def verificar_imoveis(conn):
 def verificar_demandas(conn):
     cur = conn.cursor()
     rows = cur.execute(
-        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes FROM demandas"
+        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio FROM demandas"
     ).fetchall()
 
-    corrigidos   = 0
-    alertas      = []
-    sem_edificio = []
+    corrigidos = 0
+    alertas    = []
 
-    for rid, tipo, bairro, orc, obs in rows:
+    for rid, tipo, bairro, orc, obs, edificio_atual in rows:
         fixes = {}
 
         # ① Limpar markdown WhatsApp no obs
         obs_limpo = pm.limpar_obs(obs or '')
         if obs_limpo != (obs or ''):
             fixes['observacoes'] = obs_limpo
-            if VERBOSE:
-                print(f"    [#{rid}] obs: removeu markdown")
 
         # ② Bairro com texto de IA → apaga
         if _parece_ia(bairro or ''):
             fixes['bairro_regiao'] = ''
-            alertas.append(f"  ⚠️  [demandas #{rid}] bairro parecia IA → apagado: {(bairro or '')[:60]!r}")
+            alertas.append(f"  ⚠️  [demandas #{rid}] bairro parecia IA → apagado")
 
         # ③ Normalizar tipo
         tipo_novo = _normalizar_tipo(tipo or '', obs_limpo)
         if tipo_novo != (tipo or ''):
             fixes['tipo_buscado'] = tipo_novo
-            if VERBOSE:
-                print(f"    [#{rid}] tipo: {tipo!r} → {tipo_novo!r}")
 
-        # ④ Verificar se edificio seria extraído (confirma que vai aparecer no card)
-        edificio = _checar_edificio(obs_limpo)
-        if not edificio and obs_limpo and VERBOSE:
-            sem_edificio.append(f"    [demandas #{rid}] sem edificio extraído do obs")
+        # ⑥ Verificar/popular edificio
+        motivo = _edificio_invalido(edificio_atual)
+        if motivo:
+            novo = _extrair_edificio_seguro(obs_limpo)
+            if novo and not _edificio_invalido(novo):
+                fixes['edificio'] = novo
+                if VERBOSE:
+                    print(f"    [demandas #{rid}] edificio: {edificio_atual!r} ({motivo}) → {novo!r}")
+            else:
+                fixes['edificio'] = None
+        elif not edificio_atual:
+            novo = _extrair_edificio_seguro(obs_limpo)
+            if novo and not _edificio_invalido(novo):
+                fixes['edificio'] = novo
+                if VERBOSE:
+                    print(f"    [demandas #{rid}] edificio: (vazio) → {novo!r}")
 
         if fixes:
             if VERBOSE:
-                print(f"  [demandas #{rid}] corrigindo: {list(fixes.keys())}")
+                print(f"  [demandas #{rid}] fixes: {list(fixes.keys())}")
             if not DRY_RUN:
                 set_clause = ', '.join(f"{k}=?" for k in fixes)
                 cur.execute(f"UPDATE demandas SET {set_clause} WHERE id=?",
@@ -204,9 +274,6 @@ def verificar_demandas(conn):
 
     for a in alertas:
         print(a)
-    if VERBOSE:
-        for s in sem_edificio:
-            print(s)
     print(f"  ✅ demandas: {corrigidos} corrigido(s)"
           + (f", {len(alertas)} alerta(s)" if alertas else ""))
     return corrigidos, len(alertas)

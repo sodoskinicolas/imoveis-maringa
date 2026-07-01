@@ -102,13 +102,14 @@ def carregar_imoveis():
                 continue
             vistos.add(chave_dup)
 
-        # Edifício pré-calculado com a mesma lógica testada de processar_mensagens.py
-        # (mais confiável que reextrair no JS do site — evita pegar pedaço de frase
-        # truncada como se fosse nome de prédio, ex: "Condomínio clube com ár...")
-        try:
-            edificio = pm.extrair_edificio(obs) if obs else None
-        except Exception:
-            edificio = None
+        # Edifício: usa valor salvo no banco (verificado/corrigido pelo quality gate).
+        # Fallback para extração do obs se coluna ainda estiver vazia.
+        edificio = r.get("edificio") or None
+        if not edificio and obs:
+            try:
+                edificio = pm.extrair_edificio(obs) or None
+            except Exception:
+                edificio = None
 
         rows.append({
             "data":            data,
@@ -152,10 +153,13 @@ def carregar_demandas():
             continue
         vistos.add(chave)
         obs_d = pm.limpar_obs(r.get("observacoes") or "")
-        try:
-            edificio_d = pm.extrair_edificio(obs_d) or "" if obs_d else ""
-        except Exception:
-            edificio_d = ""
+        # Edifício: usa valor salvo pelo quality gate; fallback para extração.
+        edificio_d = r.get("edificio") or ""
+        if not edificio_d and obs_d:
+            try:
+                edificio_d = pm.extrair_edificio(obs_d) or ""
+            except Exception:
+                edificio_d = ""
         rows.append({
             "data":      data,
             "grupo":     r.get("grupo") or "",

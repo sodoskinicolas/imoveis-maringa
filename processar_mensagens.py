@@ -1063,8 +1063,12 @@ _EDIFICIO_GENERICO = {
     'pessoal', 'galera', 'turma', 'amigos', 'alguém', 'alguem', 'atenção', 'atencao',
     'disponível', 'disponivel', 'urgente', 'procuro', 'preciso', 'buscando', 'busco',
     # Verbos/saudações que iniciam frases no WhatsApp
-    'busca', 'busco', 'tenho', 'procura', 'vendo', 'alugo', 'ofereço', 'ofereço',
+    'busca', 'busco', 'tenho', 'procura', 'vendo', 'alugo', 'ofereço',
     'bom', 'boa', 'olá', 'ola', 'oi', 'prezados', 'corretor', 'corretores',
+    # Palavras que indicam estado/condição do imóvel, não nome do prédio
+    'semi', 'mobiliado', 'mobiliada', 'reformado', 'reformada',
+    'sem', 'aceita', 'aceito', 'documentação', 'documentacao',
+    'pretende', 'financiamento', 'térreo', 'terreo', 'subsolo',
     # Termos geográficos/estruturais — nunca são nome de prédio isolados
     'zona', 'setor', 'parque', 'jardim', 'conjunto', 'bairro', 'região', 'regiao',
     'andar', 'bloco', 'torre', 'predio', 'prédio',

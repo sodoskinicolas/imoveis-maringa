@@ -213,7 +213,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="topbar">
   <span class="logo">Imóveis Maringá</span>
-  <span class="topbar-meta">Atualizado 01/07/2026 12:27</span>
+  <span class="topbar-meta">Atualizado 01/07/2026 12:49</span>
 </div>
 
 <!-- Tab nav -->
@@ -389,20 +389,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <input type="text" id="busca-d" class="search-input" placeholder="Buscar por corretor, região, observações…" autocomplete="off">
     </div>
     <div class="filterbar">
+      <select class="fsel" id="tipo-d">
+        <option value="">Tipo</option>
+        <option value="Apartamento">Apartamento</option>
+        <option value="Casa">Casa</option>
+        <option value="Terreno">Terreno</option>
+        <option value="Imóvel">Imóvel</option>
+      </select>
+      <select class="fsel" id="regiao-d">
+        <option value="">Região</option>
+      </select>
       <select class="fsel" id="quartos-d">
         <option value="">Quartos</option>
-        <option value="1">1 quarto</option><option value="2">2 quartos</option>
-        <option value="3">3 quartos</option><option value="4">4+</option>
+        <option value="1">1+</option><option value="2">2+</option>
+        <option value="3">3+</option><option value="4">4+</option>
       </select>
       <select class="fsel" id="vagas-d">
         <option value="">Vagas</option>
-        <option value="1">1 vaga</option><option value="2">2 vagas</option><option value="3">3+</option>
+        <option value="1">1+</option><option value="2">2+</option><option value="3">3+</option>
+      </select>
+      <select class="fsel" id="area-d">
+        <option value="">Área mín.</option>
+        <option value="50">50 m²</option><option value="80">80 m²</option>
+        <option value="100">100 m²</option><option value="120">120 m²</option>
+        <option value="150">150 m²</option><option value="200">200 m²</option>
       </select>
       <select class="fsel" id="orc-d">
         <option value="">Orçamento até</option>
         <option value="300000">R$ 300 mil</option><option value="400000">R$ 400 mil</option>
         <option value="500000">R$ 500 mil</option><option value="700000">R$ 700 mil</option>
-        <option value="1000000">R$ 1 milhão</option><option value="2000000">R$ 2 milhões</option>
+        <option value="1000000">R$ 1 milhão</option><option value="1500000">R$ 1,5 milhão</option>
+        <option value="2000000">R$ 2 milhões</option><option value="3000000">R$ 3 milhões</option>
       </select>
       <select class="fsel" id="status-d">
         <option value="">Status</option>
@@ -762,16 +779,22 @@ function cardD(dm){
 }
 
 function filtrarD(){
-  var b  = document.getElementById('busca-d').value.toLowerCase();
-  var q  = document.getElementById('quartos-d').value;
-  var vg = document.getElementById('vagas-d').value;
-  var om = parseFloat(document.getElementById('orc-d').value)||Infinity;
-  var st = document.getElementById('status-d').value;
+  var b   = document.getElementById('busca-d').value.toLowerCase();
+  var tp  = document.getElementById('tipo-d').value;
+  var rg  = document.getElementById('regiao-d').value.toLowerCase();
+  var q   = document.getElementById('quartos-d').value;
+  var vg  = document.getElementById('vagas-d').value;
+  var am  = parseFloat(document.getElementById('area-d').value)||0;
+  var om  = parseFloat(document.getElementById('orc-d').value)||Infinity;
+  var st  = document.getElementById('status-d').value;
   return DEMANDAS.filter(function(dm){
     var hay=[dm.obs,dm.regiao,dm.corretor,dm.grupo,dm.tipo,dm.edificio,dm.condominio].join(' ').toLowerCase();
     if(b&&hay.indexOf(b)===-1) return false;
-    if(q){var n=parseInt(q);if(q==='4'){if(!dm.quartos||dm.quartos<4)return false;}else{if(dm.quartos&&dm.quartos<n)return false;}}
-    if(vg){var n2=parseInt(vg);if(vg==='3'){if(!dm.vagas||dm.vagas<3)return false;}else{if(dm.vagas&&dm.vagas<n2)return false;}}
+    if(tp&&(dm.tipo||'').toLowerCase().indexOf(tp.toLowerCase())===-1) return false;
+    if(rg){var drg=(dm.regiao||'').toLowerCase();if(drg.indexOf(rg)===-1) return false;}
+    if(q){var n=parseInt(q);if(!dm.quartos||dm.quartos<n)return false;}
+    if(vg){var n2=parseInt(vg);if(!dm.vagas||dm.vagas<n2)return false;}
+    if(am&&(!dm.area_min||dm.area_min<am)) return false;
     if(dm.orcamento&&dm.orcamento>om) return false;
     if(st&&dm.status!==st) return false;
     return true;
@@ -788,7 +811,7 @@ function ordenarD(l){
 
 function aplicarD(){
   var lista=ordenarD(filtrarD());
-  ['quartos-d','vagas-d','orc-d','status-d'].forEach(selActive);
+  ['tipo-d','regiao-d','quartos-d','vagas-d','area-d','orc-d','status-d'].forEach(selActive);
   var urgentes=lista.filter(function(d){return d.obs&&d.obs.toUpperCase().indexOf('URGENTE')!==-1;}).length;
   var novos=lista.filter(function(d){return d.status==='Novo';}).length;
   var co=lista.filter(function(d){return d.orcamento;});
@@ -805,11 +828,28 @@ function aplicarD(){
 
 function resetarD(){
   document.getElementById('busca-d').value='';
-  ['quartos-d','vagas-d','orc-d','status-d'].forEach(function(id){document.getElementById(id).value='';});
+  ['tipo-d','regiao-d','quartos-d','vagas-d','area-d','orc-d','status-d'].forEach(function(id){document.getElementById(id).value='';});
   aplicarD();
 }
 
-['busca-d','quartos-d','vagas-d','orc-d','status-d'].forEach(function(id){
+// Popular dropdown de regiões dinamicamente
+(function(){
+  var regioes={};
+  DEMANDAS.forEach(function(dm){
+    if(!dm.regiao) return;
+    // Se tem ' · ', pegar cada parte
+    dm.regiao.split(' · ').forEach(function(r){
+      r=r.trim();
+      if(r) regioes[r]=(regioes[r]||0)+1;
+    });
+  });
+  var sel=document.getElementById('regiao-d');
+  Object.keys(regioes).sort().forEach(function(r){
+    var o=document.createElement('option');o.value=r;o.textContent=r+' ('+regioes[r]+')';sel.appendChild(o);
+  });
+})();
+
+['busca-d','tipo-d','regiao-d','quartos-d','vagas-d','area-d','orc-d','status-d'].forEach(function(id){
   document.getElementById(id).addEventListener('input',aplicarD);
 });
 

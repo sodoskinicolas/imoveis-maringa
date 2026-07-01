@@ -41,7 +41,11 @@ else
     exit 0
 fi
 
-# 2. Analisar domínios novos descobertos nos links das mensagens
+# 2. Quality gate: verificar e corrigir dados antes de publicar
+log "Verificando qualidade dos dados..."
+$PYTHON verificar_corrigir.py >> "$LOG" 2>&1
+
+# 3. Analisar domínios novos descobertos nos links das mensagens
 if [ -f "novos_dominios.json" ]; then
     PENDENTES_DOM=$(python3 -c "
 import json
@@ -54,11 +58,11 @@ print(sum(1 for v in d.values() if not v.get('analisado')))
     fi
 fi
 
-# 3. Gerar site atualizado
+# 4. Gerar site atualizado
 log "Gerando site..."
 $PYTHON gerar_site.py >> "$LOG" 2>&1
 
-# 4. Fazer push para GitHub se imoveis.db mudou
+# 5. Fazer push para GitHub se imoveis.db mudou
 git add imoveis.db mensagens_fila.json Imoveis.html novos_dominios.json sites_extras.json 2>/dev/null || true
 
 if git diff --staged --quiet; then

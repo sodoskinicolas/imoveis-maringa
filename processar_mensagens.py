@@ -213,7 +213,11 @@ RE_DEMANDA = re.compile(
     r'\bsem\s+ser\b|'   # "sem ser Mrv" — exclusão de marca/construtora, só faz sentido em busca
     # Atalho comum de post de demanda: "Apartamento até 380 mil ..." (título curto,
     # sem endereço/link/"R$" — quem vende anuncia, quem procura resume o que quer)
-    r'^(?:apartamento|apto|casa|sobrado|terreno|kitnet)\s+at[ée]\s+\d',
+    r'^(?:apartamento|apto|casa|sobrado|terreno|kitnet)\s+at[ée]\s+\d|'
+    # "até 500 mil"/"até 1.300.000" SEM "R$" na frente — quem vende quase sempre
+    # escreve "R$" no preço; quem procura escreve o teto "pelado" (negative
+    # lookahead evita pegar "negociável até R$500mil" de um anúncio de venda)
+    r'\bat[ée]\s+(?!r\$)[\d.,]+\s*(?:mil\b|milh)',
     re.IGNORECASE)
 
 # "Se vc procura... achou!" = anúncio de venda, não demanda

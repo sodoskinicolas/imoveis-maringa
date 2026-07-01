@@ -406,3 +406,122 @@ UnboundLocalError: cannot access local variable 'found' where it is not associat
 2026-07-01 01:14:44,265 INFO   harakiimoveis.com.br | Casa |  |  | None | https://harakiimoveis.com.br/imovel/20001724/
 2026-07-01 01:14:44,265 INFO Raspagem concluída. Novos: 1065
 2026-07-01 01:14:44,265 INFO ============================================================
+2026-07-01 11:57:04,689 INFO ============================================================
+2026-07-01 11:57:04,690 INFO Iniciando raspagem — 2026-07-01 11:57:04
+2026-07-01 11:57:05,875 INFO [Haraki Imóveis] 5 categoria(s) encontrada(s) na home
+2026-07-01 11:57:07,405 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 11:57:09,766 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 11:57:11,995 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 11:57:14,551 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 11:57:16,770 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 11:57:19,264 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 11:57:20,963 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr?pagina=7&page=7 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 11:57:24,624 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 11:57:26,872 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 11:57:30,623 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 10 imóveis
+2026-07-01 11:57:33,928 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 8 imóveis
+2026-07-01 11:57:39,135 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 11:57:40,297 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda/terrenos/10-maringa-pr?pagina=2&page=2 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 11:57:44,781 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 11:57:52,742 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 11:57:55,052 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 11:57:57,310 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 11:57:59,683 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 6: 5 imóveis
+2026-07-01 11:58:01,194 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda/terrenos/10-maringa-pr?pagina=7&page=7 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 11:58:07,072 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 11:58:09,458 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 11:58:11,496 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 11:58:13,912 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 4: 6 imóveis
+2026-07-01 11:58:18,418 INFO [Haraki Imóveis] /chacaras/10-maringa-pr — página 1: 4 imóveis
+2026-07-01 11:58:22,175 INFO [Haraki Imóveis] /barracao/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 11:58:27,523 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 11:58:33,466 WARNING   Tentativa 2/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 11:58:42,023 WARNING   Tentativa 3/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 11:58:42,038 INFO [Haraki Imóveis] Total: 196 imóveis | {'Casa': 77, 'Sobrado': 21, 'Terreno': 55, 'Apartamento': 36, 'Chácara': 4, 'Imóvel': 3}
+2026-07-01 11:58:49,966 INFO [Massaru Imóveis] 8 categoria(s) encontrada(s) na home
+2026-07-01 11:58:50,449 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda/apartamentos → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 11:58:58,366 INFO [Massaru Imóveis] /apartamentos — página 1: 10 imóveis
+2026-07-01 11:59:02,932 INFO [Massaru Imóveis] /apartamentos — página 2: 10 imóveis
+2026-07-01 11:59:05,333 INFO [Massaru Imóveis] /apartamentos — página 3: 10 imóveis
+2026-07-01 11:59:07,826 INFO [Massaru Imóveis] /apartamentos — página 4: 10 imóveis
+2026-07-01 11:59:10,389 INFO [Massaru Imóveis] /apartamentos — página 5: 10 imóveis
+2026-07-01 11:59:12,993 INFO [Massaru Imóveis] /apartamentos — página 6: 10 imóveis
+2026-07-01 11:59:15,576 INFO [Massaru Imóveis] /apartamentos — página 7: 1 imóveis
+2026-07-01 11:59:21,735 INFO [Massaru Imóveis] /casas-ou-sobrados-em-condominios — página 1: 7 imóveis
+2026-07-01 11:59:26,765 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda/terrenos-em-condominios → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 11:59:30,986 INFO [Massaru Imóveis] /terrenos-em-condominios — página 1: 10 imóveis
+2026-07-01 11:59:33,178 INFO [Massaru Imóveis] /terrenos-em-condominios — página 2: 8 imóveis
+2026-07-01 11:59:37,598 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 11:59:40,337 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 11:59:42,995 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 11:59:46,181 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 11:59:47,446 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr?pagina=5&page=5 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 11:59:51,986 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 11:59:54,998 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 11:59:56,238 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr?pagina=7&page=7 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 12:00:00,893 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 12:00:03,914 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 12:00:06,962 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 12:00:08,119 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr?pagina=10&page=10 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 12:00:13,813 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 10 imóveis
+2026-07-01 12:00:16,739 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 11: 10 imóveis
+2026-07-01 12:00:19,489 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 12: 10 imóveis
+2026-07-01 12:00:22,410 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 13: 3 imóveis
+2026-07-01 12:00:27,135 INFO [Massaru Imóveis] /apartamentos/10-maringa-pr — página 1: 0 imóveis
+2026-07-01 12:00:29,926 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 12:00:32,101 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 12:00:34,344 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 12:00:36,753 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 4: 5 imóveis
+2026-07-01 12:00:39,068 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 5: 8 imóveis
+2026-07-01 12:00:41,228 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 6: 3 imóveis
+2026-07-01 12:00:45,427 INFO [Massaru Imóveis] /salas-comerciais/10-maringa-pr — página 1: 7 imóveis
+2026-07-01 12:00:49,776 INFO [Massaru Imóveis] /chacaras/10-maringa-pr — página 1: 5 imóveis
+2026-07-01 12:00:51,041 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda/chacaras/10-maringa-pr?pagina=2&page=2 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 12:00:56,060 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 12:00:59,812 WARNING   Tentativa 2/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 12:01:08,075 WARNING   Tentativa 3/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 12:01:08,077 INFO [Massaru Imóveis] Total: 265 imóveis | {'Apartamento': 59, 'Kitnet': 2, 'Casa': 99, 'Sobrado': 30, 'Terreno': 63, 'Sala Comercial': 7, 'Chácara': 5}
+2026-07-01 12:01:11,465 INFO [Bellakaza] 6 categoria(s) encontrada(s) na home
+2026-07-01 12:01:12,540 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 12:01:14,884 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 12:01:16,934 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 12:01:19,127 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 4: 2 imóveis
+2026-07-01 12:01:23,204 INFO [Bellakaza] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 12:01:25,551 INFO [Bellakaza] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 12:01:29,540 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 12:01:31,656 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 2: 3 imóveis
+2026-07-01 12:01:35,408 INFO [Bellakaza] /chacaras/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 12:01:39,240 INFO [Bellakaza] /saloes-comerciais/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 12:01:42,938 INFO [Bellakaza] /salas-em-edificios/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 12:01:46,828 WARNING   Tentativa 1/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 12:01:51,140 WARNING   Tentativa 2/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 12:01:56,409 WARNING   Tentativa 3/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 12:01:56,410 INFO [Bellakaza] Total: 74 imóveis | {'Casa': 28, 'Sobrado': 4, 'Terreno': 20, 'Apartamento': 15, 'Kitnet': 1, 'Chácara': 3, 'Sala Comercial': 3}
+2026-07-01 12:02:00,949 INFO [Silvio Iwata] 2 categoria(s) encontrada(s) na home
+2026-07-01 12:02:01,837 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 12:02:03,754 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 12:02:05,720 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 12:02:07,299 WARNING   Tentativa 1/3 falhou: https://silvioiwata.com.br/imoveis/venda/apartamentos/10-maringa-pr?pagina=4&page=4 → ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2026-07-01 12:03:03,416 WARNING   Tentativa 2/3 falhou: https://silvioiwata.com.br/imoveis/venda/apartamentos/10-maringa-pr?pagina=4&page=4 → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda/apartamentos/10-maringa-pr?pagina=4&page=4 (Caused by NewConnectionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to establish a new connection: [Errno 51] Network is unreachable"))
+2026-07-01 12:03:08,542 WARNING   Tentativa 3/3 falhou: https://silvioiwata.com.br/imoveis/venda/apartamentos/10-maringa-pr?pagina=4&page=4 → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda/apartamentos/10-maringa-pr?pagina=4&page=4 (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:03:09,599 WARNING   Tentativa 1/3 falhou: https://silvioiwata.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda/casas-ou-sobrados/10-maringa-pr (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:03:11,621 WARNING   Tentativa 2/3 falhou: https://silvioiwata.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda/casas-ou-sobrados/10-maringa-pr (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:03:15,640 WARNING   Tentativa 3/3 falhou: https://silvioiwata.com.br/imoveis/venda/casas-ou-sobrados/10-maringa-pr → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda/casas-ou-sobrados/10-maringa-pr (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:03:16,656 WARNING   Tentativa 1/3 falhou: https://silvioiwata.com.br/imoveis/venda → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:03:18,665 WARNING   Tentativa 2/3 falhou: https://silvioiwata.com.br/imoveis/venda → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:12:55,813 WARNING   Tentativa 3/3 falhou: https://silvioiwata.com.br/imoveis/venda → HTTPSConnectionPool(host='silvioiwata.com.br', port=443): Max retries exceeded with url: /imoveis/venda (Caused by NameResolutionError("HTTPSConnection(host='silvioiwata.com.br', port=443): Failed to resolve 'silvioiwata.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:12:55,815 INFO [Silvio Iwata] Total: 27 imóveis | {'Apartamento': 24, 'Kitnet': 3}
+2026-07-01 12:12:57,832 WARNING   Tentativa 1/3 falhou: https://casadocorretormga.com.br → HTTPSConnectionPool(host='casadocorretormga.com.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='casadocorretormga.com.br', port=443): Failed to resolve 'casadocorretormga.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:12:59,841 WARNING   Tentativa 2/3 falhou: https://casadocorretormga.com.br → HTTPSConnectionPool(host='casadocorretormga.com.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='casadocorretormga.com.br', port=443): Failed to resolve 'casadocorretormga.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:13:47,865 WARNING   Tentativa 3/3 falhou: https://casadocorretormga.com.br → HTTPSConnectionPool(host='casadocorretormga.com.br', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='casadocorretormga.com.br', port=443): Failed to resolve 'casadocorretormga.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:13:47,866 WARNING [Casa do Corretor] Nenhuma categoria encontrada na home — só vou tentar a página combinada
+2026-07-01 12:13:47,869 WARNING   Tentativa 1/3 falhou: https://casadocorretormga.com.br/imoveis/venda → HTTPSConnectionPool(host='casadocorretormga.com.br', port=443): Max retries exceeded with url: /imoveis/venda (Caused by NameResolutionError("HTTPSConnection(host='casadocorretormga.com.br', port=443): Failed to resolve 'casadocorretormga.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:13:49,886 WARNING   Tentativa 2/3 falhou: https://casadocorretormga.com.br/imoveis/venda → HTTPSConnectionPool(host='casadocorretormga.com.br', port=443): Max retries exceeded with url: /imoveis/venda (Caused by NameResolutionError("HTTPSConnection(host='casadocorretormga.com.br', port=443): Failed to resolve 'casadocorretormga.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:13:53,985 WARNING   Tentativa 3/3 falhou: https://casadocorretormga.com.br/imoveis/venda → HTTPSConnectionPool(host='casadocorretormga.com.br', port=443): Max retries exceeded with url: /imoveis/venda (Caused by NameResolutionError("HTTPSConnection(host='casadocorretormga.com.br', port=443): Failed to resolve 'casadocorretormga.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 12:13:53,987 INFO [Casa do Corretor] Total: 0 imóveis | {}
+2026-07-01 12:13:55,995 INFO Total coletado (todos os sites): 562
+2026-07-01 12:13:56,045 INFO Itens coletados (todos os sites): 562
+2026-07-01 12:13:56,045 INFO Validando e cruzando com a base (bairros + condominios)...
+2026-07-01 12:14:06,629 INFO ✅ 562 novos · 0 atualizados · 0 com preço alterado · 0 marcados como Removido
+2026-07-01 12:14:06,631 INFO Raspagem concluída. Novos: 562
+2026-07-01 12:14:06,631 INFO ============================================================

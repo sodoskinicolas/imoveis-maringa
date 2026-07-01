@@ -1791,3 +1791,1427 @@ To https://github.com/sodoskinicolas/imoveis-maringa.git
 [2026-07-01 00:05:07] === Ciclo concluído ===
 [2026-07-01 00:12:22] === Início do ciclo automático ===
 [2026-07-01 00:12:22] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 35 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 2 condomínio(s) novo(s)...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-07-01 00:12:49] Processamento concluído.
+[2026-07-01 00:12:49] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+[main 976e7f3] 🤖 Auto: 2026-07-01 00:13 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   085cf8f..976e7f3  main -> main
+[2026-07-01 00:13:01] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 00:13:01] === Ciclo concluído ===
+[2026-07-01 00:35:07] === Início do ciclo automático ===
+[2026-07-01 00:35:07] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🌐 Novo domínio registrado para análise: pr.olx.com.br
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🌐 Novo domínio registrado para análise: sympla.com.br
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-07-01 00:35:38] Processamento concluído.
+[2026-07-01 00:35:38] Analisando 2 domínio(s) novo(s)...
+🔍 2 domínio(s) novo(s) para analisar...
+
+── pr.olx.com.br (exemplo: https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-)
+  ❌ Não consegui acessar pr.olx.com.br
+  ❓ Não foi possível gerar config automaticamente — revisar manualmente
+
+── sympla.com.br (exemplo: https://www.sympla.com.br/evento/minha-venda-minha-vida/3350)
+  🤖 Config gerada por Claude para sympla.com.br
+  📋 Config: tipo=generico | nome=Sympla
+  ✅ Adicionado a sites_extras.json
+
+
+✅ 1 site(s) adicionado(s) ao raspador automático.
+   → Serão raspados no próximo ciclo do GitHub Actions (3h).
+[2026-07-01 00:35:48] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 01:06:07] === Início do ciclo automático ===
+[2026-07-01 01:06:07] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🗺️  'Maison Constantine' → CONDOMINIO: Maison Constantine (bairro: Zona 7)
+  🔎 'Maison Constantine' incompleto — pesquisando na web...
+  🔎 Pesquisando condomínio 'Maison Constantine' em Maringá-PR...
+  ✅ Dados obtidos para 'Maison Constantine'
+  🏗️  Condomínio 'Maison Constantine' completado no SQLite (estava incompleto)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 35 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 01:06:55] Processamento concluído.
+[2026-07-01 01:06:55] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+[main 679ba68] 🤖 Auto: 2026-07-01 01:07 — mensagens + sites descobertos
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   5907a8e..679ba68  main -> main
+[2026-07-01 01:07:08] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 01:07:08] === Ciclo concluído ===
+[2026-07-01 02:22:49] === Início do ciclo automático ===
+[2026-07-01 02:22:50] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 35 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 02:23:36] Processamento concluído.
+[2026-07-01 02:23:36] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 511 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 4 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=1056  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim São Paulo II · Sarandi' → 'Jardim São Paulo'
+  [imoveis] id=1062  'Jardim São Paulo II · Sarandi' → 'Jardim São Paulo'
+  📍 Bairro (cache): 'Jardim Itaipu' → 'Jardim Itapuã'
+  [imoveis] id=1099  'Jardim Itaipu' → 'Jardim Itapuã'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Pioneiro Jurandyr Schelles' → 'Jardim Dias'
+  [imoveis] id=1109  'Jardim Dias I · Rua Pioneiro Jurandyr Schelles' → 'Jardim Dias'
+  📍 Bairro (cache): 'Conjunto João de Barro Champagnat · Rua Rio Jordão' → 'Conjunto João de Barro Champagnat'
+  [imoveis] id=1110  'Conjunto João de Barro Champagnat · Rua Rio Jordão' → 'Conjunto João de Barro Champagnat'
+  📍 Bairro (cache): 'Jardim Paulista III · Rua Francisco Dias de Aro' → 'Jardim Paulista'
+  [imoveis] id=1112  'Jardim Paulista III · Rua Francisco Dias de Aro' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Rebouças · Avenida das Torres' → 'Jardim Rebouças'
+  [imoveis] id=1113  'Jardim Rebouças · Avenida das Torres' → 'Jardim Rebouças'
+  📍 Bairro (cache): 'Jardim Montreal · Rua Pioneira Rosa Portela da Silva' → 'Jardim Montreal'
+  [imoveis] id=1114  'Jardim Montreal · Rua Pioneira Rosa Portela da Silva' → 'Jardim Montreal'
+  📍 Bairro (cache): 'Jardim Paulista · Rua José Granado Parra' → 'Jardim Paulista'
+  [imoveis] id=1115  'Jardim Paulista · Rua José Granado Parra' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Albatroz' → 'Jardim Olímpico'
+  [imoveis] id=1116  'Jardim Olímpico · Rua Albatroz' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua José Tescaro' → 'Loteamento Sumaré'
+  [imoveis] id=1117  'Loteamento Sumaré · Rua José Tescaro' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Jardim São Miguel · Rua Veronice Francisca Ribeiro' → 'Jardim São Miguel'
+  [imoveis] id=1120  'Jardim São Miguel · Rua Veronice Francisca Ribeiro' → 'Jardim São Miguel'
+  📍 Bairro (cache): 'Jardim Paris · Avenida Pioneiro Antônio Franco de Morais' → 'Jardim Paris'
+  [imoveis] id=1121  'Jardim Paris · Avenida Pioneiro Antônio Franco de Morais' → 'Jardim Paris'
+  📍 Bairro (cache): 'Zona 08 · Rua São Cristóvão' → 'Zona 08'
+  [imoveis] id=1124  'Zona 08 · Rua São Cristóvão' → 'Zona 08'
+  📍 Bairro (cache): 'Zona 01 · Rua Neo Alves Martins' → 'Zona 01'
+  [imoveis] id=1126  'Zona 01 · Rua Neo Alves Martins' → 'Zona 01'
+  📍 Bairro (cache): 'Recanto dos Magnatas · Rua Jair do Couto Costa' → 'Recanto dos Magnatas'
+  [imoveis] id=1127  'Recanto dos Magnatas · Rua Jair do Couto Costa' → 'Recanto dos Magnatas'
+  📍 Bairro (cache): 'Zona 07 · Rua Mandaguari' → 'Zona 07'
+  [imoveis] id=1128  'Zona 07 · Rua Mandaguari' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Bem-te-vi' → 'Jardim Olímpico'
+  [imoveis] id=1130  'Jardim Olímpico · Rua Bem-te-vi' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Conjunto Habitacional Lea Leal · Rua Madre Mônica Maria' → 'Conjunto Habitacional Lea Leal'
+  [imoveis] id=1131  'Conjunto Habitacional Lea Leal · Rua Madre Mônica Maria' → 'Conjunto Habitacional Lea Leal'
+  📍 Bairro (cache): 'Jardim Brasil · Rua Jaspe' → 'Jardim Brasil'
+  [imoveis] id=1133  'Jardim Brasil · Rua Jaspe' → 'Jardim Brasil'
+  📍 Bairro (cache): 'Portal das Torres · Avenida Torres' → 'Portal Das Torres'
+  [imoveis] id=1136  'Portal das Torres · Avenida Torres' → 'Portal Das Torres'
+  📍 Bairro (cache): 'Jardim da Glória · Avenida 7 de Setembro' → 'Jardim da Gloria'
+  [imoveis] id=1137  'Jardim da Glória · Avenida 7 de Setembro' → 'Jardim da Gloria'
+  📍 Bairro (cache): 'Parque Residencial Tuiuti · Rua Rio Congoinhas' → 'Parque Residencial Tuiuti'
+  [imoveis] id=1138  'Parque Residencial Tuiuti · Rua Rio Congoinhas' → 'Parque Residencial Tuiuti'
+  📍 Bairro (cache): 'Zona 03 · Rua Barroso' → 'Zona 03'
+  [imoveis] id=1139  'Zona 03 · Rua Barroso' → 'Zona 03'
+  📍 Bairro (cache): 'Jardim Brasil · Avenida Deputado José Alves dos Santos' → 'Jardim Brasil'
+  [imoveis] id=1140  'Jardim Brasil · Avenida Deputado José Alves dos Santos' → 'Jardim Brasil'
+  📍 Bairro (cache): 'Jardim Rebouças · Rua Pioneiro Salvador Kessa' → 'Jardim Rebouças'
+  [imoveis] id=1142  'Jardim Rebouças · Rua Pioneiro Salvador Kessa' → 'Jardim Rebouças'
+  📍 Bairro (cache): 'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  [imoveis] id=1144  'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  📍 Bairro (cache): 'Jardim Licce · Rua Ivaldo Borges Horta' → 'Jardim Licce'
+  [imoveis] id=1145  'Jardim Licce · Rua Ivaldo Borges Horta' → 'Jardim Licce'
+  📍 Bairro (cache): 'Zona 01 · Avenida Governador Parigot de Souza' → 'Zona 01'
+  [imoveis] id=1146  'Zona 01 · Avenida Governador Parigot de Souza' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Albatroz' → 'Jardim Olímpico'
+  [imoveis] id=1151  'Jardim Olímpico · Rua Albatroz' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Ipanema · Rua Cantor Raul Seixas' → 'Jardim Ipanema'
+  [imoveis] id=1152  'Jardim Ipanema · Rua Cantor Raul Seixas' → 'Jardim Ipanema'
+  📍 Bairro (cache): 'Jardim dos Pássaros · Rua Acauã' → 'Jardim Dos Pássaros'
+  [imoveis] id=1154  'Jardim dos Pássaros · Rua Acauã' → 'Jardim Dos Pássaros'
+  📍 Bairro (cache): 'Jardim Iguaçu · Rua dos Gerânios' → 'Jardim Iguaçu'
+  [imoveis] id=1155  'Jardim Iguaçu · Rua dos Gerânios' → 'Jardim Iguaçu'
+  📍 Bairro (cache): 'Parque das Bandeiras · Rua das Seringueiras' → 'Parque Das Bandeiras'
+  [imoveis] id=1157  'Parque das Bandeiras · Rua das Seringueiras' → 'Parque Das Bandeiras'
+  📍 Bairro (cache): 'Vila Cleópatra · Rua Monsenhor Kimura' → 'Vila Cleópatra'
+  [imoveis] id=1159  'Vila Cleópatra · Rua Monsenhor Kimura' → 'Vila Cleópatra'
+  📍 Bairro (cache): 'Jardim Tóquio · Rua Pioneiro Nereu Mazzer' → 'Jardim Tóquio'
+  [imoveis] id=1163  'Jardim Tóquio · Rua Pioneiro Nereu Mazzer' → 'Jardim Tóquio'
+  📍 Bairro (cache): 'Zona 07 · Rua Padre Vieira' → 'Zona 07'
+  [imoveis] id=1164  'Zona 07 · Rua Padre Vieira' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Diamante · Rua Pioneira Rosa Esteves Gusmão' → 'Jardim Diamante'
+  [imoveis] id=1166  'Jardim Diamante · Rua Pioneira Rosa Esteves Gusmão' → 'Jardim Diamante'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Carlos Maurício Duarte' → 'Parque Tarumã'
+  [imoveis] id=1169  'Parque Tarumã · Rua Carlos Maurício Duarte' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Parque da Gávea · Rua Pioneiro José Lourenço dos Santos' → 'Parque da Gávea'
+  [imoveis] id=1171  'Parque da Gávea · Rua Pioneiro José Lourenço dos Santos' → 'Parque da Gávea'
+  📍 Bairro (cache): 'Zona 01 · Rua Neo Alves Martins' → 'Zona 01'
+  [imoveis] id=1172  'Zona 01 · Rua Neo Alves Martins' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Pinheiros III · Rua Cuba' → 'Jardim Pinheiros'
+  [imoveis] id=1173  'Jardim Pinheiros III · Rua Cuba' → 'Jardim Pinheiros'
+  📍 Bairro (cache): 'Conjunto Residencial Paulino Carlos Filho · Rua Rio Amazonas' → 'Conjunto Residencial Paulino Carlos Filho'
+  [imoveis] id=1174  'Conjunto Residencial Paulino Carlos Filho · Rua Rio Amazonas' → 'Conjunto Residencial Paulino Carlos Filho'
+  📍 Bairro (cache): 'Jardim Olímpico · Avenida Naihma Name' → 'Jardim Olímpico'
+  [imoveis] id=1175  'Jardim Olímpico · Avenida Naihma Name' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Zona 07 · Rua Manoel de Macedo' → 'Zona 07'
+  [imoveis] id=1176  'Zona 07 · Rua Manoel de Macedo' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Dias II · Rua José Carlos Paixão' → 'Jardim Dias'
+  [imoveis] id=1177  'Jardim Dias II · Rua José Carlos Paixão' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Pioneiro Antônio de Ganello' → 'Jardim Dias'
+  [imoveis] id=1179  'Jardim Dias I · Rua Pioneiro Antônio de Ganello' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim América · Rua Auto Curti' → 'Jardim America'
+  [imoveis] id=1181  'Jardim América · Rua Auto Curti' → 'Jardim America'
+  📍 Bairro (cache): 'Jardim Everest · Avenida Deputado José Alves dos Santos' → 'Jardim Everest'
+  [imoveis] id=1183  'Jardim Everest · Avenida Deputado José Alves dos Santos' → 'Jardim Everest'
+  📍 Bairro (cache): 'Jardim Brasil · Avenida Deputado José Alves dos Santos' → 'Jardim Brasil'
+  [imoveis] id=1184  'Jardim Brasil · Avenida Deputado José Alves dos Santos' → 'Jardim Brasil'
+  📍 Bairro (cache): 'Jardim Universo · Rua Joaquim Mendonça' → 'Jardim Universo'
+  [imoveis] id=1186  'Jardim Universo · Rua Joaquim Mendonça' → 'Jardim Universo'
+  📍 Bairro (cache): 'Jardim Colina Verde II · Rua Pioneira Leonarda Garcia Coelho' → 'Jardim Colina Verde'
+  [imoveis] id=1187  'Jardim Colina Verde II · Rua Pioneira Leonarda Garcia Coelho' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Conjunto Habitacional Sol Nascente · Rua Pioneira Maria Batista de Souza Neves' → 'Conjunto Habitacional Sol Nascente'
+  [imoveis] id=1188  'Conjunto Habitacional Sol Nascente · Rua Pioneira Maria Batista de Souza Neves' → 'Conjunto Habitacional Sol Nascente'
+  📍 Bairro (cache): 'Jardim Paris · Rua Herculano Ribeiro de Paiva' → 'Jardim Paris'
+  [imoveis] id=1189  'Jardim Paris · Rua Herculano Ribeiro de Paiva' → 'Jardim Paris'
+  📍 Bairro (cache): 'Jardim Paris III · Rua Pioneiro Sebastião Alves' → 'Jardim Paris'
+  [imoveis] id=1192  'Jardim Paris III · Rua Pioneiro Sebastião Alves' → 'Jardim Paris'
+  📍 Bairro (cache): 'Jardim Alamar · Avenida Joaquim Duarte Moleirinho' → 'Jardim Alamar'
+  [imoveis] id=1193  'Jardim Alamar · Avenida Joaquim Duarte Moleirinho' → 'Jardim Alamar'
+  📍 Bairro (cache): 'Jardim Brasil · Avenida Deputado José Alves dos Santos' → 'Jardim Brasil'
+  [imoveis] id=1194  'Jardim Brasil · Avenida Deputado José Alves dos Santos' → 'Jardim Brasil'
+  📍 Bairro (cache): 'Jardim Monte Rei · Rua Esmeralda' → 'Jardim Monte Rei'
+  [imoveis] id=1195  'Jardim Monte Rei · Rua Esmeralda' → 'Jardim Monte Rei'
+  📍 Bairro (cache): 'Jardim Imperial · Rua Chihiro Nakatani' → 'Jardim Imperial'
+  [imoveis] id=1196  'Jardim Imperial · Rua Chihiro Nakatani' → 'Jardim Imperial'
+  📍 Bairro (cache): 'Jardim Catedral · Rua Pioneiro Olivar Freitas de Paiva' → 'Jardim Catedral'
+  [imoveis] id=1198  'Jardim Catedral · Rua Pioneiro Olivar Freitas de Paiva' → 'Jardim Catedral'
+  📍 Bairro (cache): 'Jardim Dias II · Rua José Carlos Paixão' → 'Jardim Dias'
+  [imoveis] id=1199  'Jardim Dias II · Rua José Carlos Paixão' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim do Carmo · Rua Pioneiro Rafael Garcia' → 'Jardim Do Carmo'
+  [imoveis] id=1201  'Jardim do Carmo · Rua Pioneiro Rafael Garcia' → 'Jardim Do Carmo'
+  📍 Bairro (cache): 'Jardim Licce · Rua Mieko Imai da Silva' → 'Jardim Licce'
+  [imoveis] id=1203  'Jardim Licce · Rua Mieko Imai da Silva' → 'Jardim Licce'
+  📍 Bairro (cache): 'Jardim Tupinambá · Rua Barão de Piracicaba' → 'Jardim Tupinambá'
+  [imoveis] id=1204  'Jardim Tupinambá · Rua Barão de Piracicaba' → 'Jardim Tupinambá'
+  📍 Bairro (cache): 'Jardim Higienópolis · Avenida Arquiteto Nildo Ribeiro da Rocha' → 'Jardim Higienópolis'
+  [imoveis] id=1206  'Jardim Higienópolis · Avenida Arquiteto Nildo Ribeiro da Rocha' → 'Jardim Higienópolis'
+  📍 Bairro (cache): 'Jardim Tabaete · Rua Tabaetê' → 'Jardim Tabaeté'
+  [imoveis] id=1208  'Jardim Tabaete · Rua Tabaetê' → 'Jardim Tabaeté'
+  📍 Bairro (cache): 'Jardim Imperial II · Rua Kyoto' → 'Jardim Imperial'
+  [imoveis] id=1209  'Jardim Imperial II · Rua Kyoto' → 'Jardim Imperial'
+  📍 Bairro (cache): 'Zona 07 · Rua Tietê' → 'Zona 07'
+  [imoveis] id=1210  'Zona 07 · Rua Tietê' → 'Zona 07'
+  📍 Bairro (cache): 'Zona 07 · Rua Mandaguari' → 'Zona 07'
+  [imoveis] id=1211  'Zona 07 · Rua Mandaguari' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Oásis · Avenida Guaiapó' → 'Jardim Oasis'
+  [imoveis] id=1212  'Jardim Oásis · Avenida Guaiapó' → 'Jardim Oasis'
+  📍 Bairro (cache): 'Vila Morangueira · Rua La Paz' → 'Vila Morangueira'
+  [imoveis] id=1213  'Vila Morangueira · Rua La Paz' → 'Vila Morangueira'
+  📍 Bairro (cache): 'Zona 07 · Rua Quintino Bocaiúva' → 'Zona 07'
+  [imoveis] id=1215  'Zona 07 · Rua Quintino Bocaiúva' → 'Zona 07'
+  📍 Bairro (cache): 'Zona 07 · Rua Benjamin Constant' → 'Zona 07'
+  [imoveis] id=1217  'Zona 07 · Rua Benjamin Constant' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Catedral · Rua Pioneiro Olivar Freitas de Paiva' → 'Jardim Catedral'
+  [imoveis] id=1218  'Jardim Catedral · Rua Pioneiro Olivar Freitas de Paiva' → 'Jardim Catedral'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Rua Paim' → 'Parque Das Laranjeiras'
+  [imoveis] id=1220  'Parque das Laranjeiras · Rua Paim' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Azulão' → 'Jardim Olímpico'
+  [imoveis] id=1221  'Jardim Olímpico · Rua Azulão' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Zona 01 · Praça Deputado Renato Celidônio' → 'Zona 01'
+  [imoveis] id=1225  'Zona 01 · Praça Deputado Renato Celidônio' → 'Zona 01'
+  📍 Bairro (cache): 'Parque Residencial Quebec · Rua Kiri' → 'Parque Residencial Quebec'
+  [imoveis] id=1227  'Parque Residencial Quebec · Rua Kiri' → 'Parque Residencial Quebec'
+  📍 Bairro (cache): 'Jardim Licce · Rua Mieko Imai da Silva' → 'Jardim Licce'
+  [imoveis] id=1228  'Jardim Licce · Rua Mieko Imai da Silva' → 'Jardim Licce'
+  📍 Bairro (cache): 'Jardim Imperial · Rua Sol Poente' → 'Jardim Imperial'
+  [imoveis] id=1229  'Jardim Imperial · Rua Sol Poente' → 'Jardim Imperial'
+  📍 Bairro (cache): 'Vila Emília · Rua São Salvador' → 'Vila Emilia'
+  [imoveis] id=1230  'Vila Emília · Rua São Salvador' → 'Vila Emilia'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Arara' → 'Jardim Olímpico'
+  [imoveis] id=1231  'Jardim Olímpico · Rua Arara' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Parque Residencial Patrícia · Rua Alexandra' → 'Parque Residencial Patrícia'
+  [imoveis] id=1234  'Parque Residencial Patrícia · Rua Alexandra' → 'Parque Residencial Patrícia'
+  📍 Bairro (cache): 'Jardim Monte Rei · Rua Esmeralda' → 'Jardim Monte Rei'
+  [imoveis] id=1235  'Jardim Monte Rei · Rua Esmeralda' → 'Jardim Monte Rei'
+  📍 Bairro (cache): 'Jardim Tropical · Rua Pequi' → 'Jardim Tropical'
+  [imoveis] id=1236  'Jardim Tropical · Rua Pequi' → 'Jardim Tropical'
+  📍 Bairro (cache): 'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  [imoveis] id=1237  'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  📍 Bairro (cache): 'Jardim Novo Oásis · Rua Rio Belo' → 'Jardim Novo Oasis'
+  [imoveis] id=1238  'Jardim Novo Oásis · Rua Rio Belo' → 'Jardim Novo Oasis'
+  📍 Bairro (cache): 'Jardim Higienópolis · Avenida Arquiteto Nildo Ribeiro da Rocha' → 'Jardim Higienópolis'
+  [imoveis] id=1239  'Jardim Higienópolis · Avenida Arquiteto Nildo Ribeiro da Rocha' → 'Jardim Higienópolis'
+  📍 Bairro (cache): 'Jardim Paulista IV · Rua João Carneiro Filgueiras' → 'Jardim Paulista'
+  [imoveis] id=1243  'Jardim Paulista IV · Rua João Carneiro Filgueiras' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Zona 01 · Avenida João Paulino Vieira Filho' → 'Zona 01'
+  [imoveis] id=1244  'Zona 01 · Avenida João Paulino Vieira Filho' → 'Zona 01'
+  📍 Bairro (cache): 'Zona 08 · Avenida Londrina' → 'Zona 08'
+  [imoveis] id=1245  'Zona 08 · Avenida Londrina' → 'Zona 08'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Maria Augusta Pereira Vomstein' → 'Loteamento Sumaré'
+  [imoveis] id=1246  'Loteamento Sumaré · Rua Maria Augusta Pereira Vomstein' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Avenida Pintassilgo' → 'Parque Das Laranjeiras'
+  [imoveis] id=1247  'Parque das Laranjeiras · Avenida Pintassilgo' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Rua Pioneiro Basílio Moreschi' → 'Parque Das Laranjeiras'
+  [imoveis] id=1252  'Parque das Laranjeiras · Rua Pioneiro Basílio Moreschi' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Conjunto Habitacional Lea Leal · Avenida Guaiapó' → 'Conjunto Habitacional Lea Leal'
+  [imoveis] id=1254  'Conjunto Habitacional Lea Leal · Avenida Guaiapó' → 'Conjunto Habitacional Lea Leal'
+  📍 Bairro (cache): 'Jardim Tupinambá · Rua 28 de Junho' → 'Jardim Tupinambá'
+  [imoveis] id=1255  'Jardim Tupinambá · Rua 28 de Junho' → 'Jardim Tupinambá'
+  📍 Bairro (cache): 'Zona 07 · Rua Marechal Deodoro' → 'Zona 07'
+  [imoveis] id=1256  'Zona 07 · Rua Marechal Deodoro' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Paris · Rua Herculano Ribeiro de Paiva' → 'Jardim Paris'
+  [imoveis] id=1257  'Jardim Paris · Rua Herculano Ribeiro de Paiva' → 'Jardim Paris'
+  📍 Bairro (cache): 'Zona 01 · Rua Santos Dumont' → 'Zona 01'
+  [imoveis] id=1260  'Zona 01 · Rua Santos Dumont' → 'Zona 01'
+  📍 Bairro (cache): 'Zona 01 · Avenida Getúlio Vargas' → 'Zona 01'
+  [imoveis] id=1262  'Zona 01 · Avenida Getúlio Vargas' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Império do Sol · Rua Pioneiro José Leal' → 'Jardim Império Do Sol'
+  [imoveis] id=1263  'Jardim Império do Sol · Rua Pioneiro José Leal' → 'Jardim Império Do Sol'
+  📍 Bairro (cache): 'Jardim Andrade · Rua Rodolfo Cremm' → 'Jardim Andrade'
+  [imoveis] id=1264  'Jardim Andrade · Rua Rodolfo Cremm' → 'Jardim Andrade'
+  📍 Bairro (cache): 'Jardim Aclimação · Rua José Moreno Júnior' → 'Jardim Aclimação'
+  [imoveis] id=1267  'Jardim Aclimação · Rua José Moreno Júnior' → 'Jardim Aclimação'
+  📍 Bairro (cache): 'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  [imoveis] id=1268  'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  📍 Bairro (cache): 'Jardim Monte Rei · Rua Vereador José Mário Hauari' → 'Jardim Monte Rei'
+  [imoveis] id=1270  'Jardim Monte Rei · Rua Vereador José Mário Hauari' → 'Jardim Monte Rei'
+  📍 Bairro (cache): 'Jardim Paraíso · Rua Pioneiro Cezare Mochi' → 'Jardim Paraíso'
+  [imoveis] id=1273  'Jardim Paraíso · Rua Pioneiro Cezare Mochi' → 'Jardim Paraíso'
+  📍 Bairro (cache): 'Jardim Oásis · Avenida Dona Sophia Rasgulaeff' → 'Jardim Oasis'
+  [imoveis] id=1274  'Jardim Oásis · Avenida Dona Sophia Rasgulaeff' → 'Jardim Oasis'
+  📍 Bairro (cache): 'Jardim Olimpico' → 'Jardim Olímpico'
+  [imoveis] id=1277  'Jardim Olimpico' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Zona 07 · Rua Benjamin Constant' → 'Zona 07'
+  [imoveis] id=1279  'Zona 07 · Rua Benjamin Constant' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Piatã · Rua Pioneira Guilhermina Mazolini' → 'Jardim Piatã'
+  [imoveis] id=1281  'Jardim Piatã · Rua Pioneira Guilhermina Mazolini' → 'Jardim Piatã'
+  📍 Bairro (cache): 'Zona 06 · Rua Antônio Octávio Scramim' → 'Zona 06'
+  [imoveis] id=1282  'Zona 06 · Rua Antônio Octávio Scramim' → 'Zona 06'
+  📍 Bairro (cache): 'Jardim Colina Verde · Rua Pioneiro João Calvi' → 'Jardim Colina Verde'
+  [imoveis] id=1284  'Jardim Colina Verde · Rua Pioneiro João Calvi' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Jardim Lucianópolis · Rua dos Jasmins' → 'Jardim Lucianópolis'
+  [imoveis] id=1285  'Jardim Lucianópolis · Rua dos Jasmins' → 'Jardim Lucianópolis'
+  📍 Bairro (cache): 'Conjunto Residencial Cidade Alta · Rua Pioneiro Manoel Domingos Prina' → 'Conjunto Residencial Cidade Alta'
+  [imoveis] id=1287  'Conjunto Residencial Cidade Alta · Rua Pioneiro Manoel Domingos Prina' → 'Conjunto Residencial Cidade Alta'
+  📍 Bairro (cache): 'Zona 06 · Rua Rui Barbosa' → 'Zona 06'
+  [imoveis] id=1288  'Zona 06 · Rua Rui Barbosa' → 'Zona 06'
+  📍 Bairro (cache): 'Jardim Fregadolli · Rua Pioneiro Domingos Errerias Ernandes' → 'Jardim Fregadolli'
+  [imoveis] id=1290  'Jardim Fregadolli · Rua Pioneiro Domingos Errerias Ernandes' → 'Jardim Fregadolli'
+  📍 Bairro (cache): 'Jardim Itália II · Rua Pioneiro Carlos João Basso' → 'Jardim Itália'
+  [imoveis] id=1291  'Jardim Itália II · Rua Pioneiro Carlos João Basso' → 'Jardim Itália'
+  📍 Bairro (cache): 'Zona 08 · Avenida Londrina' → 'Zona 08'
+  [imoveis] id=1296  'Zona 08 · Avenida Londrina' → 'Zona 08'
+  📍 Bairro (cache): 'Parque Avenida · Rua Allan Kardec' → 'Parque Avenida'
+  [imoveis] id=1297  'Parque Avenida · Rua Allan Kardec' → 'Parque Avenida'
+  📍 Bairro (cache): 'Jardim Imperial II · Rua Pará' → 'Jardim Imperial'
+  [imoveis] id=1298  'Jardim Imperial II · Rua Pará' → 'Jardim Imperial'
+  📍 Bairro (cache): 'Jardim Diamante · Rua Rodolpho Maibon Moreira' → 'Jardim Diamante'
+  [imoveis] id=1299  'Jardim Diamante · Rua Rodolpho Maibon Moreira' → 'Jardim Diamante'
+  📍 Bairro (cache): 'Jardim Everest · Rua Pioneiro Hélcio Siolari' → 'Jardim Everest'
+  [imoveis] id=1300  'Jardim Everest · Rua Pioneiro Hélcio Siolari' → 'Jardim Everest'
+  📍 Bairro (cache): 'Parque Residencial Cidade Nova · Rua Domingos Mião' → 'Parque Residencial Cidade Nova'
+  [imoveis] id=1301  'Parque Residencial Cidade Nova · Rua Domingos Mião' → 'Parque Residencial Cidade Nova'
+  📍 Bairro (cache): 'Jardim Andrade · Rua Charles Carniel' → 'Jardim Andrade'
+  [imoveis] id=1302  'Jardim Andrade · Rua Charles Carniel' → 'Jardim Andrade'
+  📍 Bairro (cache): 'Jardim Santa Alice · Rua Carlos Cândido' → 'Jardim Santa Alice'
+  [imoveis] id=1303  'Jardim Santa Alice · Rua Carlos Cândido' → 'Jardim Santa Alice'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Pioneira Maria Aparecida Araújo de Siqueira' → 'Loteamento Sumaré'
+  [imoveis] id=1304  'Loteamento Sumaré · Rua Pioneira Maria Aparecida Araújo de Siqueira' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Zona 07 · Rua José Clemente' → 'Zona 07'
+  [imoveis] id=1306  'Zona 07 · Rua José Clemente' → 'Zona 07'
+  📍 Bairro (cache): 'Vila Progresso · Rua José Barão Neto' → 'Vila Progresso'
+  [imoveis] id=1308  'Vila Progresso · Rua José Barão Neto' → 'Vila Progresso'
+  📍 Bairro (cache): 'Conjunto Residencial Dona Angelina (Iguatemi) · Rua Santa Helena' → 'Conjunto Residencial Dona Angelina'
+  [imoveis] id=1309  'Conjunto Residencial Dona Angelina (Iguatemi) · Rua Santa Helena' → 'Conjunto Residencial Dona Angelina'
+  📍 Bairro (cache): 'Jardim Colina Verde · Rua Adelina de França Viana' → 'Jardim Colina Verde'
+  [imoveis] id=1310  'Jardim Colina Verde · Rua Adelina de França Viana' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Jardim América · Rua Professor Jailton Saraiva' → 'Jardim America'
+  [imoveis] id=1311  'Jardim América · Rua Professor Jailton Saraiva' → 'Jardim America'
+  📍 Bairro (cache): 'Vila Morangueira · Rua Filipinas' → 'Vila Morangueira'
+  [imoveis] id=1312  'Vila Morangueira · Rua Filipinas' → 'Vila Morangueira'
+  📍 Bairro (cache): 'Jardim Real · Rua Esmeralda' → 'Jardim Real'
+  [imoveis] id=1315  'Jardim Real · Rua Esmeralda' → 'Jardim Real'
+  📍 Bairro (cache): 'Loteamento Grajaú · Rua Pioneiro João Calvi' → 'Loteamento Grajaú'
+  [imoveis] id=1316  'Loteamento Grajaú · Rua Pioneiro João Calvi' → 'Loteamento Grajaú'
+  📍 Bairro (cache): 'Zona 07 · Rua Tietê' → 'Zona 07'
+  [imoveis] id=1318  'Zona 07 · Rua Tietê' → 'Zona 07'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Antônia Capoti Fernandes' → 'Parque Tarumã'
+  [imoveis] id=1319  'Parque Tarumã · Rua Antônia Capoti Fernandes' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Jardim Pinheiros · Rua Araucária' → 'Jardim Pinheiros'
+  [imoveis] id=1322  'Jardim Pinheiros · Rua Araucária' → 'Jardim Pinheiros'
+  📍 Bairro (cache): 'Jardim Colina Verde II · Rua Pioneira Leonarda Garcia Coelho' → 'Jardim Colina Verde'
+  [imoveis] id=1325  'Jardim Colina Verde II · Rua Pioneira Leonarda Garcia Coelho' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Parque Palmeiras' → 'Parque Das Palmeiras'
+  [imoveis] id=1326  'Parque Palmeiras' → 'Parque Das Palmeiras'
+  📍 Bairro (cache): 'Conjunto Residencial Cidade Alta · Avenida Carmen Miranda' → 'Conjunto Residencial Cidade Alta'
+  [imoveis] id=1327  'Conjunto Residencial Cidade Alta · Avenida Carmen Miranda' → 'Conjunto Residencial Cidade Alta'
+  📍 Bairro (cache): 'Vila Nevada · Rua Ronaldo Petrucci' → 'Vila Nevada'
+  [imoveis] id=1329  'Vila Nevada · Rua Ronaldo Petrucci' → 'Vila Nevada'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Pioneira Maria Aparecida Araújo de Siqueira' → 'Loteamento Sumaré'
+  [imoveis] id=1331  'Loteamento Sumaré · Rua Pioneira Maria Aparecida Araújo de Siqueira' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Jardim São Domingos · Estrada São Bento' → 'Jardim São Domingos'
+  [imoveis] id=1332  'Jardim São Domingos · Estrada São Bento' → 'Jardim São Domingos'
+  📍 Bairro (cache): 'Zona 07 · Rua Osvaldo Cruz' → 'Zona 07'
+  [imoveis] id=1334  'Zona 07 · Rua Osvaldo Cruz' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Paris · Rua Antônio Brambilla' → 'Jardim Paris'
+  [imoveis] id=1335  'Jardim Paris · Rua Antônio Brambilla' → 'Jardim Paris'
+  📍 Bairro (cache): 'Jardim Aclimação · Avenida Senador Petrônio Portela' → 'Jardim Aclimação'
+  [imoveis] id=1336  'Jardim Aclimação · Avenida Senador Petrônio Portela' → 'Jardim Aclimação'
+  📍 Bairro (cache): 'Zona 07 · Rua Osvaldo Cruz' → 'Zona 07'
+  [imoveis] id=1337  'Zona 07 · Rua Osvaldo Cruz' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Paris III · Rua Pioneiro Luiz Fitz' → 'Jardim Paris'
+  [imoveis] id=1339  'Jardim Paris III · Rua Pioneiro Luiz Fitz' → 'Jardim Paris'
+  📍 Bairro (cache): 'Jardim Higienópolis · Avenida Arquiteto Nildo Ribeiro da Rocha' → 'Jardim Higienópolis'
+  [imoveis] id=1342  'Jardim Higienópolis · Avenida Arquiteto Nildo Ribeiro da Rocha' → 'Jardim Higienópolis'
+  📍 Bairro (cache): 'Zona 01 · Avenida Getúlio Vargas' → 'Zona 01'
+  [imoveis] id=1343  'Zona 01 · Avenida Getúlio Vargas' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Aclimação · Rua Ernesto Mariucci' → 'Jardim Aclimação'
+  [imoveis] id=1344  'Jardim Aclimação · Rua Ernesto Mariucci' → 'Jardim Aclimação'
+  📍 Bairro (cache): 'Zona 07 · Rua José Clemente' → 'Zona 07'
+  [imoveis] id=1345  'Zona 07 · Rua José Clemente' → 'Zona 07'
+  📍 Bairro (cache): 'Loteamento Grajau' → 'Loteamento Grajaú'
+  [imoveis] id=1348  'Loteamento Grajau' → 'Loteamento Grajaú'
+  📍 Bairro (cache): 'Jardim Dias II · Rua Domingos Dotta' → 'Jardim Dias'
+  [imoveis] id=1349  'Jardim Dias II · Rua Domingos Dotta' → 'Jardim Dias'
+  📍 Bairro (cache): 'Parque Taruma' → 'Parque Tarumã'
+  [imoveis] id=1350  'Parque Taruma' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Jardim Cerro Azul · Rua Pioneiro Waldemar Lingiardi' → 'Jardim Cerro Azul'
+  [imoveis] id=1354  'Jardim Cerro Azul · Rua Pioneiro Waldemar Lingiardi' → 'Jardim Cerro Azul'
+  📍 Bairro (cache): 'Zona 08 · Avenida Londrina' → 'Zona 08'
+  [imoveis] id=1355  'Zona 08 · Avenida Londrina' → 'Zona 08'
+  📍 Bairro (cache): 'Zona 03 · Avenida Mauá' → 'Zona 03'
+  [imoveis] id=1356  'Zona 03 · Avenida Mauá' → 'Zona 03'
+  📍 Bairro (cache): 'Zona 08 · Rua Carlos Borrasca' → 'Zona 08'
+  [imoveis] id=1358  'Zona 08 · Rua Carlos Borrasca' → 'Zona 08'
+  📍 Bairro (cache): 'Zona 01 · Rua Piratininga' → 'Zona 01'
+  [imoveis] id=1359  'Zona 01 · Rua Piratininga' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Tropical · Rua Pequi' → 'Jardim Tropical'
+  [imoveis] id=1360  'Jardim Tropical · Rua Pequi' → 'Jardim Tropical'
+  📍 Bairro (cache): 'Jardim Aclimação · Rua José de Oliveira' → 'Jardim Aclimação'
+  [imoveis] id=1361  'Jardim Aclimação · Rua José de Oliveira' → 'Jardim Aclimação'
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2140  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2141  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=2143  'Jardim Paulista 3' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Pioneira Fumi Tanoue' → 'Parque Tarumã'
+  [imoveis] id=2146  'Parque Tarumã · Rua Pioneira Fumi Tanoue' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Jardim Paris · Rua Nilo Polo Ferrato' → 'Jardim Paris'
+  [imoveis] id=2147  'Jardim Paris · Rua Nilo Polo Ferrato' → 'Jardim Paris'
+  📍 Bairro (cache): 'Jardim da Glória · Rua Pioneiro Carlos Poppi' → 'Jardim da Gloria'
+  [imoveis] id=2148  'Jardim da Glória · Rua Pioneiro Carlos Poppi' → 'Jardim da Gloria'
+  📍 Bairro (cache): 'Jardim Tropical · Rua Pequi' → 'Jardim Tropical'
+  [imoveis] id=2152  'Jardim Tropical · Rua Pequi' → 'Jardim Tropical'
+  📍 Bairro (cache): 'Vila Nevada · Rua Josefa Ruiz Vellasco' → 'Vila Nevada'
+  [imoveis] id=2153  'Vila Nevada · Rua Josefa Ruiz Vellasco' → 'Vila Nevada'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Maria Bertolina Carolino' → 'Loteamento Sumaré'
+  [imoveis] id=2154  'Loteamento Sumaré · Rua Maria Bertolina Carolino' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Jardim América · Rua Sérgio Bittencourt' → 'Jardim America'
+  [imoveis] id=2155  'Jardim América · Rua Sérgio Bittencourt' → 'Jardim America'
+  📍 Bairro (cache): 'Parque Residencial Patrícia · Rua Pioneiro Antonio Allai' → 'Parque Residencial Patrícia'
+  [imoveis] id=2156  'Parque Residencial Patrícia · Rua Pioneiro Antonio Allai' → 'Parque Residencial Patrícia'
+  📍 Bairro (cache): 'Jardim Santa Alice · Rua José Bergamasco' → 'Jardim Santa Alice'
+  [imoveis] id=2158  'Jardim Santa Alice · Rua José Bergamasco' → 'Jardim Santa Alice'
+  📍 Bairro (cache): 'Conjunto Habitacional Sol Nascente · Rua Pioneiro Mário Pagani' → 'Conjunto Habitacional Sol Nascente'
+  [imoveis] id=2164  'Conjunto Habitacional Sol Nascente · Rua Pioneiro Mário Pagani' → 'Conjunto Habitacional Sol Nascente'
+  📍 Bairro (cache): 'Jardim Atami · Rua Pioneira Hilde Marini Jordan' → 'Jardim Atami'
+  [imoveis] id=2165  'Jardim Atami · Rua Pioneira Hilde Marini Jordan' → 'Jardim Atami'
+  📍 Bairro (cache): 'Jardim Dias II · Rua Pioneiro Antonio Deganello' → 'Jardim Dias'
+  [imoveis] id=2166  'Jardim Dias II · Rua Pioneiro Antonio Deganello' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paulista · Rua José Granado Parra' → 'Jardim Paulista'
+  [imoveis] id=2168  'Jardim Paulista · Rua José Granado Parra' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Guairacá · Rua Pioneiro José Henrique de Paula' → 'Jardim Guairacá'
+  [imoveis] id=2169  'Jardim Guairacá · Rua Pioneiro José Henrique de Paula' → 'Jardim Guairacá'
+  📍 Bairro (cache): 'Jardim Novo Oásis · Rua Pioneiro Dionísio Volpi Frediani' → 'Jardim Novo Oasis'
+  [imoveis] id=2171  'Jardim Novo Oásis · Rua Pioneiro Dionísio Volpi Frediani' → 'Jardim Novo Oasis'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Albatroz' → 'Jardim Olímpico'
+  [imoveis] id=2172  'Jardim Olímpico · Rua Albatroz' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Novo Oásis · Rua Rio Cunha' → 'Jardim Novo Oasis'
+  [imoveis] id=2174  'Jardim Novo Oásis · Rua Rio Cunha' → 'Jardim Novo Oasis'
+  📍 Bairro (cache): 'Jardim Aurora · Rua Pioneiro Geraldino Fernandes Rodrigues' → 'Jardim Aurora'
+  [imoveis] id=2175  'Jardim Aurora · Rua Pioneiro Geraldino Fernandes Rodrigues' → 'Jardim Aurora'
+  📍 Bairro (cache): 'Jardim Paulista III · Rua Pioneiro Walcyr Baveloni' → 'Jardim Paulista'
+  [imoveis] id=2176  'Jardim Paulista III · Rua Pioneiro Walcyr Baveloni' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Império do Sol · Rua Henrique Veronez' → 'Jardim Império Do Sol'
+  [imoveis] id=2177  'Jardim Império do Sol · Rua Henrique Veronez' → 'Jardim Império Do Sol'
+  📍 Bairro (cache): 'Jardim Universo · Rua Joaquim Mendonça' → 'Jardim Universo'
+  [imoveis] id=2179  'Jardim Universo · Rua Joaquim Mendonça' → 'Jardim Universo'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Carlos Maurício Duarte' → 'Parque Tarumã'
+  [imoveis] id=2180  'Parque Tarumã · Rua Carlos Maurício Duarte' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Jardim Monte Rei · Rua Pioneira Luíza Davoglio Bortolatto' → 'Jardim Monte Rei'
+  [imoveis] id=2181  'Jardim Monte Rei · Rua Pioneira Luíza Davoglio Bortolatto' → 'Jardim Monte Rei'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Rua Orlândia' → 'Parque Das Laranjeiras'
+  [imoveis] id=2182  'Parque das Laranjeiras · Rua Orlândia' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Jardim Leblon · Rua Pioneiro Hettore Giacopini' → 'Jardim Leblon'
+  [imoveis] id=2184  'Jardim Leblon · Rua Pioneiro Hettore Giacopini' → 'Jardim Leblon'
+  📍 Bairro (cache): 'Parque Residencial Quebec · Rua Kiri' → 'Parque Residencial Quebec'
+  [imoveis] id=2187  'Parque Residencial Quebec · Rua Kiri' → 'Parque Residencial Quebec'
+  📍 Bairro (cache): 'Jardim da Glória · Avenida 7 de Setembro' → 'Jardim da Gloria'
+  [imoveis] id=2188  'Jardim da Glória · Avenida 7 de Setembro' → 'Jardim da Gloria'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Arthur Fregadolli' → 'Jardim Dias'
+  [imoveis] id=2189  'Jardim Dias I · Rua Arthur Fregadolli' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paris VI · Rua Dinoh Hundzinski' → 'Jardim Paris'
+  [imoveis] id=2192  'Jardim Paris VI · Rua Dinoh Hundzinski' → 'Jardim Paris'
+  📍 Bairro (cache): 'Zona 06 · Rua Castro Alves' → 'Zona 06'
+  [imoveis] id=2193  'Zona 06 · Rua Castro Alves' → 'Zona 06'
+  📍 Bairro (cache): 'Jardim Rebouças · Avenida das Torres' → 'Jardim Rebouças'
+  [imoveis] id=2194  'Jardim Rebouças · Avenida das Torres' → 'Jardim Rebouças'
+  📍 Bairro (cache): 'Jardim Paulista IV · Rua Pioneira Maria Otávia do Nascimento' → 'Jardim Paulista'
+  [imoveis] id=2197  'Jardim Paulista IV · Rua Pioneira Maria Otávia do Nascimento' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim São Clemente · Rua Pioneiro Exaltino Pereira Boa Sorte' → 'Jardim São Clemente'
+  [imoveis] id=2198  'Jardim São Clemente · Rua Pioneiro Exaltino Pereira Boa Sorte' → 'Jardim São Clemente'
+  📍 Bairro (cache): 'Jardim Império do Sol · Rua Almerinda Silveira Coelho' → 'Jardim Império Do Sol'
+  [imoveis] id=2199  'Jardim Império do Sol · Rua Almerinda Silveira Coelho' → 'Jardim Império Do Sol'
+  📍 Bairro (cache): 'Jardim Ipanema · Rua Adão Elói Trojan' → 'Jardim Ipanema'
+  [imoveis] id=2200  'Jardim Ipanema · Rua Adão Elói Trojan' → 'Jardim Ipanema'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Rouxinol' → 'Jardim Olímpico'
+  [imoveis] id=2201  'Jardim Olímpico · Rua Rouxinol' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Paulista · Rua Pioneiro José Borin' → 'Jardim Paulista'
+  [imoveis] id=2202  'Jardim Paulista · Rua Pioneiro José Borin' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Pioneiro Jurandyr Schelles' → 'Jardim Dias'
+  [imoveis] id=2203  'Jardim Dias I · Rua Pioneiro Jurandyr Schelles' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Licce · Rua Ivaldo Borges Horta' → 'Jardim Licce'
+  [imoveis] id=2204  'Jardim Licce · Rua Ivaldo Borges Horta' → 'Jardim Licce'
+  📍 Bairro (cache): 'Vila Morangueira · Rua Pioneiro Isaac José de Faria' → 'Vila Morangueira'
+  [imoveis] id=2205  'Vila Morangueira · Rua Pioneiro Isaac José de Faria' → 'Vila Morangueira'
+  📍 Bairro (cache): 'Jardim Monte Rei · Rua Marçal Candido Siqueira' → 'Jardim Monte Rei'
+  [imoveis] id=2207  'Jardim Monte Rei · Rua Marçal Candido Siqueira' → 'Jardim Monte Rei'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Pioneiro Jurandyr Schelles' → 'Jardim Dias'
+  [imoveis] id=2209  'Jardim Dias I · Rua Pioneiro Jurandyr Schelles' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Everest · Rua Rosana Cambaúva Cordeiro' → 'Jardim Everest'
+  [imoveis] id=2210  'Jardim Everest · Rua Rosana Cambaúva Cordeiro' → 'Jardim Everest'
+  📍 Bairro (cache): 'Jardim Atlanta · Rua Seul' → 'Jardim Atlanta'
+  [imoveis] id=2211  'Jardim Atlanta · Rua Seul' → 'Jardim Atlanta'
+  📍 Bairro (cache): 'Conjunto Habitacional Sanenge · Rua Cotovia do Campo' → 'Conjunto Habitacional Sanenge'
+  [imoveis] id=2212  'Conjunto Habitacional Sanenge · Rua Cotovia do Campo' → 'Conjunto Habitacional Sanenge'
+  📍 Bairro (cache): 'Jardim Paulista IV · Rua Pioneiro Joaquim Pedro de Oliveira' → 'Jardim Paulista'
+  [imoveis] id=2213  'Jardim Paulista IV · Rua Pioneiro Joaquim Pedro de Oliveira' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Pastor Antônio Luiz Furlan' → 'Parque Tarumã'
+  [imoveis] id=2215  'Parque Tarumã · Rua Pastor Antônio Luiz Furlan' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Rua Pioneiro Lívio Olivo' → 'Parque Das Laranjeiras'
+  [imoveis] id=2216  'Parque das Laranjeiras · Rua Pioneiro Lívio Olivo' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Parque Taruma' → 'Parque Tarumã'
+  [imoveis] id=2222  'Parque Taruma' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Pioneiro João Custódio Pereira' → 'Parque Tarumã'
+  [imoveis] id=2223  'Parque Tarumã · Rua Pioneiro João Custódio Pereira' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Conjunto Habitacional Sol Nascente · Rua Pioneiro Elias Martins' → 'Conjunto Habitacional Sol Nascente'
+  [imoveis] id=2227  'Conjunto Habitacional Sol Nascente · Rua Pioneiro Elias Martins' → 'Conjunto Habitacional Sol Nascente'
+  📍 Bairro (cache): 'Jardim Montreal · Rua Pioneiro Domênico Durso' → 'Jardim Montreal'
+  [imoveis] id=2229  'Jardim Montreal · Rua Pioneiro Domênico Durso' → 'Jardim Montreal'
+  📍 Bairro (cache): 'Jardim Paulista · Rua Pioneiro José Borin' → 'Jardim Paulista'
+  [imoveis] id=2233  'Jardim Paulista · Rua Pioneiro José Borin' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Zona 01 · Rua Santos Dumont' → 'Zona 01'
+  [imoveis] id=2235  'Zona 01 · Rua Santos Dumont' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  [imoveis] id=2236  'Jardim Paraíso · Rua Pioneiro Carlos Bulla' → 'Jardim Paraíso'
+  📍 Bairro (cache): 'Jardim São Silvestre · Rua Rosa Donata Diniz' → 'Jardim São Silvestre'
+  [imoveis] id=2237  'Jardim São Silvestre · Rua Rosa Donata Diniz' → 'Jardim São Silvestre'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Pioneiro Genir Galli' → 'Loteamento Sumaré'
+  [imoveis] id=2238  'Loteamento Sumaré · Rua Pioneiro Genir Galli' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Jardim Paulista IV · Rua Marianna Spinelli Tait' → 'Jardim Paulista'
+  [imoveis] id=2239  'Jardim Paulista IV · Rua Marianna Spinelli Tait' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Rua Paim' → 'Parque Das Laranjeiras'
+  [imoveis] id=2241  'Parque das Laranjeiras · Rua Paim' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Jardim Olimpico' → 'Jardim Olímpico'
+  [imoveis] id=2242  'Jardim Olimpico' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Brasil · Rua Pioneiro Múcio Rodrigues' → 'Jardim Brasil'
+  [imoveis] id=2243  'Jardim Brasil · Rua Pioneiro Múcio Rodrigues' → 'Jardim Brasil'
+  📍 Bairro (cache): 'Jardim Colina Verde · Rua Angelina Tedesca' → 'Jardim Colina Verde'
+  [imoveis] id=2244  'Jardim Colina Verde · Rua Angelina Tedesca' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Conjunto Habitacional Inocente Vila Nova Júnior · Rua dos Alecrins' → 'Vila Nova'
+  [imoveis] id=2245  'Conjunto Habitacional Inocente Vila Nova Júnior · Rua dos Alecrins' → 'Vila Nova'
+  📍 Bairro (cache): 'Jardim Colina Verde II · Rua Pioneira Leonarda Garcia Coelho' → 'Jardim Colina Verde'
+  [imoveis] id=2247  'Jardim Colina Verde II · Rua Pioneira Leonarda Garcia Coelho' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Conjunto Residencial Rodolpho Bernardi · Rua Pioneiro Guarino Augusto Basseto' → 'Conjunto Residencial Rodolpho Bernardi'
+  [imoveis] id=2248  'Conjunto Residencial Rodolpho Bernardi · Rua Pioneiro Guarino Augusto Basseto' → 'Conjunto Residencial Rodolpho Bernardi'
+  📍 Bairro (cache): 'Jardim Brasil · Rua Ametista' → 'Jardim Brasil'
+  [imoveis] id=2249  'Jardim Brasil · Rua Ametista' → 'Jardim Brasil'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Azulão' → 'Jardim Olímpico'
+  [imoveis] id=2250  'Jardim Olímpico · Rua Azulão' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Oásis · Rua Rio Sena' → 'Jardim Oasis'
+  [imoveis] id=2251  'Jardim Oásis · Rua Rio Sena' → 'Jardim Oasis'
+  📍 Bairro (cache): 'Jardim Universo · Rua Joaquim Mendonça' → 'Jardim Universo'
+  [imoveis] id=2252  'Jardim Universo · Rua Joaquim Mendonça' → 'Jardim Universo'
+  📍 Bairro (cache): 'Loteamento Madrid · Rua Becervilho dos Santos' → 'Loteamento Madrid'
+  [imoveis] id=2254  'Loteamento Madrid · Rua Becervilho dos Santos' → 'Loteamento Madrid'
+  📍 Bairro (cache): 'Jardim Santa Rosa · Rua Marcílio Zequim' → 'Jardim Santa Rosa'
+  [imoveis] id=2255  'Jardim Santa Rosa · Rua Marcílio Zequim' → 'Jardim Santa Rosa'
+  📍 Bairro (cache): 'Jardim Guairacá · Rua Manoel da Silveira' → 'Jardim Guairacá'
+  [imoveis] id=2256  'Jardim Guairacá · Rua Manoel da Silveira' → 'Jardim Guairacá'
+  📍 Bairro (cache): 'Jardim Novo Oásis · Rua Rio Mamoré' → 'Jardim Novo Oasis'
+  [imoveis] id=2257  'Jardim Novo Oásis · Rua Rio Mamoré' → 'Jardim Novo Oasis'
+  📍 Bairro (cache): 'Jardim Montreal · Rua Pioneiro Domênico Durso' → 'Jardim Montreal'
+  [imoveis] id=2258  'Jardim Montreal · Rua Pioneiro Domênico Durso' → 'Jardim Montreal'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Pioneiro Alfredo José da Costa' → 'Loteamento Sumaré'
+  [imoveis] id=2260  'Loteamento Sumaré · Rua Pioneiro Alfredo José da Costa' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Maria Bertolina Carolino' → 'Loteamento Sumaré'
+  [imoveis] id=2261  'Loteamento Sumaré · Rua Maria Bertolina Carolino' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Jardim Paulista III · Rua Francisco Dias de Aro' → 'Jardim Paulista'
+  [imoveis] id=2262  'Jardim Paulista III · Rua Francisco Dias de Aro' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Vila Morangueira · Rua Lima' → 'Vila Morangueira'
+  [imoveis] id=2263  'Vila Morangueira · Rua Lima' → 'Vila Morangueira'
+  📍 Bairro (cache): 'Jardim Pinheiros · Rua Araucária' → 'Jardim Pinheiros'
+  [imoveis] id=2264  'Jardim Pinheiros · Rua Araucária' → 'Jardim Pinheiros'
+  📍 Bairro (cache): 'Jardim Paulista Iii' → 'Jardim Paulista III'
+  [imoveis] id=2265  'Jardim Paulista Iii' → 'Jardim Paulista III'
+  📍 Bairro (cache): 'Zona 07 · Rua Quintino Bocaiúva' → 'Zona 07'
+  [imoveis] id=2269  'Zona 07 · Rua Quintino Bocaiúva' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Paulista III · Rua Pioneiro Walcyr Baveloni' → 'Jardim Paulista'
+  [imoveis] id=2270  'Jardim Paulista III · Rua Pioneiro Walcyr Baveloni' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim São Silvestre · Rua Pioneiro Antonio Tait' → 'Jardim São Silvestre'
+  [imoveis] id=2271  'Jardim São Silvestre · Rua Pioneiro Antonio Tait' → 'Jardim São Silvestre'
+  📍 Bairro (cache): 'Zona 01 · Rua Neo Alves Martins' → 'Zona 01'
+  [imoveis] id=2273  'Zona 01 · Rua Neo Alves Martins' → 'Zona 01'
+  📍 Bairro (cache): 'Jardim Everest · Rua Miguel Belai Filho' → 'Jardim Everest'
+  [imoveis] id=2274  'Jardim Everest · Rua Miguel Belai Filho' → 'Jardim Everest'
+  📍 Bairro (cache): 'Jardim Aurora · Rua Pioneiro José Zara' → 'Jardim Aurora'
+  [imoveis] id=2275  'Jardim Aurora · Rua Pioneiro José Zara' → 'Jardim Aurora'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Pioneiro Hélio dos Reis Figueiredo' → 'Loteamento Sumaré'
+  [imoveis] id=2276  'Loteamento Sumaré · Rua Pioneiro Hélio dos Reis Figueiredo' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Vila Emília · Rua Ouro Verde' → 'Vila Emilia'
+  [imoveis] id=2278  'Vila Emília · Rua Ouro Verde' → 'Vila Emilia'
+  📍 Bairro (cache): 'Jardim Colina Verde · Rua Rodolfo Cremm' → 'Jardim Colina Verde'
+  [imoveis] id=2282  'Jardim Colina Verde · Rua Rodolfo Cremm' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Jardim Tupinambá · Rua Barão do Rio Pardo' → 'Jardim Tupinambá'
+  [imoveis] id=2284  'Jardim Tupinambá · Rua Barão do Rio Pardo' → 'Jardim Tupinambá'
+  📍 Bairro (cache): 'Jardim Montreal · Rua Pioneiro Rodolfo Pinheiro Lima' → 'Jardim Montreal'
+  [imoveis] id=2285  'Jardim Montreal · Rua Pioneiro Rodolfo Pinheiro Lima' → 'Jardim Montreal'
+  📍 Bairro (cache): 'Jardim Oásis · Rua Rio Guaíba' → 'Jardim Oasis'
+  [imoveis] id=2287  'Jardim Oásis · Rua Rio Guaíba' → 'Jardim Oasis'
+  📍 Bairro (cache): 'Zona 07 · Rua Benjamin Constant' → 'Zona 07'
+  [imoveis] id=2288  'Zona 07 · Rua Benjamin Constant' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Diamante · Rua Hilda Matheus Afonso' → 'Jardim Diamante'
+  [imoveis] id=2290  'Jardim Diamante · Rua Hilda Matheus Afonso' → 'Jardim Diamante'
+  📍 Bairro (cache): 'Jardim Paulista IV · Rua Pioneiro Joaquim Pedro de Oliveira' → 'Jardim Paulista'
+  [imoveis] id=2291  'Jardim Paulista IV · Rua Pioneiro Joaquim Pedro de Oliveira' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Colina Verde · Rua Elionildo Dena' → 'Jardim Colina Verde'
+  [imoveis] id=2299  'Jardim Colina Verde · Rua Elionildo Dena' → 'Jardim Colina Verde'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Garça' → 'Jardim Olímpico'
+  [imoveis] id=2300  'Jardim Olímpico · Rua Garça' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Real · Rua Ônix' → 'Jardim Real'
+  [imoveis] id=2301  'Jardim Real · Rua Ônix' → 'Jardim Real'
+  📍 Bairro (cache): 'Jardim Império do Sol · Rua Pioneiro José Leal' → 'Jardim Império Do Sol'
+  [imoveis] id=2304  'Jardim Império do Sol · Rua Pioneiro José Leal' → 'Jardim Império Do Sol'
+  📍 Bairro (cache): 'Zona 07 · Rua Rui Barbosa' → 'Zona 07'
+  [imoveis] id=2307  'Zona 07 · Rua Rui Barbosa' → 'Zona 07'
+  📍 Bairro (cache): 'Vila Nova · Rua Matinhos' → 'Vila Nova'
+  [imoveis] id=2308  'Vila Nova · Rua Matinhos' → 'Vila Nova'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Quero-quero' → 'Jardim Olímpico'
+  [imoveis] id=2310  'Jardim Olímpico · Rua Quero-quero' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Jardim Paulista III · Rua Ana Coronado Marquioto' → 'Jardim Paulista'
+  [imoveis] id=2311  'Jardim Paulista III · Rua Ana Coronado Marquioto' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim América · Rua Auto Curti' → 'Jardim America'
+  [imoveis] id=2313  'Jardim América · Rua Auto Curti' → 'Jardim America'
+  📍 Bairro (cache): 'Jardim Universo · Avenida Prefeito Sincler Sambatti' → 'Jardim Universo'
+  [imoveis] id=2314  'Jardim Universo · Avenida Prefeito Sincler Sambatti' → 'Jardim Universo'
+  📍 Bairro (cache): 'Jardim Paulista · Rua Pioneiro João Nunes' → 'Jardim Paulista'
+  [imoveis] id=2315  'Jardim Paulista · Rua Pioneiro João Nunes' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Recanto dos Magnatas · Rua João Carlos Polo' → 'Recanto dos Magnatas'
+  [imoveis] id=2316  'Recanto dos Magnatas · Rua João Carlos Polo' → 'Recanto dos Magnatas'
+  📍 Bairro (cache): 'Jardim Paris · Rua Ernesto Volpato' → 'Jardim Paris'
+  [imoveis] id=2317  'Jardim Paris · Rua Ernesto Volpato' → 'Jardim Paris'
+  📍 Bairro (cache): 'Jardim Santa Helena · Rua Ágata' → 'Jardim Santa Helena'
+  [imoveis] id=2318  'Jardim Santa Helena · Rua Ágata' → 'Jardim Santa Helena'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Pioneiro Aldo Montovanelli' → 'Parque Tarumã'
+  [imoveis] id=2319  'Parque Tarumã · Rua Pioneiro Aldo Montovanelli' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Conjunto Residencial Cidade Alta · Rua Ataulfo Alves' → 'Conjunto Residencial Cidade Alta'
+  [imoveis] id=2320  'Conjunto Residencial Cidade Alta · Rua Ataulfo Alves' → 'Conjunto Residencial Cidade Alta'
+  📍 Bairro (cache): 'Parque Tarumã · Rua Antônia Capoti Fernandes' → 'Parque Tarumã'
+  [imoveis] id=2325  'Parque Tarumã · Rua Antônia Capoti Fernandes' → 'Parque Tarumã'
+  📍 Bairro (cache): 'Zona 07 · Rua José Clemente' → 'Zona 07'
+  [imoveis] id=2327  'Zona 07 · Rua José Clemente' → 'Zona 07'
+  📍 Bairro (cache): 'Conjunto Residencial Paulino Carlos Filho · Rua Rio Xingu' → 'Conjunto Residencial Paulino Carlos Filho'
+  [imoveis] id=2329  'Conjunto Residencial Paulino Carlos Filho · Rua Rio Xingu' → 'Conjunto Residencial Paulino Carlos Filho'
+  📍 Bairro (cache): 'Jardim Olímpico · Rua Bem-te-vi' → 'Jardim Olímpico'
+  [imoveis] id=2331  'Jardim Olímpico · Rua Bem-te-vi' → 'Jardim Olímpico'
+  📍 Bairro (cache): 'Parque Residencial Tuiuti · Rua Rio Barreiro' → 'Parque Residencial Tuiuti'
+  [imoveis] id=2333  'Parque Residencial Tuiuti · Rua Rio Barreiro' → 'Parque Residencial Tuiuti'
+  📍 Bairro (cache): 'Jardim Leblon · Rua Pioneiro Hettore Giacopini' → 'Jardim Leblon'
+  [imoveis] id=2334  'Jardim Leblon · Rua Pioneiro Hettore Giacopini' → 'Jardim Leblon'
+  📍 Bairro (cache): 'Jardim Itália II · Rua Pioneira Vergínia Maria Fecchio' → 'Jardim Itália'
+  [imoveis] id=2335  'Jardim Itália II · Rua Pioneira Vergínia Maria Fecchio' → 'Jardim Itália'
+  📍 Bairro (cache): 'Parque Residencial Quebec · Rua Palmital' → 'Parque Residencial Quebec'
+  [imoveis] id=2336  'Parque Residencial Quebec · Rua Palmital' → 'Parque Residencial Quebec'
+  📍 Bairro (cache): 'Cidade Jardim · Rua Pioneiro Marcos Takashi Kawamoto' → 'Cidade Jardim'
+  [imoveis] id=2337  'Cidade Jardim · Rua Pioneiro Marcos Takashi Kawamoto' → 'Cidade Jardim'
+  📍 Bairro (cache): 'Conjunto Residencial Paulino Carlos Filho · Rua Rio Amazonas' → 'Conjunto Residencial Paulino Carlos Filho'
+  [imoveis] id=2340  'Conjunto Residencial Paulino Carlos Filho · Rua Rio Amazonas' → 'Conjunto Residencial Paulino Carlos Filho'
+  📍 Bairro (cache): 'Jardim Aurora · Rua Pioneiro José Zara' → 'Jardim Aurora'
+  [imoveis] id=2341  'Jardim Aurora · Rua Pioneiro José Zara' → 'Jardim Aurora'
+  📍 Bairro (cache): 'Jardim Real · Avenida Doutor Alexandre Rasgulaeff' → 'Jardim Real'
+  [imoveis] id=2342  'Jardim Real · Avenida Doutor Alexandre Rasgulaeff' → 'Jardim Real'
+  📍 Bairro (cache): 'Zona 07 · Rua Rui Barbosa' → 'Zona 07'
+  [imoveis] id=2343  'Zona 07 · Rua Rui Barbosa' → 'Zona 07'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Pioneiro Guido Antônio Germani' → 'Jardim Dias'
+  [imoveis] id=2345  'Jardim Dias I · Rua Pioneiro Guido Antônio Germani' → 'Jardim Dias'
+  📍 Bairro (cache): 'Loteamento Sumaré · Rua Pioneiro Hélio dos Reis Figueiredo' → 'Loteamento Sumaré'
+  [imoveis] id=2352  'Loteamento Sumaré · Rua Pioneiro Hélio dos Reis Figueiredo' → 'Loteamento Sumaré'
+  📍 Bairro (cache): 'Jardim Universo · Rua Pioneiro Mário Marangoni' → 'Jardim Universo'
+  [imoveis] id=2354  'Jardim Universo · Rua Pioneiro Mário Marangoni' → 'Jardim Universo'
+  📍 Bairro (cache): 'Jardim São Jorge · Rua Santa Guilhermina' → 'Jardim São Jorge'
+  [imoveis] id=2357  'Jardim São Jorge · Rua Santa Guilhermina' → 'Jardim São Jorge'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Pioneiro Salvador Ludovico Mazzer' → 'Jardim Dias'
+  [imoveis] id=2358  'Jardim Dias I · Rua Pioneiro Salvador Ludovico Mazzer' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Rebouças · Rua Pioneiro Salvador Kessa' → 'Jardim Rebouças'
+  [imoveis] id=2361  'Jardim Rebouças · Rua Pioneiro Salvador Kessa' → 'Jardim Rebouças'
+  📍 Bairro (cache): 'Loteamento Batel · Rua Rodrigo Jacques' → 'Loteamento Batel'
+  [imoveis] id=2362  'Loteamento Batel · Rua Rodrigo Jacques' → 'Loteamento Batel'
+  📍 Bairro (cache): 'Jardim Licce · Rua Ivaldo Borges Horta' → 'Jardim Licce'
+  [imoveis] id=2364  'Jardim Licce · Rua Ivaldo Borges Horta' → 'Jardim Licce'
+  📍 Bairro (cache): 'Jardim Everest · Rua Miguel Belai Filho' → 'Jardim Everest'
+  [imoveis] id=2366  'Jardim Everest · Rua Miguel Belai Filho' → 'Jardim Everest'
+  📍 Bairro (cache): 'Jardim Paulista III · Rua Constante Sala' → 'Jardim Paulista'
+  [imoveis] id=2371  'Jardim Paulista III · Rua Constante Sala' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Tóquio · Rua Fernando César Menezes Nagib Neme' → 'Jardim Tóquio'
+  [imoveis] id=2375  'Jardim Tóquio · Rua Fernando César Menezes Nagib Neme' → 'Jardim Tóquio'
+  📍 Bairro (cache): 'Jardim Guairacá · Rua Manoel da Silveira' → 'Jardim Guairacá'
+  [imoveis] id=2378  'Jardim Guairacá · Rua Manoel da Silveira' → 'Jardim Guairacá'
+  📍 Bairro (cache): 'Jardim Guairacá · Rua Manoel da Silveira' → 'Jardim Guairacá'
+  [imoveis] id=2380  'Jardim Guairacá · Rua Manoel da Silveira' → 'Jardim Guairacá'
+  📍 Bairro (cache): 'Parque das Laranjeiras · Rua Tupanssi' → 'Parque Das Laranjeiras'
+  [imoveis] id=2381  'Parque das Laranjeiras · Rua Tupanssi' → 'Parque Das Laranjeiras'
+  📍 Bairro (cache): 'Jardim Diamante · Rua Pioneiro João Vaz de Queiroz Filho' → 'Jardim Diamante'
+  [imoveis] id=2383  'Jardim Diamante · Rua Pioneiro João Vaz de Queiroz Filho' → 'Jardim Diamante'
+  📍 Bairro (cache): 'Jardim Imperio Do Sol' → 'Jardim Império Do Sol'
+  [imoveis] id=2385  'Jardim Imperio Do Sol' → 'Jardim Império Do Sol'
+  📍 Bairro (cache): 'Jardim Dias I · Rua Arthur Fregadolli' → 'Jardim Dias'
+  [imoveis] id=2387  'Jardim Dias I · Rua Arthur Fregadolli' → 'Jardim Dias'
+  📍 Bairro (cache): 'Portal das Torres · Rua Mitugu Miyabayashi' → 'Portal Das Torres'
+  [imoveis] id=2389  'Portal das Torres · Rua Mitugu Miyabayashi' → 'Portal Das Torres'
+
+  ✅ imoveis: 307 bairros corrigidos
+  ✅ bairros: 307 corrigido(s)
+
+✅ 822 correção(ões) automática(s)
+[2026-07-01 02:23:36] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 02:53:53] === Início do ciclo automático ===
+[2026-07-01 02:53:53] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 3 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 02:54:24] Processamento concluído.
+[2026-07-01 02:54:24] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 0 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 0 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2393  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=2394  'Jardim Paulista 3' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2395  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+
+  ✅ imoveis: 3 bairros corrigidos
+  ✅ bairros: 3 corrigido(s)
+
+✅ 3 correção(ões) automática(s)
+[2026-07-01 02:54:25] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 04:00:41] === Início do ciclo automático ===
+[2026-07-01 04:00:41] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 04:01:14] Processamento concluído.
+[2026-07-01 04:01:14] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 0 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 0 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2396  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2397  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+
+  ✅ imoveis: 2 bairros corrigidos
+  ✅ bairros: 2 corrigido(s)
+
+✅ 2 correção(ões) automática(s)
+[2026-07-01 04:01:14] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 04:31:23] === Início do ciclo automático ===
+[2026-07-01 04:31:23] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 3 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 04:31:56] Processamento concluído.
+[2026-07-01 04:31:56] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 0 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 0 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2398  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=2399  'Jardim Paulista 3' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2400  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+
+  ✅ imoveis: 3 bairros corrigidos
+  ✅ bairros: 3 corrigido(s)
+
+✅ 3 correção(ões) automática(s)
+[2026-07-01 04:31:56] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 05:32:05] === Início do ciclo automático ===
+[2026-07-01 05:32:05] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 05:32:38] Processamento concluído.
+[2026-07-01 05:32:38] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 0 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 0 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2401  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2402  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+
+  ✅ imoveis: 2 bairros corrigidos
+  ✅ bairros: 2 corrigido(s)
+
+✅ 2 correção(ões) automática(s)
+[2026-07-01 05:32:38] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 06:02:47] === Início do ciclo automático ===
+[2026-07-01 06:02:47] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 33 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 06:03:16] Processamento concluído.
+[2026-07-01 06:03:16] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 0 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 0 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2403  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2404  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+
+  ✅ imoveis: 2 bairros corrigidos
+  ✅ bairros: 2 corrigido(s)
+
+✅ 2 correção(ões) automática(s)
+[2026-07-01 06:03:17] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-07-01 08:19:31] === Início do ciclo automático ===
+[2026-07-01 08:19:31] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  📍 Bairro (cache): '' → 'Jardim Fregadolli'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro (cache): 'Zona Armazém (Zona 07)' → 'Zona 07'
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 3 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+[2026-07-01 08:19:59] Processamento concluído.
+[2026-07-01 08:19:59] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 0 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  ✅ demandas: 0 corrigido(s)
+
+── Bairros ──────────────────────────────────────────────────────
+  📍 Bairro (cache): 'Jardim Dias II' → 'Jardim Dias'
+  [imoveis] id=2405  'Jardim Dias II' → 'Jardim Dias'
+  📍 Bairro (cache): 'Jardim Paulista 3' → 'Jardim Paulista'
+  [imoveis] id=2406  'Jardim Paulista 3' → 'Jardim Paulista'
+  📍 Bairro (cache): 'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+  [imoveis] id=2407  'Jardim Universitário (Zona 07)' → 'Jardim Universitário'
+
+  ✅ imoveis: 3 bairros corrigidos
+  ✅ bairros: 3 corrigido(s)
+
+✅ 3 correção(ões) automática(s)
+[2026-07-01 08:19:59] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.

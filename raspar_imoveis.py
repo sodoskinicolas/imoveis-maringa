@@ -13,6 +13,7 @@ Agendado via LaunchAgent para rodar às 3h da manhã.
 
 import re
 import sys
+import json
 import time
 import logging
 import argparse
@@ -132,30 +133,23 @@ def get_page(url, ajax=False, retries=3, delay=2):
     return None
 
 
-# ── Sub100 CMS (Haraki, Massaru, Bellakaza) ──────────────────────────────────
+# ── Sub100 CMS (Haraki, Massaru, Bellakaza, Silvio Iwata, Casa do Corretor) ──
 #
-# Config por site Sub100.
-# pagina_param → parâmetro de paginação (padrão Sub100: "pagina")
-# Para adicionar um novo site Sub100, basta incluir uma entrada aqui.
+# Todos os 5 sites são construídos na mesma plataforma Sub100 (confirmado pelo
+# rodapé "Desenvolvedor: Sub100 Sistemas" em cada um). Cada tenant, porém, tem
+# sua própria configuração de URLs — silvioiwata.com.br mudou de
+# "/imoveis-a-venda" pra "/imoveis/venda/{categoria}/{cidade}-pr" em algum
+# momento e quebrou o scraper (410 Gone); o mesmo aconteceu antes com
+# Haraki/Massaru/Bellakaza. Por isso não fixamos mais slugs de categoria à mão
+# — descobrir_categorias_venda() lê a home do site e extrai as URLs de
+# categoria reais que estão publicadas ali, o que sobrevive a mudanças de
+# slug sem precisar de manutenção manual.
 SUB100_SITES = [
-    {
-        "url":          "https://harakiimoveis.com.br/imoveis-a-venda",
-        "domain":       "harakiimoveis.com.br",
-        "grupo":        "Haraki Imóveis",
-        "pagina_param": "pagina",
-    },
-    {
-        "url":          "https://massaruimoveis.com.br/imoveis-a-venda",
-        "domain":       "massaruimoveis.com.br",
-        "grupo":        "Massaru Imóveis",
-        "pagina_param": "pagina",
-    },
-    {
-        "url":          "https://bellakaza.com.br/imoveis-a-venda",
-        "domain":       "bellakaza.com.br",
-        "grupo":        "Bellakaza",
-        "pagina_param": "pagina",
-    },
+    {"domain": "harakiimoveis.com.br",    "grupo": "Haraki Imóveis"},
+    {"domain": "massaruimoveis.com.br",   "grupo": "Massaru Imóveis"},
+    {"domain": "bellakaza.com.br",        "grupo": "Bellakaza"},
+    {"domain": "silvioiwata.com.br",      "grupo": "Silvio Iwata"},
+    {"domain": "casadocorretormga.com.br","grupo": "Casa do Corretor"},
 ]
 
 # Carregar sites descobertos automaticamente pelo descobrir_sites.py
@@ -180,16 +174,27 @@ def parse_sub100_block(html_block, base_domain):
       2. og:title / <title> / <h1-4>  (só presentes na página individual)
     """
     # ── Ref / URL ─────────────────────────────────────────────────────────────
-    # AJAX retorna URLs longas: /imovel/8020000829/venda/sobrado-em-maringa/bairro
-    # Página individual usa:    /imovel/00000829/
-    # Texto do bloco contém:    00000829 (antes de "Contate agora")
-    full_url_m = re.search(r'/imovel/(\d{7,12})/venda/([^"\'>\s]+)', html_block)
+    # Tenants Sub100 diferentes usam estruturas de URL diferentes pro item:
+    #   Haraki/Massaru/Bellakaza:  /imovel/8020000829/venda/sobrado-em-maringa/bairro
+    #   Silvio Iwata/Casa do Corretor: /imovel/3620005920/apartamento-a-venda/bairro
+    # Tentamos os dois formatos, mais dois fallbacks genéricos pra qualquer
+    # variação futura: pegar só o ID de qualquer /imovel/{id}/, ou o número
+    # (com zeros à esquerda) solto no texto do bloco.
+    full_url_m  = re.search(r'/imovel/(\d{7,12})/venda/([^"\'>\s]+)', html_block)
+    alt_url_m   = re.search(r'/imovel/(\d{7,12})/([a-z][a-z-]*?)-a-venda/', html_block, re.I)
+    bare_url_m  = re.search(r'/imovel/(\d{7,12})/', html_block)
     short_url_m = re.search(r'/imovel/(0{3,}\d+)/', html_block)
     text_ref_m  = re.search(r'\b(0{3,}\d{2,})\b', html_block)
 
     if full_url_m:
         raw_ref   = full_url_m.group(1)   # ex: 8020000829
         url_slug  = full_url_m.group(2)   # ex: sobrado-em-maringa/jardim-everest
+    elif alt_url_m:
+        raw_ref   = alt_url_m.group(1)    # ex: 3620005920
+        url_slug  = alt_url_m.group(2)    # ex: apartamento, casa-em-condominio
+    elif bare_url_m:
+        raw_ref  = bare_url_m.group(1)
+        url_slug = ""
     elif short_url_m:
         raw_ref  = short_url_m.group(1)
         url_slug = ""
@@ -256,41 +261,87 @@ def parse_sub100_block(html_block, base_domain):
         "obs":       link,
     }
 
-def scrape_sub100(cfg):
+def descobrir_categorias_venda(domain):
     """
-    Raspa um site Sub100 usando a config do dicionário `cfg` (ver SUB100_SITES).
+    Descobre as URLs de categoria de venda publicadas na home do site Sub100,
+    em vez de confiar em slugs fixos — eles já mudaram pelo menos duas vezes
+    nesses sites (foi exatamente isso que quebrou o scraper: "/imoveis-a-venda"
+    virou "/imoveis/venda/{categoria}/{cidade}-pr", com categorias que variam
+    por tenant: "casas-ou-sobrados" num site, "casas"+"sobrados" separados em
+    outro, etc). Ler direto da home sobrevive a essas mudanças sem manutenção.
 
-    Estratégia definitiva:
-      • Usa AJAX (X-Requested-With: XMLHttpRequest) na página geral de listagem.
-        Sem AJAX o Sub100 entrega shell HTML vazio (conteúdo é JS-renderizado).
-      • O tipo é extraído da URL slug de cada item no bloco AJAX:
-          /venda/sobrado-em-maringa/... → Sobrado
-          /venda/casa-em-maringa/...   → Casa
-        Isso substitui a abordagem de categorias, que era necessária antes mas
-        dependia de requests sem AJAX (que não traziam itens).
+    Exclui variantes por bairro (.../imoveis/venda/apartamentos/10-maringa-pr
+    /143-bairros), que são subconjuntos redundantes da própria categoria.
+
+    O sufixo de cidade (/10-maringa-pr) é OPCIONAL — a Casa do Corretor, por
+    exemplo, publica as categorias sem ele (/imoveis/venda/casas-ou-sobrados,
+    sem cidade), provavelmente por atuar numa cidade só.
     """
-    domain     = cfg["domain"]
-    nome_grupo = cfg["grupo"]
-    base_url   = cfg["url"]
-    pag_param  = cfg.get("pagina_param", "pagina")
+    base = f"https://{domain}"
+    r = get_page(base)
+    categorias = []
+    if r:
+        vistas = set()
+        for m in re.finditer(
+            r'href=["\'](?:https?://[^"\']*?)?(/imoveis/venda/[a-z0-9-]+(?:/\d+-[a-z-]+-pr)?)["\']',
+            r.text,
+        ):
+            path = m.group(1)
+            if path in vistas:
+                continue
+            vistas.add(path)
+            categorias.append(f"{base}{path}")
+    return categorias
 
-    items     = []
-    seen_refs = set()
 
-    log.info(f"[{nome_grupo}] Iniciando raspagem AJAX → {base_url}")
+# Delimitadores conhecidos de "fim de card" em páginas Sub100 — tentados em
+# ordem até um deles produzir uma divisão real (mais de ~3 blocos). Tenants
+# diferentes usam textos de botão diferentes: Haraki/Massaru/Bellakaza usam
+# "Contate agora", Silvio Iwata usa "CONTATAR". Sem o delimitador certo, a
+# página inteira vira 1 bloco só e só o primeiro imóvel é extraído — foi
+# exatamente isso que fazia Silvio Iwata/Casa do Corretor renderem só 1
+# imóvel por página em vez de ~10.
+_DELIMITADORES_CARD = [
+    r'Contate\s+agora',
+    r'CONTATAR',
+    r'(?=Ref\.:?\s*\d{4,})',   # fallback genérico: quebra antes de cada "Ref.: NNNN"
+]
+
+def _split_blocks_sub100(html):
+    for pat in _DELIMITADORES_CARD:
+        blocks = re.split(pat, html, flags=re.I)
+        if len(blocks) >= 2:   # delimitador realmente bateu pelo menos 1 vez
+            return blocks
+    return [html]
+
+
+def _raspar_listagem_sub100(url_base, domain, seen_refs, nome_grupo, max_paginas=80):
+    """
+    Raspa uma URL de listagem Sub100 (categoria ou página combinada),
+    paginando até não achar mais imóveis novos.
+
+    Manda os dois nomes de parâmetro de paginação conhecidos (pagina= e
+    page=) porque tenants Sub100 diferentes usam nomes diferentes — o
+    framework ignora o que não reconhece, então não custa nada mandar os
+    dois de uma vez em vez de adivinhar qual esse site em particular usa.
+    """
+    items = []
     page = 1
-    while True:
-        url = f"{base_url}?{pag_param}={page}" if page > 1 else base_url
-        r = get_page(url, ajax=True)   # AJAX necessário — sem ele a página é JS-rendered
+    while page <= max_paginas:
+        if page == 1:
+            url = url_base
+        else:
+            sep = "&" if "?" in url_base else "?"
+            url = f"{url_base}{sep}pagina={page}&page={page}"
+        r = get_page(url)
         if not r:
-            log.warning(f"[{nome_grupo}] Falha ao carregar página {page}")
             break
 
         html = r.text
         if not re.search(r'/imovel/\d+', html):
             break
 
-        blocks = re.split(r'Contate\s+agora', html, flags=re.I)
+        blocks = _split_blocks_sub100(html)
         found = 0
         for block in blocks:
             item = parse_sub100_block(block, domain)
@@ -300,164 +351,57 @@ def scrape_sub100(cfg):
             items.append(item)
             found += 1
 
-        log.info(f"[{nome_grupo}] Página {page}: {found} imóveis")
+        rotulo = url_base.rsplit("/imoveis/venda", 1)[-1] or "/imoveis/venda"
+        log.info(f"[{nome_grupo}] {rotulo} — página {page}: {found} imóveis")
         if found == 0:
             break
-
-        soup = BeautifulSoup(html, "html.parser")
-        next_btn = (
-            soup.find("a", href=re.compile(rf'{pag_param}={page+1}'))
-            or soup.find("a", string=re.compile(r"próxima|next|›|»", re.I))
-        )
-        if not next_btn:
-            break
         page += 1
-        time.sleep(1.5)
+        time.sleep(1.0)
 
-    # Resumo por tipo
+    return items
+
+
+def scrape_sub100(cfg):
+    """
+    Raspa um site Sub100 (config em SUB100_SITES: domain + grupo). Vale para
+    os 5 sites — Haraki, Massaru, Bellakaza, Silvio Iwata e Casa do Corretor
+    são todos construídos na mesma plataforma (rodapé "Sub100 Sistemas").
+
+    Estratégia: descobre as URLs de categoria publicadas na própria home
+    (descobrir_categorias_venda) e raspa cada uma com paginação, mais a
+    página combinada /imoveis/venda como fonte extra — funciona em alguns
+    tenants (ex. Silvio Iwata lista tudo ali junto) e é inofensiva nos que
+    não suportam (só retorna vazio). Dedup por ref dentro do site inteiro via
+    seen_refs, então rodar a combinada depois das categorias não duplica nada.
+
+    O tipo de cada imóvel vem do slug da URL do PRÓPRIO item
+    (parse_sub100_block), não da categoria — mais confiável, já que algumas
+    categorias vêm combinadas (ex: "casas-ou-sobrados").
+    """
+    domain     = cfg["domain"]
+    nome_grupo = cfg["grupo"]
+    base       = f"https://{domain}"
+
+    seen_refs = set()
+    items     = []
+
+    categorias = descobrir_categorias_venda(domain)
+    if categorias:
+        log.info(f"[{nome_grupo}] {len(categorias)} categoria(s) encontrada(s) na home")
+    else:
+        log.warning(f"[{nome_grupo}] Nenhuma categoria encontrada na home — só vou tentar a página combinada")
+
+    for url_cat in categorias:
+        items.extend(_raspar_listagem_sub100(url_cat, domain, seen_refs, nome_grupo))
+        time.sleep(1.0)
+
+    # Página combinada — cobertura extra, sem custo se o tenant não suportar
+    items.extend(_raspar_listagem_sub100(f"{base}/imoveis/venda", domain, seen_refs, nome_grupo))
+
     from collections import Counter
     tipos = Counter(it["tipo"] for it in items)
     log.info(f"[{nome_grupo}] Total: {len(items)} imóveis | {dict(tipos)}")
     return items
-
-
-# ── Silvio Iwata ──────────────────────────────────────────────────────────────
-
-def scrape_silvio():
-    log.info("[Silvio Iwata] Iniciando raspagem")
-    base = "https://silvioiwata.com.br"
-    items = []
-    seen = set()
-    page = 1
-
-    while True:
-        url = f"{base}/imoveis-a-venda?pagina={page}" if page > 1 else f"{base}/imoveis-a-venda"
-        r = get_page(url)
-        if not r:
-            break
-
-        soup = BeautifulSoup(r.text, "html.parser")
-
-        # Procura cards de imóveis — padrão comum em sites imobiliários
-        cards = (
-            soup.find_all("div", class_=re.compile(r"imovel|property|listing|card", re.I))
-            or soup.find_all("article")
-        )
-
-        found = 0
-        for card in cards:
-            link_tag = card.find("a", href=re.compile(r"/imovel/"))
-            if not link_tag:
-                continue
-            link = base + link_tag["href"] if link_tag["href"].startswith("/") else link_tag["href"]
-            s = slug(link)
-            if s in seen:
-                continue
-            seen.add(s)
-
-            text = card.get_text(" ", strip=True)
-            tipo_tag = card.find(class_=re.compile(r"tipo|categoria|tag", re.I))
-            bairro_tag = card.find(class_=re.compile(r"bairro|local|cidade|regi", re.I))
-
-            items.append({
-                "ref":     s,
-                "link":    link,
-                "tipo":    infer_tipo(tipo_tag.get_text() if tipo_tag else text),
-                "bairro":  bairro_tag.get_text(strip=True) if bairro_tag else "",
-                "area":    parse_area(text),
-                "quartos": parse_int(re.search(r"(\d+)\s*quarto", text, re.I) and
-                                     re.search(r"(\d+)\s*quarto", text, re.I).group(1)),
-                "suites":  parse_int(re.search(r"(\d+)\s*su[íi]te", text, re.I) and
-                                     re.search(r"(\d+)\s*su[íi]te", text, re.I).group(1)),
-                "vagas":   parse_int(re.search(r"(\d+)\s*vaga", text, re.I) and
-                                     re.search(r"(\d+)\s*vaga", text, re.I).group(1)),
-                "preco":   parse_preco(re.search(r"R\$\s*[\d.,]+", text.replace("\xa0", " ")) and
-                                       re.search(r"R\$\s*[\d.,]+", text.replace("\xa0", " ")).group(0)),
-                "obs":     link,
-            })
-            found += 1
-
-        log.info(f"[Silvio Iwata] Página {page}: {found} imóveis")
-        if found == 0:
-            break
-
-        next_btn = soup.find("a", string=re.compile(r"próxima|next|»|›", re.I))
-        if not next_btn:
-            break
-        page += 1
-        time.sleep(1.5)
-
-    log.info(f"[Silvio Iwata] Total: {len(items)}")
-    return items, "silvioiwata.com.br"
-
-
-# ── Casa do Corretor ──────────────────────────────────────────────────────────
-
-def scrape_casa_corretor():
-    log.info("[Casa do Corretor] Iniciando raspagem")
-    base = "https://casadocorretormga.com.br"
-    items = []
-    seen = set()
-    page = 1
-
-    while True:
-        url = f"{base}/imoveis-a-venda?pagina={page}" if page > 1 else f"{base}/imoveis-a-venda"
-        r = get_page(url)
-        if not r:
-            break
-
-        soup = BeautifulSoup(r.text, "html.parser")
-        cards = (
-            soup.find_all("div", class_=re.compile(r"imovel|property|listing|card", re.I))
-            or soup.find_all("article")
-        )
-
-        found = 0
-        for card in cards:
-            link_tag = card.find("a", href=re.compile(r"/imovel/|/imoveis/"))
-            if not link_tag:
-                continue
-            link = base + link_tag["href"] if link_tag["href"].startswith("/") else link_tag["href"]
-            s = slug(link)
-            if s in seen:
-                continue
-            seen.add(s)
-
-            text = card.get_text(" ", strip=True)
-            tipo_tag  = card.find(class_=re.compile(r"tipo|categoria|tag", re.I))
-            bairro_tag = card.find(class_=re.compile(r"bairro|local|regi", re.I))
-            addr_tag   = card.find(class_=re.compile(r"endereco|address|rua", re.I))
-
-            items.append({
-                "ref":     s,
-                "link":    link,
-                "tipo":    infer_tipo(tipo_tag.get_text() if tipo_tag else text),
-                "bairro":  fix_enc(bairro_tag.get_text(strip=True) if bairro_tag else ""),
-                "endereco": fix_enc(addr_tag.get_text(strip=True) if addr_tag else ""),
-                "area":    parse_area(text),
-                "quartos": parse_int(re.search(r"(\d+)\s*quarto", text, re.I) and
-                                     re.search(r"(\d+)\s*quarto", text, re.I).group(1)),
-                "suites":  None,
-                "vagas":   parse_int(re.search(r"(\d+)\s*vaga", text, re.I) and
-                                     re.search(r"(\d+)\s*vaga", text, re.I).group(1)),
-                "preco":   parse_preco(re.search(r"R\$\s*[\d.,]+", text.replace("\xa0", " ")) and
-                                       re.search(r"R\$\s*[\d.,]+", text.replace("\xa0", " ")).group(0)),
-                "obs":     link,
-            })
-            found += 1
-
-        log.info(f"[Casa do Corretor] Página {page}: {found} imóveis")
-        if found == 0:
-            break
-
-        next_btn = soup.find("a", string=re.compile(r"próxima|next|»|›", re.I))
-        if not next_btn:
-            break
-        page += 1
-        time.sleep(1.5)
-
-    log.info(f"[Casa do Corretor] Total: {len(items)}")
-    return items, "casadocorretormga.com.br"
 
 
 # ── Coletar todos ─────────────────────────────────────────────────────────────
@@ -465,7 +409,6 @@ def scrape_casa_corretor():
 def coletar_todos():
     todos = []
 
-    # Sub100 (Haraki, Massaru, Bellakaza)
     for cfg in SUB100_SITES:
         try:
             items = scrape_sub100(cfg)
@@ -475,26 +418,6 @@ def coletar_todos():
         except Exception as e:
             log.error(f"[{cfg['grupo']}] Erro na raspagem: {e}", exc_info=True)
         time.sleep(2)
-
-    # Silvio
-    try:
-        items, grupo = scrape_silvio()
-        for it in items:
-            it["grupo"] = grupo
-        todos.extend(items)
-    except Exception as e:
-        log.error(f"[Silvio] Erro: {e}", exc_info=True)
-
-    time.sleep(2)
-
-    # Casa do Corretor
-    try:
-        items, grupo = scrape_casa_corretor()
-        for it in items:
-            it["grupo"] = grupo
-        todos.extend(items)
-    except Exception as e:
-        log.error(f"[Casa do Corretor] Erro: {e}", exc_info=True)
 
     log.info(f"Total coletado (todos os sites): {len(todos)}")
     return todos
@@ -547,66 +470,51 @@ def validar_e_completar_item(item, permitir_pesquisa_web=True):
     return item
 
 
-# ── Deduplicação e import ─────────────────────────────────────────────────────
+# ── Sincronização com o banco ─────────────────────────────────────────────────
 
 def atualizar_db(novos_raw, dry_run=False):
-    """Deduplica e insere imóveis raspados no SQLite."""
-    db.init_db()
+    """
+    Sincroniza os imóveis raspados no SQLite via upsert por (fonte, ref) —
+    mesmo padrão usado pra VivaReal/Junior Joda (ver db.upsert_imovel_externo).
 
+    Cada rodada de scrape é uma fotografia do catálogo atual de cada site:
+    imóveis novos são inseridos, os que já existiam são atualizados (com o
+    preço antigo preservado em preco_historico se mudou), e os que sumiram
+    do site nesta rodada são marcados status='Removido' — em vez do
+    comportamento antigo, que só inseria e nunca detectava o que saiu de
+    venda/foi vendido.
+    """
+    db.init_db()
     hoje = date.today().isoformat()
 
-    # Carregar slugs e fingerprints existentes para deduplicação em memória
-    with db.db_conn() as conn:
-        slugs_existentes = db.carregar_slugs(conn)
-        fps_existentes   = db.carregar_fps_imoveis(conn)
-
-    novos      = []
-    slugs_vis  = set()
-    fps_vis    = set()
-
-    for item in novos_raw:
-        obs = item.get("obs") or item.get("link", "")
-        sl  = db.slug_from_obs(obs)
-        bairro = (item.get("bairro") or "").lower().strip()[:20]
-        area   = round(item.get("area") or 0, 0)
-        preco  = int(item.get("preco") or 0)
-        fp = (bairro, area, preco)
-        fp_sem = ("", area, preco)
-
-        if sl and (sl in slugs_existentes or sl in slugs_vis):
-            continue
-        if (fp[0] and fp in fps_existentes) or fp_sem in fps_existentes:
-            continue
-        if fp in fps_vis or fp_sem in fps_vis:
-            continue
-
-        novos.append(item)
-        if sl:
-            slugs_vis.add(sl)
-        fps_vis.add(fp)
-        fps_vis.add(fp_sem)
-
-    log.info(f"Imóveis novos: {len(novos)} (de {len(novos_raw)} coletados)")
-
-    if not novos:
+    log.info(f"Itens coletados (todos os sites): {len(novos_raw)}")
+    if not novos_raw:
         return 0
 
     # Validar/cruzar com bairros oficiais + tabela condominios, e completar o
     # que faltar. Em --dry-run não pesquisa na web (evita custo de API só pra
     # testar), mas ainda valida e cruza com o que já está cadastrado.
     log.info("Validando e cruzando com a base (bairros + condominios)...")
-    for item in novos:
+    for item in novos_raw:
         validar_e_completar_item(item, permitir_pesquisa_web=not dry_run)
 
     if dry_run:
         log.info("[DRY-RUN] Nenhuma alteração salva.")
-        for it in novos[:10]:
-            log.info(f"  Novo: {it.get('tipo','')} | {it.get('bairro','')} | {it.get('edificio','') or ''} | {it.get('preco','')} | {it.get('obs','')}")
-        return len(novos)
+        for it in novos_raw[:10]:
+            log.info(f"  {it.get('grupo','')} | {it.get('tipo','')} | {it.get('bairro','')} | {it.get('edificio','') or ''} | {it.get('preco','')} | {it.get('obs','')}")
+        return len(novos_raw)
 
-    inseridos = 0
+    novos = atualizados = precos_mudaram = 0
+    refs_por_fonte = {}
+
     with db.db_conn() as conn:
-        for item in novos:
+        for item in novos_raw:
+            fonte = item.get("grupo") or ""
+            ref   = item.get("ref") or ""
+            if not fonte or not ref:
+                continue
+            refs_por_fonte.setdefault(fonte, []).append(ref)
+
             bairro_end = item.get("bairro") or ""
             end = item.get("endereco", "")
             if end:
@@ -615,9 +523,10 @@ def atualizar_db(novos_raw, dry_run=False):
             if edificio and edificio.lower() not in bairro_end.lower():
                 bairro_end = f"{bairro_end} · Ed. {edificio}".strip(" ·")
 
-            ok = db.inserir_imovel(conn, {
+            db_item = {
+                "ref_externa":     ref,
                 "data_captura":    hoje,
-                "grupo":           item.get("grupo", ""),
+                "grupo":           fonte,
                 "corretor":        "",
                 "contato":         "",
                 "tipo":            item.get("tipo", "Imóvel"),
@@ -631,12 +540,28 @@ def atualizar_db(novos_raw, dry_run=False):
                 "observacoes":     item.get("obs", ""),
                 "status":          "Novo",
                 "data_publicacao": hoje,
-            })
-            if ok:
-                inseridos += 1
+                "link":            item.get("link", ""),
+            }
+            acao, _ = db.upsert_imovel_externo(conn, db_item, fonte)
+            if acao == "novo":
+                novos += 1
+            elif acao == "preco_mudou":
+                precos_mudaram += 1
+            elif acao == "atualizado":
+                atualizados += 1
 
-    log.info(f"✅ {inseridos} imóveis novos adicionados no SQLite")
-    return inseridos
+        # Só marca como Removido dentro das fontes que de fato coletamos algo
+        # nesta rodada — se um site falhou por completo (0 itens), não
+        # queremos apagar o status de tudo que já estava lá por causa disso.
+        removidos_total = 0
+        for fonte, refs in refs_por_fonte.items():
+            removidos_total += db.marcar_ausentes(conn, fonte, refs)
+
+    log.info(
+        f"✅ {novos} novos · {atualizados} atualizados · "
+        f"{precos_mudaram} com preço alterado · {removidos_total} marcados como Removido"
+    )
+    return novos
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -644,7 +569,7 @@ def atualizar_db(novos_raw, dry_run=False):
 def main():
     parser = argparse.ArgumentParser(description="Raspar imóveis de Maringá")
     parser.add_argument("--dry-run", action="store_true",
-                        help="Mostra o que seria inserido sem alterar a planilha")
+                        help="Mostra o que seria sincronizado sem alterar o banco")
     args = parser.parse_args()
 
     log.info("=" * 60)
@@ -653,9 +578,9 @@ def main():
         log.info("** MODO DRY-RUN — nenhuma alteração será salva **")
 
     todos = coletar_todos()
-    inseridos = atualizar_db(todos, dry_run=args.dry_run)
+    novos = atualizar_db(todos, dry_run=args.dry_run)
 
-    log.info(f"Raspagem concluída. Novos inseridos: {inseridos}")
+    log.info(f"Raspagem concluída. Novos: {novos}")
     log.info("=" * 60)
     return 0
 

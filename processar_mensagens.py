@@ -1553,6 +1553,15 @@ def resolver_pacote(pacote):
 
 # ─── Deduplicação ─────────────────────────────────────────────────────────────
 
+def _normalizar_texto_fp(texto):
+    """
+    Normaliza texto para fingerprint: remove markdown WhatsApp e colapsa
+    espaços/quebras de linha, evitando duplicatas por diferença de formatação.
+    """
+    t = limpar_obs(str(texto or ''))   # tira *bold*, _italic_, ~riscado~
+    t = re.sub(r'\s+', ' ', t).strip() # colapsa whitespace múltiplo
+    return t[:80].lower()
+
 def fazer_fp(autor, bairro, preco, area, texto, timestamp=None):
     autor = str(autor or '').lower().strip()
     bairro = str(bairro or '').lower().strip()
@@ -1561,7 +1570,9 @@ def fazer_fp(autor, bairro, preco, area, texto, timestamp=None):
     except: preco = 0
     try:   area = int(float(area)) if area else 0
     except: area = 0
-    texto_curto = str(texto or '')[:80].lower().strip()
+    # Texto normalizado: sem markdown e sem whitespace extra — evita duplicatas
+    # por diferença de \n\n\n vs \n\n ou *texto* vs texto
+    texto_curto = _normalizar_texto_fp(texto)
 
     if bairro and preco:       return f"{autor}|{bairro}|{preco}"
     elif preco and area:       return f"{autor}|{preco}|{area}"

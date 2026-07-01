@@ -250,13 +250,13 @@ def verificar_imoveis(conn):
 def verificar_demandas(conn):
     cur = conn.cursor()
     rows = cur.execute(
-        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio, condominio FROM demandas"
+        "SELECT id, tipo_buscado, bairro_regiao, orcamento_max, observacoes, edificio, condominio, contato FROM demandas"
     ).fetchall()
 
     corrigidos = 0
     alertas    = []
 
-    for rid, tipo, bairro, orc, obs, edificio_atual, condominio_atual in rows:
+    for rid, tipo, bairro, orc, obs, edificio_atual, condominio_atual, contato in rows:
         fixes = {}
 
         # ① Limpar markdown WhatsApp no obs
@@ -268,6 +268,10 @@ def verificar_demandas(conn):
         if _parece_ia(bairro or ''):
             fixes['bairro_regiao'] = ''
             alertas.append(f"  ⚠️  [demandas #{rid}] bairro parecia IA → apagado")
+
+        # ⓪ Alerta: sem contato (LID do WhatsApp — número real indisponível)
+        if not (contato or '').strip():
+            alertas.append(f"  📵 [demandas #{rid}] sem contato WhatsApp — grupo pode usar LID")
 
         # ③ Normalizar tipo
         tipo_novo = _normalizar_tipo(tipo or '', obs_limpo)

@@ -940,9 +940,26 @@ function cardD(dm){{
   if (condominio) tituloParts.push(condominio);
   if (regiao)     tituloParts.push(regiao);
   var titulo = tituloParts.length ? 'Busca ' + tituloParts.join(' · ') : 'Demanda';
-  return '<div class="card card-dem">'+
+  // Seção expandida
+  var ceSpecs=[];
+  if(dm.area_min)  ceSpecs.push('Mín '+dm.area_min+' m²');
+  if(dm.quartos)   ceSpecs.push(dm.quartos+(dm.quartos===1?' quarto':' quartos'));
+  if(dm.suites)    ceSpecs.push(dm.suites+(dm.suites===1?' suíte':' suítes'));
+  if(dm.banheiros) ceSpecs.push(dm.banheiros+(dm.banheiros===1?' banheiro':' banheiros'));
+  if(dm.vagas)     ceSpecs.push(dm.vagas+(dm.vagas===1?' vaga':' vagas'));
+  if(dm.orcamento) ceSpecs.push('Orç. até '+fmtP(dm.orcamento));
+  var ceOrigem=(dm.corretor||'')+(dm.grupo?' · '+dm.grupo:'')+(dm.data?' · '+dm.data:'');
+  var ceBtns='';
+  if(dm.contato){{var nc=String(dm.contato).replace(/\D/g,'');if(nc.length>=8&&nc.length<=13)ceBtns+='<a class="ce-btn-wa" href="https://wa.me/'+nc+'" target="_blank">💬 WhatsApp</a>';}}
+  var expandHtml='<div class="card-expand">'+
+    (ceSpecs.length?'<div class="ce-specs">'+ceSpecs.map(function(s){{return'<span class="ce-spec">'+s+'</span>';}}).join('')+'</div>':'')+
+    (dm.obs?'<div class="ce-obs">'+dm.obs.replace(/</g,'&lt;')+'</div>':'')+
+    (ceOrigem?'<div class="ce-origem">'+ceOrigem+'</div>':'')+
+    (ceBtns?'<div class="ce-btns">'+ceBtns+'</div>':'<div style="color:#bbb;font-size:12px">Sem contato disponível</div>')+
+  '</div>';
+  return '<div class="card card-dem" onclick="toggleExpand(this)">'+
     '<div class="card-header">'+
-      '<div><div class="card-name">'+titulo+'</div><div class="card-loc">'+(dm.corretor||'—')+'</div></div>'+
+      '<div><div class="card-name">'+titulo+' <span class="card-expand-arrow">▾</span></div><div class="card-loc">'+(dm.corretor||'—')+'</div></div>'+
       '<div style="text-align:right">'+
         (dm.orcamento?'<div class="card-price">'+fmtP(dm.orcamento)+'</div><div class="dem-orcamento-label">orçamento máx</div>':'<div class="card-price-na">Consultar</div>')+
       '</div>'+
@@ -951,8 +968,9 @@ function cardD(dm){{
     (dm.obs?'<div class="card-desc">'+dm.obs+'</div>':'')+
     '<div class="card-foot">'+
       '<div class="card-who">'+(dm.grupo||'—')+(dm.data?' · '+dm.data:'')+' </div>'+
-      '<div class="foot-right">'+btnWa(dm.contato)+'<span class="'+pillCls(dm.status||'Novo')+'">'+(dm.status||'Novo')+'</span></div>'+
+      '<div class="foot-right" onclick="event.stopPropagation()">'+btnWa(dm.contato)+'<span class="'+pillCls(dm.status||'Novo')+'">'+(dm.status||'Novo')+'</span></div>'+
     '</div>'+
+    expandHtml+
   '</div>';
 }}
 

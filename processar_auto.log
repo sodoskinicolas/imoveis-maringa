@@ -1722,3 +1722,72 @@ To https://github.com/sodoskinicolas/imoveis-maringa.git
    ee61e9a..83d95e7  main -> main
 [2026-06-30 23:34:07] ✅ Push feito ao GitHub. Site será atualizado em instantes.
 [2026-06-30 23:34:07] === Ciclo concluído ===
+[2026-07-01 00:04:07] === Início do ciclo automático ===
+[2026-07-01 00:04:08] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 'Lote 200 Metros' não cadastrado — pesquisando na web...
+  🏗️  'Lote 200 Metros' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🔎 'Sky Maringá' incompleto — pesquisando na web...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 35 duplicatas ignoradas
+   ↳ 6 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 2 condomínio(s) novo(s)...
+  🏗️  'Sky Maringá' já pesquisado anteriormente (cache)
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-07-01 00:04:41] Processamento concluído.
+[2026-07-01 00:04:41] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (812 imóveis [57 JJ · 502 VR] · 16 demandas)
+[main d4d76a8] 🤖 Auto: 2026-07-01 00:05 — mensagens processadas
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   a2cd5fe..d4d76a8  main -> main
+[2026-07-01 00:05:07] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-01 00:05:07] === Ciclo concluído ===
+[2026-07-01 00:12:22] === Início do ciclo automático ===
+[2026-07-01 00:12:22] Processando 95 mensagens pendentes...

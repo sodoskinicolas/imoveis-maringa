@@ -99,3 +99,8 @@ UnboundLocalError: cannot access local variable 'found' where it is not associat
 2026-06-29 18:54:05,370 INFO Imóveis novos encontrados: 0 (de 0 coletados)
 2026-06-29 18:54:05,370 INFO Raspagem concluída. Novos inseridos: 0
 2026-06-29 18:54:05,370 INFO ============================================================
+2026-06-30 23:32:41,758 INFO Imóveis novos: 2 (de 2 coletados)
+2026-06-30 23:32:41,759 INFO Validando e cruzando com a base (bairros + condominios)...
+2026-06-30 23:32:41,971 INFO [DRY-RUN] Nenhuma alteração salva.
+2026-06-30 23:32:41,972 INFO   Novo: Apartamento | Zona 03 | Atmosphere | 900000 | https://teste.com/1
+2026-06-30 23:32:41,972 INFO   Novo: Apartamento | jd alvorada |  | 480000 | https://teste.com/2

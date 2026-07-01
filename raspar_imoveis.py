@@ -22,6 +22,11 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 import db
+from processar_mensagens import (
+    validar_bairro, validar_campos_numericos, extrair_edificio,
+    buscar_specs_condo, buscar_condo_completo, condo_incompleto,
+    eh_provavel_edificio, pesquisar_condominio, atualizar_aba_condominios,
+)
 
 # ── Configuração ──────────────────────────────────────────────────────────────
 BASE_DIR  = Path(__file__).parent
@@ -224,16 +229,19 @@ def parse_sub100_block(html_block, base_domain):
     bairro = fix_enc(bairro_m.group(1).strip()) if bairro_m else ""
 
     return {
-        "ref":     ref,
-        "link":    link,
-        "tipo":    tipo,
-        "bairro":  bairro,
-        "area":    parse_area(fix_enc(area_m.group(0))) if area_m else None,
-        "quartos": parse_int(qtos_m.group(1))  if qtos_m  else None,
-        "suites":  parse_int(ban_m.group(1))   if ban_m   else None,
-        "vagas":   parse_int(vaga_m.group(1))  if vaga_m  else None,
-        "preco":   parse_preco(preco_m.group(0)) if preco_m else None,
-        "obs":     link,
+        "ref":       ref,
+        "link":      link,
+        "tipo":      tipo,
+        "bairro":    bairro,
+        "area":      parse_area(fix_enc(area_m.group(0))) if area_m else None,
+        "quartos":   parse_int(qtos_m.group(1))  if qtos_m  else None,
+        # Sub100 só expõe contagem de banheiro no card, não suíte — antes isso
+        # estava sendo gravado por engano na coluna "suites".
+        "banheiros": parse_int(ban_m.group(1))   if ban_m   else None,
+        "suites":    None,
+        "vagas":     parse_int(vaga_m.group(1))  if vaga_m  else None,
+        "preco":     parse_preco(preco_m.group(0)) if preco_m else None,
+        "obs":       link,
     }
 
 def scrape_sub100(cfg):
@@ -480,6 +488,53 @@ def coletar_todos():
     return todos
 
 
+# ── Validação e cruzamento com a base (bairros + condominios) ────────────────
+
+def validar_e_completar_item(item, permitir_pesquisa_web=True):
+    """
+    Cruza o item raspado com nossa base (bairros oficiais + tabela condominios)
+    e completa o que estiver faltando:
+      1. Tenta identificar o edifício/condomínio citado no bairro/endereço/link.
+      2. Se achar um já cadastrado → preenche bairro/área/quartos/vagas vazios.
+      3. Se achar um nome de edifício mas ele NÃO estiver cadastrado → pesquisa
+         na web (Claude + web_search) e cadastra antes de completar o item.
+      4. Valida o bairro contra a lista oficial de Maringá.
+      5. Valida as faixas numéricas (quartos/suítes/banheiros/vagas/área).
+    Modifica `item` in-place e também retorna.
+    """
+    texto_ref = " ".join(str(item.get(k) or "") for k in ("bairro", "endereco", "tipo", "obs"))
+
+    edificio = extrair_edificio(texto_ref)
+    if edificio:
+        condo_row = buscar_condo_completo(edificio)
+        # Só pesquisa/completa specs padronizados pra prédios verticais — um
+        # condomínio residencial de casas não tem "specs padrão" pra buscar.
+        if permitir_pesquisa_web and eh_provavel_edificio(edificio) and (
+            condo_row is None or condo_incompleto(condo_row)
+        ):
+            nome_pesq = (condo_row or {}).get('nome') or edificio
+            info = pesquisar_condominio(nome_pesq)
+            if info:
+                atualizar_aba_condominios(info, atualizar_se_existir=bool(condo_row))
+        specs = buscar_specs_condo(edificio)
+        if specs:
+            if not item.get("bairro") and specs.get("bairro"):
+                item["bairro"] = specs["bairro"]
+            if not item.get("area") and specs.get("area_min"):
+                item["area"] = specs["area_min"]
+            if not item.get("quartos") and specs.get("quartos"):
+                item["quartos"] = specs["quartos"]
+            if not item.get("vagas") and specs.get("vagas"):
+                item["vagas"] = specs["vagas"]
+        item["edificio"] = edificio
+
+    item["bairro"] = validar_bairro(
+        item.get("bairro", ""), texto_completo=texto_ref, edificio=edificio or ""
+    )
+    validar_campos_numericos(item)
+    return item
+
+
 # ── Deduplicação e import ─────────────────────────────────────────────────────
 
 def atualizar_db(novos_raw, dry_run=False):
@@ -524,10 +579,17 @@ def atualizar_db(novos_raw, dry_run=False):
     if not novos:
         return 0
 
+    # Validar/cruzar com bairros oficiais + tabela condominios, e completar o
+    # que faltar. Em --dry-run não pesquisa na web (evita custo de API só pra
+    # testar), mas ainda valida e cruza com o que já está cadastrado.
+    log.info("Validando e cruzando com a base (bairros + condominios)...")
+    for item in novos:
+        validar_e_completar_item(item, permitir_pesquisa_web=not dry_run)
+
     if dry_run:
         log.info("[DRY-RUN] Nenhuma alteração salva.")
         for it in novos[:10]:
-            log.info(f"  Novo: {it.get('tipo','')} | {it.get('bairro','')} | {it.get('preco','')} | {it.get('obs','')}")
+            log.info(f"  Novo: {it.get('tipo','')} | {it.get('bairro','')} | {it.get('edificio','') or ''} | {it.get('preco','')} | {it.get('obs','')}")
         return len(novos)
 
     inseridos = 0
@@ -537,6 +599,9 @@ def atualizar_db(novos_raw, dry_run=False):
             end = item.get("endereco", "")
             if end:
                 bairro_end = f"{bairro_end} · {end}".strip(" ·")
+            edificio = item.get("edificio") or ""
+            if edificio and edificio.lower() not in bairro_end.lower():
+                bairro_end = f"{bairro_end} · Ed. {edificio}".strip(" ·")
 
             ok = db.inserir_imovel(conn, {
                 "data_captura":    hoje,
@@ -548,7 +613,7 @@ def atualizar_db(novos_raw, dry_run=False):
                 "area":            item.get("area"),
                 "quartos":         item.get("quartos"),
                 "suites":          item.get("suites"),
-                "banheiros":       None,
+                "banheiros":       item.get("banheiros"),
                 "vagas":           item.get("vagas"),
                 "preco":           item.get("preco"),
                 "observacoes":     item.get("obs", ""),

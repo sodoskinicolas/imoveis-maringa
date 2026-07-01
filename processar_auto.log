@@ -647,3 +647,776 @@ To https://github.com/sodoskinicolas/imoveis-maringa.git
    bbe6fdd..c7cd71d  main -> main
 [2026-06-30 11:22:01] ✅ Push feito ao GitHub. Site será atualizado em instantes.
 [2026-06-30 11:22:01] === Ciclo concluído ===
+[2026-06-30 13:11:21] === Início do ciclo automático ===
+[2026-06-30 13:11:21] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 13:11:46] Processamento concluído.
+[2026-06-30 13:11:46] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+[main bf6efea] 🤖 Auto: 2026-06-30 13:11 — mensagens processadas
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   02dbe61..bf6efea  main -> main
+[2026-06-30 13:11:53] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-06-30 13:11:53] === Ciclo concluído ===
+[2026-06-30 14:00:02] === Início do ciclo automático ===
+[2026-06-30 14:00:02] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar informações sobre este imóvel em Maringá-PR.'
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar as informações do imóvel nesse endereço.'
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro 'EDIFÍCIO VITÓRIA' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro 'Tuiuti' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 30 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 14:01:35] Processamento concluído.
+[2026-06-30 14:01:35] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 14:31:46] === Início do ciclo automático ===
+[2026-06-30 14:31:46] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar informações sobre este imóvel em Maringá-PR.'
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 14:33:20] Processamento concluído.
+[2026-06-30 14:33:20] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 15:18:21] === Início do ciclo automático ===
+[2026-06-30 15:18:22] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 32 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 15:20:48] Processamento concluído.
+[2026-06-30 15:20:48] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 15:50:49] === Início do ciclo automático ===
+[2026-06-30 15:50:50] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar sobre o imóvel "Segundamos" em Maringá-PR.'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 15:52:00] Processamento concluído.
+[2026-06-30 15:52:00] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 16:55:32] === Início do ciclo automático ===
+[2026-06-30 16:55:32] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar sobre o imóvel "Segundamos" em Maringá-PR.'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Zona urbana (Urban Yticon) | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 16:56:27] Processamento concluído.
+[2026-06-30 16:56:27] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 17:32:07] === Início do ciclo automático ===
+[2026-06-30 17:32:07] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 17:34:48] Processamento concluído.
+[2026-06-30 17:34:48] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 18:04:49] === Início do ciclo automático ===
+[2026-06-30 18:04:49] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar informações sobre este imóvel em Maringá-PR.'
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar informações sobre este imóvel em Maringá-PR.'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar o endereço deste imóvel para você.'
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Preciso esclarecer alguns pontos para ajudá-lo melhor:'
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 18:06:42] Processamento concluído.
+[2026-06-30 18:06:42] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 18:55:24] === Início do ciclo automático ===
+[2026-06-30 18:55:24] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar sobre este imóvel em Maringá-PR.'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  📍 Bairro via web: '' → 'Vou pesquisar por esse imóvel em Maringá-PR.'
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 18:56:23] Processamento concluído.
+[2026-06-30 18:56:23] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 19:26:24] === Início do ciclo automático ===
+[2026-06-30 19:26:25] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 Condo 'Desconhecido em Maringá-PR' não encontrado no DB — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 2 demandas inseridas → SQLite demandas
+   ↳ 29 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 19:26:51] Processamento concluído.
+[2026-06-30 19:26:52] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 19:57:08] === Início do ciclo automático ===
+[2026-06-30 19:57:09] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🔎 Bairro 'Cond. 135 MTS Construção' não reconhecido — buscando via web...
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 Bairro '?' não reconhecido — buscando via web...
+  🔎 Bairro '?' não reconhecido — buscando via web...
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 30 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+[2026-06-30 19:57:39] Processamento concluído.
+[2026-06-30 19:57:39] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: cannot lock ref 'HEAD': Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/HEAD.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 20:27:43] === Início do ciclo automático ===
+[2026-06-30 20:27:44] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | ? | R$822000
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+[2026-06-30 20:28:14] Processamento concluído.
+[2026-06-30 20:28:14] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/index.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+[2026-06-30 20:58:17] === Início do ciclo automático ===
+[2026-06-30 20:58:17] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  🗺️  'CENTRAL' → BAIRRO: Centro
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🏗️  Bairro do condo 'MARINGÁ': Parque Industrial Bandeirantes
+  📍 Bairro (cache): 'Parque Industrial Bandeirantes' → 'Maringá'
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🗺️  'LIBERDADE' → BAIRRO: Liberdade
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🗺️  'ROMA' → BAIRRO: Roma
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🗺️  'CATUAI' → BAIRRO: Catuaí
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🗺️  'MAISON INFINITY' → CONDOMINIO: Maison Infinity (bairro: Zona 7)
+  🔎 'Maison Infinity' incompleto — pesquisando na web...
+  🔎 Pesquisando condomínio 'Maison Infinity' em Maringá-PR...
+  ✅ Dados obtidos para 'Maison Infinity'
+  🏗️  Condomínio 'Maison Infinity' completado no SQLite (estava incompleto)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🗺️  'CAMPO BELO' → CONDOMINIO: Campo Belo (bairro: Zona 7)
+  🔎 'Campo Belo' incompleto — pesquisando na web...
+  🔎 Pesquisando condomínio 'Campo Belo' em Maringá-PR...
+  ✅ Dados obtidos para 'Edifício Campo Belo'
+  🏗️  Condomínio 'Edifício Campo Belo' completado no SQLite (estava incompleto)
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 30 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 20:59:39] Processamento concluído.
+[2026-06-30 20:59:39] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (813 imóveis [57 JJ · 502 VR] · 12 demandas)
+fatal: Unable to create '/Users/nicolassodoski/Claude/Projects/PW/.git/index.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.

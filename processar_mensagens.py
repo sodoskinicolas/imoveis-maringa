@@ -93,6 +93,110 @@ def analisar_imagem(img_path, caption="", autor=""):
         print(f"  ⚠️  Claude API: {e}")
         return None
 
+# ─── Links de imóveis (sites de imobiliárias, portais) ───────────────────────
+
+_HEADERS_LINK = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept-Language": "pt-BR,pt;q=0.9",
+}
+
+# Domínios que não são páginas de imóvel (não vale a pena buscar)
+_LINKS_IGNORAR = re.compile(
+    r'wa\.me|whatsapp\.com|chat\.whatsapp|instagram\.com|facebook\.com|fb\.com|'
+    r'youtube\.com|youtu\.be|maps\.google|goo\.gl/maps|tiktok\.com',
+    re.IGNORECASE
+)
+
+def extrair_links(texto):
+    """Retorna lista de URLs http(s) encontradas no texto, ignorando redes sociais/mapas."""
+    if not texto:
+        return []
+    urls = re.findall(r'https?://[^\s<>"\')\]]+', texto)
+    limpos = []
+    for u in urls:
+        u = u.rstrip('.,;!?')
+        if u and not _LINKS_IGNORAR.search(u) and u not in limpos:
+            limpos.append(u)
+    return limpos
+
+def _extrair_texto_pagina(html, max_chars=3000):
+    """Extrai título, meta tags e texto visível de uma página HTML."""
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "lxml")
+
+    partes = []
+    if soup.title and soup.title.string:
+        partes.append(f"TÍTULO: {soup.title.string.strip()}")
+
+    for prop in ("og:title", "og:description", "description", "og:price:amount", "product:price:amount"):
+        tag = soup.find("meta", attrs={"property": prop}) or soup.find("meta", attrs={"name": prop})
+        if tag and tag.get("content"):
+            partes.append(f"{prop.upper()}: {tag['content'].strip()}")
+
+    for tag in soup(["script", "style", "nav", "footer", "header", "noscript"]):
+        tag.decompose()
+    corpo = soup.get_text(separator=" ", strip=True)
+    corpo = re.sub(r'\s{2,}', ' ', corpo)
+    partes.append(f"TEXTO DA PÁGINA: {corpo[:max_chars]}")
+
+    return "\n".join(partes)
+
+def analisar_link(url, caption="", autor=""):
+    """
+    Baixa a página de um link de imóvel compartilhado e usa Claude Haiku
+    para extrair os dados, no mesmo schema usado para imagens.
+    Retorna dict ou None se a página não puder ser lida/não for imóvel.
+    """
+    api_key = _api_key()
+    if not api_key:
+        return None
+    try:
+        import requests
+        resp = requests.get(url, headers=_HEADERS_LINK, timeout=12, allow_redirects=True)
+        ctype = resp.headers.get("Content-Type", "")
+        if resp.status_code != 200 or "html" not in ctype.lower():
+            print(f"  ⚠️  Link {url} → status {resp.status_code} / {ctype or '?'}")
+            return None
+        texto_pagina = _extrair_texto_pagina(resp.text)
+    except Exception as e:
+        print(f"  ⚠️  Não consegui acessar o link ({url}): {e}")
+        return None
+
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        prompt = (
+            "Você é especialista em imóveis de Maringá/PR. Abaixo está o conteúdo extraído "
+            "da página de um anúncio de imóvel compartilhado num grupo de corretores.\n"
+            "Retorne SOMENTE um JSON válido:\n"
+            '{"eh_imovel":true/false,"tipo":"Apartamento|Casa|Terreno|Sala Comercial|Outro",'
+            '"bairro":"nome ou null","edificio":"nome do condomínio/edifício ou null",'
+            '"area":numero_m2_ou_null,"quartos":num_ou_null,"suites":num_ou_null,'
+            '"banheiros":num_ou_null,"vagas":num_ou_null,"preco":inteiro_reais_ou_null,'
+            '"obs":"resumo curto do anúncio"}\n\n'
+            f"Legenda da mensagem: {caption or '(sem legenda)'}\nCorretor: {autor}\n\n"
+            f"{texto_pagina}"
+        )
+        resp_ai = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=500,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        m = re.search(r'\{.*\}', resp_ai.content[0].text, re.DOTALL)
+        resultado = json.loads(m.group()) if m else None
+        if resultado and resultado.get("eh_imovel"):
+            resultado["link"] = url
+            print(f"  🔗 Link analisado: {resultado.get('tipo')} | {resultado.get('bairro') or '?'} | R${resultado.get('preco')}")
+            return resultado
+        return None
+    except Exception as e:
+        print(f"  ⚠️  Claude API (link): {e}")
+        return None
+
 # ─── Classificação: venda vs demanda ─────────────────────────────────────────
 
 RE_DEMANDA = re.compile(
@@ -124,6 +228,24 @@ def classificar(texto):
         return 'demanda' if RE_DEMANDA.search(texto).start() < RE_VENDA.search(texto).start() else 'venda'
     return 'indefinido'
 
+# ─── Limpeza de texto WhatsApp ───────────────────────────────────────────────
+
+def limpar_obs(texto):
+    """Remove formatação WhatsApp do texto de observações."""
+    if not texto:
+        return texto
+    # Remover negrito/itálico do WhatsApp: *texto* → texto, _texto_ → texto
+    t = re.sub(r'\*([^*\n]+)\*', r'\1', texto)
+    t = re.sub(r'_([^_\n]+)_', r'\1', t)
+    # Remover tachado: ~texto~ → texto
+    t = re.sub(r'~([^~\n]+)~', r'\1', t)
+    # Remover caracteres invisíveis
+    t = re.sub(r'[⁠​‌‍﻿]', '', t)
+    # Limpar espaços múltiplos e linhas em branco excessivas
+    t = re.sub(r' {2,}', ' ', t)
+    t = re.sub(r'\n{3,}', '\n\n', t)
+    return t.strip()
+
 # ─── Extratores ───────────────────────────────────────────────────────────────
 
 def extrair_preco(texto):
@@ -153,8 +275,14 @@ def extrair_preco(texto):
         (r'R\$\s*([\d.,]+)\s*mil\b', 'mil'),
         (r'R\$\s*([\d.,]+)', 'reais'),
         (r'\b(\d+(?:[.,]\d+)?)\s*mi(?:lhão|lhões)\b', 'mi'),   # "1 milhão" sem R$
+        (r'\b(\d+(?:[.,]\d+)?)\s*mi\b', 'mi'),                 # "2mi" / "1.5 mi" abreviado, sem R$
         (r'\binvestimento[:\s]+(\d+(?:[.,]\d+)?)\s*mil\b', 'mil'),
         (r'\b([\d.,]+)\s*mil\b', 'mil'),
+        (r'\b(\d+(?:[.,]\d+)?)\s*k\b', 'mil'),                 # "800k" abreviado
+        # Número completo sem R$/mil/mi, mas só quando vem colado a uma palavra
+        # de preço (evita confundir com CEP, telefone, código de imóvel etc.)
+        (r'(?:at[ée]|por|valor|pre[çc]o|or[çc]amento|na\s+faixa\s+de|'
+         r'cerca\s+de|em\s+torno\s+de)\s*(?:de\s+)?(\d{1,3}(?:\.\d{3}){1,3}(?:,\d{2})?)\b', 'reais'),
     ]
     for pat, tipo in padroes:
         m = re.search(pat, texto, re.IGNORECASE)
@@ -407,8 +535,13 @@ def _buscar_bairro_web(referencia):
         )
         texto = ''.join(b.text for b in resp.content if hasattr(b, 'text')).strip()
         bairro = texto.split('\n')[0].strip().strip('"\'')
-        if bairro and bairro.upper() != 'NULO' and 2 < len(bairro) < 60:
-            return bairro
+        # Rejeitar respostas conversacionais (modelo falou em vez de retornar bairro)
+        _prefixos_invalidos = ('vou ', 'preciso ', 'não ', 'nao ', 'infelizmente',
+                               'com base', 'para ', 'posso ', 'a referência',
+                               'a localização', 'o imóvel', 'desculpe')
+        if bairro and bairro.upper() != 'NULO' and 2 < len(bairro) < 50:
+            if not bairro.lower().startswith(_prefixos_invalidos) and ',' not in bairro[:20]:
+                return bairro
     except Exception as e:
         print(f"  ⚠️  Busca web bairro: {e}")
     return None
@@ -449,14 +582,13 @@ def validar_bairro(bairro_extraido, texto_completo='', edificio=''):
             _cv_save()
             return oficial
 
-    # Passo 2: sem bairro reconhecido → busca web se houver referência de edifício ou endereço
+    # Passo 2: busca web SOMENTE quando há nome de edifício/condomínio identificável
+    # Não buscar com texto genérico (causa chamadas desnecessárias e respostas erradas)
     referencia = None
     if edificio and len(edificio.strip()) > 3:
         referencia = f"Edifício/condomínio: {edificio}. Cidade: Maringá-PR."
         if texto_completo:
-            referencia += f"\nTexto: {texto_completo[:300]}"
-    elif not bairro_extraido and texto_completo and len(texto_completo.strip()) > 10:
-        referencia = texto_completo
+            referencia += f"\nTexto: {texto_completo[:200]}"
 
     if referencia:
         print(f"  🔎 Bairro '{bairro_extraido or '?'}' não reconhecido — buscando via web...")
@@ -641,48 +773,90 @@ def pesquisar_condominio(nome, cidade="Maringá-PR"):
     return None
 
 
-def buscar_specs_condo(nome):
-    """
-    Busca specs de um condomínio já cadastrado no SQLite.
-    Retorna dict com area_min, quartos, vagas, bairro, padrao ou None.
-    """
+def trim_specs_condo(row):
+    """Reduz a linha COMPLETA da tabela condominios às specs usadas pra preencher imóveis."""
+    if not row:
+        return None
+    quartos_raw = str(row.get('quartos') or '')
+    nums_q = re.findall(r'\d+', quartos_raw)
+    quartos = int(nums_q[0]) if nums_q else None
+    def toint(v):
+        try: return int(float(v)) if v else None
+        except: return None
+    return {
+        'nome':     row.get('nome'),
+        'bairro':   row.get('bairro') or None,
+        'area_min': toint(row.get('area_min')),
+        'quartos':  quartos,
+        'vagas':    toint(row.get('vagas')),
+        'padrao':   row.get('padrao') or None,
+    }
+
+def buscar_condo_completo(nome):
+    """Busca a linha INTEIRA de condominios (todas as colunas) pelo nome. Retorna dict ou None."""
     if not nome:
         return None
     try:
         with db.db_conn() as conn:
-            r = db.buscar_specs_condo(conn, nome)
-        if r:
-            quartos_raw = str(r.get('quartos') or '')
-            nums_q = re.findall(r'\d+', quartos_raw)
-            quartos = int(nums_q[0]) if nums_q else None
-            def toint(v):
-                try: return int(float(v)) if v else None
-                except: return None
-            return {
-                'nome':     r.get('nome'),
-                'bairro':   r.get('bairro') or None,
-                'area_min': toint(r.get('area_min')),
-                'quartos':  quartos,
-                'vagas':    toint(r.get('vagas')),
-                'padrao':   r.get('padrao') or None,
-            }
+            return db.buscar_specs_condo(conn, nome)
     except Exception as e:
-        print(f"  ⚠️  buscar_specs_condo: {e}")
-    return None
+        print(f"  ⚠️  buscar_condo_completo: {e}")
+        return None
 
+def condo_incompleto(row):
+    """
+    True se o registro só tem o nome (ex: os ~13.700 importados em bloco do
+    GeoMaringá, que vieram sem construtora/área/padrão/andares) — candidato a
+    ser completado via pesquisa web.
+    """
+    if not row:
+        return True
+    return not (row.get('area_min') or row.get('construtora') or row.get('padrao') or row.get('andares'))
 
-def atualizar_aba_condominios(info):
-    """Insere condomínio no SQLite se ainda não estiver lá."""
+def buscar_specs_condo(nome):
+    """Busca specs resumidas (area_min, quartos, vagas, bairro, padrao) de um condomínio. Ou None."""
+    return trim_specs_condo(buscar_condo_completo(nome))
+
+# ── Prédio/edifício vertical vs condomínio residencial horizontal (casas) ────
+#
+# Só vale a pena pesquisar/padronizar specs (torres, andares, área, lazer...)
+# pra PRÉDIOS — cada casa de um condomínio residencial tem um tamanho/planta
+# diferente, não existe "a specs do condomínio X" nesse caso.
+_RE_EDIFICIO_EXPLICITO = re.compile(r'\bedif[íi]cio\b|^ed\.?\s', re.IGNORECASE)
+_RE_CONDO_HORIZONTAL = re.compile(
+    r'condom[íi]nio\s*resid|cond\.?\s*resid|\bcond\.?\s*res\.?\b|'
+    r'conjunto\s*resid|conj\.?\s*resid|\bconj\.?\s*res\.?\b|'
+    r'loteamento|\bsobrados?\b|\bch[áa]caras?\b|residencial\s+e\s+comercial',
+    re.IGNORECASE
+)
+
+def eh_provavel_edificio(nome):
+    """
+    Heurística: 'Edifício X' ou nome limpo (ex: Atmosphere, Vision) → prédio.
+    'X, CONDOMÍNIO RESIDENCIAL' / 'COND.RES.' / 'CONJ.RES.' → casas, não prédio.
+    """
+    if not nome:
+        return False
+    n = nome.strip()
+    if _RE_EDIFICIO_EXPLICITO.search(n):
+        return True
+    if _RE_CONDO_HORIZONTAL.search(n):
+        return False
+    return True
+
+def atualizar_aba_condominios(info, atualizar_se_existir=False):
+    """
+    Insere condomínio novo no SQLite, ou — se atualizar_se_existir=True e o
+    nome já existe — completa a linha existente (usado quando o cadastro
+    estava incompleto, ex: import bruto do GeoMaringá) sem criar duplicata.
+    """
     from datetime import datetime
 
     nome = str(info.get('nome', '') or '').strip()
     if not nome:
         return
 
-    ja_cadastrados = _condos_ja_no_db()
-    if nome.lower() in ja_cadastrados:
-        print(f"  ⏭️  '{nome}' já está em condominios")
-        return
+    linha_existente = buscar_condo_completo(nome)
 
     def _toint(v):
         try: return int(float(v)) if v else None
@@ -691,37 +865,53 @@ def atualizar_aba_condominios(info):
         try: return float(v) if v else None
         except: return None
 
+    valores = (
+        info.get('endereco') or None,
+        info.get('bairro') or None,
+        info.get('cep') or None,
+        info.get('construtora') or None,
+        info.get('ano_lancamento') or None,
+        info.get('previsao_entrega') or None,
+        info.get('padrao') or None,
+        _toint(info.get('torres')),
+        _toint(info.get('andares')),
+        _toint(info.get('total_aptos')),
+        _tofloat(info.get('area_min')),
+        _tofloat(info.get('area_max')),
+        str(info.get('quartos') or '') or None,
+        _toint(info.get('vagas')),
+        info.get('lazer') or None,
+        info.get('faixa_preco') or None,
+        info.get('observacoes') or None,
+        info.get('link') or None,
+        datetime.now().strftime('%d/%m/%Y %H:%M'),
+    )
+
     with db.db_conn() as conn:
-        conn.execute("""
-            INSERT OR IGNORE INTO condominios
-                (nome, endereco, bairro, cep, construtora, ano_lancamento,
-                 previsao_entrega, padrao, torres, andares, total_aptos,
-                 area_min, area_max, quartos, vagas, lazer, faixa_preco,
-                 observacoes, site_link, data_cadastro)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """, (
-            nome,
-            info.get('endereco') or None,
-            info.get('bairro') or None,
-            info.get('cep') or None,
-            info.get('construtora') or None,
-            info.get('ano_lancamento') or None,
-            info.get('previsao_entrega') or None,
-            info.get('padrao') or None,
-            _toint(info.get('torres')),
-            _toint(info.get('andares')),
-            _toint(info.get('total_aptos')),
-            _tofloat(info.get('area_min')),
-            _tofloat(info.get('area_max')),
-            str(info.get('quartos') or '') or None,
-            _toint(info.get('vagas')),
-            info.get('lazer') or None,
-            info.get('faixa_preco') or None,
-            info.get('observacoes') or None,
-            info.get('link') or None,
-            datetime.now().strftime('%d/%m/%Y %H:%M'),
-        ))
-    print(f"  🏗️  Condomínio '{nome}' cadastrado no SQLite")
+        if linha_existente:
+            if not atualizar_se_existir:
+                print(f"  ⏭️  '{nome}' já está em condominios")
+                return
+            # Mantém o nome original (chave de match) e completa o resto
+            conn.execute("""
+                UPDATE condominios SET
+                    endereco=?, bairro=?, cep=?, construtora=?, ano_lancamento=?,
+                    previsao_entrega=?, padrao=?, torres=?, andares=?, total_aptos=?,
+                    area_min=?, area_max=?, quartos=?, vagas=?, lazer=?, faixa_preco=?,
+                    observacoes=?, site_link=?, data_cadastro=?
+                WHERE id=?
+            """, valores + (linha_existente['id'],))
+            print(f"  🏗️  Condomínio '{nome}' completado no SQLite (estava incompleto)")
+        else:
+            conn.execute("""
+                INSERT INTO condominios
+                    (nome, endereco, bairro, cep, construtora, ano_lancamento,
+                     previsao_entrega, padrao, torres, andares, total_aptos,
+                     area_min, area_max, quartos, vagas, lazer, faixa_preco,
+                     observacoes, site_link, data_cadastro)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            """, (nome,) + valores)
+            print(f"  🏗️  Condomínio '{nome}' cadastrado no SQLite")
 
 # Nomes geográficos que NÃO são bairros (cidade, estado, país)
 _NAO_BAIRRO = {
@@ -877,14 +1067,20 @@ def extrair_edificio(texto):
         if candidato.lower() not in _nao_edificio_ctx and 3 < len(candidato) < 40:
             return candidato
 
-    # 3. Fallback: verificar se algum condomínio cadastrado no DB aparece no texto
+    # 3. Fallback: verificar se algum condomínio cadastrado no DB aparece no texto.
+    #    Exclui nomes curtos demais e nomes iguais a cidade/estado (ex: existe um
+    #    condomínio chamado literalmente "MARINGÁ" no import do GeoMaringá — sem
+    #    esse filtro, toda mensagem que menciona a cidade "casava" com ele).
     try:
         with db.db_conn() as conn:
             nomes_condos = db.listar_condominios_nomes(conn)
         tl = texto.lower()
         for n in nomes_condos:
             n = str(n or '').strip()
-            if n and len(n) > 3 and n.lower() in tl:
+            nl = n.lower()
+            if not n or len(n) <= 5 or nl in _NAO_BAIRRO:
+                continue
+            if nl in tl:
                 return n
     except:
         pass
@@ -903,27 +1099,38 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
 
     # Se achou nome de edifício → buscar specs direto no DB (rápido)
     if edificio:
-        condo_specs = buscar_specs_condo(edificio)
-        if not condo_specs:
-            # Tentar classificação via IA
+        condo_row = buscar_condo_completo(edificio)
+        condo_specs = trim_specs_condo(condo_row)
+        precisa_completar = condo_row is None or condo_incompleto(condo_row)
+
+        if precisa_completar:
+            # Tentar classificação via IA pra confirmar que é mesmo um condomínio
+            # e pegar o nome mais "oficial" possível
             info_local = classificar_local(edificio)
             nome_condo = info_local.get('nome', edificio)
 
             # Código de empreendimento (ex: NEST635, PARK900) — forçar como condomínio
             # mesmo que a IA não reconheça, pois esses padrões são sempre empreendimentos
             eh_codigo = bool(re.match(r'^[A-Z]{3,}\d+', edificio))
+            parece_condo = info_local.get('tipo') == 'condominio' or eh_codigo
 
-            if info_local.get('tipo') == 'condominio' or (eh_codigo and pesquisar_condo_imediato):
-                condo_specs = buscar_specs_condo(nome_condo)
+            if parece_condo and not condo_row:
+                # Pode estar cadastrado sob o nome "oficial" devolvido pela IA
+                condo_row = buscar_condo_completo(nome_condo)
+                condo_specs = trim_specs_condo(condo_row)
+                precisa_completar = condo_row is None or condo_incompleto(condo_row)
 
-                # Se ainda não está no DB e pesquisa imediata foi solicitada → buscar na web agora
-                if not condo_specs and pesquisar_condo_imediato:
-                    print(f"  🔎 Condo '{nome_condo}' não encontrado no DB — pesquisando na web...")
+            # Só vale pesquisar/completar specs padronizados pra PRÉDIOS — um
+            # condomínio residencial de casas não tem "specs padrão" pra buscar.
+            if parece_condo and precisa_completar and eh_provavel_edificio(nome_condo):
+                if pesquisar_condo_imediato:
+                    motivo = "incompleto" if condo_row else "não cadastrado"
+                    print(f"  🔎 '{nome_condo}' {motivo} — pesquisando na web...")
                     info_pesq = pesquisar_condominio(nome_condo)
                     if info_pesq:
-                        atualizar_aba_condominios(info_pesq)
+                        atualizar_aba_condominios(info_pesq, atualizar_se_existir=bool(condo_row))
                         condo_specs = buscar_specs_condo(nome_condo)
-                elif not condo_specs:
+                elif not condo_row:
                     # Defer para o final (fluxo normal de venda)
                     _CONDOS_NOVOS.add(nome_condo)
 
@@ -972,6 +1179,66 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
             texto_completo=texto,
             edificio=campos.get('edificio', '') or ''
         )
+
+    validar_campos_numericos(campos)
+    return campos
+
+# Faixas aceitáveis pra cada campo numérico — fora disso, foi erro de extração
+_FAIXAS_NUMERICAS = {
+    'quartos':   (1, 10),
+    'suites':    (0, 10),
+    'banheiros': (0, 15),
+    'vagas':     (0, 10),
+}
+# Área tem faixa própria por tipo. Só usa a faixa apertada (prédio) quando o
+# tipo é CONFIRMADAMENTE residencial compacto — terreno/chácara/sítio/galpão/
+# sala comercial variam demais, e "Imóvel" (fallback genérico, tipo não
+# identificado com certeza) também fica na faixa larga por segurança: é
+# melhor deixar passar um exagero raro do que apagar um terreno de verdade.
+_TIPOS_RESIDENCIAL_COMPACTO = {
+    'apartamento', 'casa', 'sobrado', 'kitnet', 'studio', 'cobertura', 'flat',
+}
+_FAIXA_AREA_PREDIO   = (10, 3_000)
+_FAIXA_AREA_TERRENO  = (10, 500_000)
+
+def validar_campos_numericos(campos):
+    """
+    Anula (vira None) qualquer campo numérico fora da faixa plausível pra um
+    imóvel residencial/comercial em Maringá, e corrige inconsistências simples
+    entre quartos/suítes. Modifica `campos` in-place.
+    """
+    for campo, (minimo, maximo) in _FAIXAS_NUMERICAS.items():
+        valor = campos.get(campo)
+        if valor is None:
+            continue
+        try:
+            valor_num = float(valor)
+        except (TypeError, ValueError):
+            campos[campo] = None
+            continue
+        if not (minimo <= valor_num <= maximo):
+            print(f"  ⚠️  {campo}={valor} fora da faixa plausível ({minimo}-{maximo}) — descartado")
+            campos[campo] = None
+
+    area = campos.get('area')
+    if area is not None:
+        try:
+            area_num = float(area)
+        except (TypeError, ValueError):
+            campos['area'] = None
+            area_num = None
+        if area_num is not None:
+            tipo_norm = str(campos.get('tipo') or '').strip().lower()
+            minimo, maximo = _FAIXA_AREA_PREDIO if tipo_norm in _TIPOS_RESIDENCIAL_COMPACTO else _FAIXA_AREA_TERRENO
+            if not (minimo <= area_num <= maximo):
+                print(f"  ⚠️  area={area} fora da faixa plausível pra {campos.get('tipo') or '?'} ({minimo}-{maximo}) — descartado")
+                campos['area'] = None
+
+    # Suítes não podem passar do total de quartos (sinal de extração errada)
+    quartos, suites = campos.get('quartos'), campos.get('suites')
+    if quartos is not None and suites is not None and suites > quartos:
+        print(f"  ⚠️  suítes ({suites}) > quartos ({quartos}) — suítes descartadas")
+        campos['suites'] = None
 
     return campos
 
@@ -1043,16 +1310,52 @@ def resolver_pacote(pacote):
     classe = classificar(texto_completo) if texto_completo else 'indefinido'
 
     # Extrair campos do texto
-    # Para demandas: pesquisar condo imediatamente + extrair todos os bairros
+    # Pesquisa o edifício/condomínio na hora sempre que ele aparecer e não estiver
+    # cadastrado, pra já vir com bairro/specs corretos antes de gravar.
     eh_demanda = (classe == 'demanda')
-    campos = extrair_campos(texto_completo, pesquisar_condo_imediato=eh_demanda, eh_demanda=eh_demanda) if texto_completo else None
+    campos = extrair_campos(texto_completo, pesquisar_condo_imediato=True, eh_demanda=eh_demanda) if texto_completo else None
 
-    if campos and tem_dados(campos):
-        # Texto tem dados suficientes → não precisa analisar imagem
-        obs = texto_completo[:300]
+    link_usado = None
+
+    # ── Corretor mandou o link do anúncio? Buscar a página e completar os dados ──
+    campos_incompletos = (not campos) or (not tem_dados(campos)) or not campos.get('bairro') or not campos.get('preco')
+    if campos_incompletos:
+        links = extrair_links(texto_completo)
+        if links:
+            print(f"  🔗 Link encontrado na mensagem — buscando dados em {links[0]}")
+            info_link = analisar_link(links[0], texto_completo, pacote['autor'])
+            if info_link:
+                if campos is None:
+                    campos = {
+                        'tipo': info_link.get('tipo', 'Imóvel'), 'bairro': info_link.get('bairro') or '',
+                        'edificio': info_link.get('edificio'), 'area': None, 'quartos': None,
+                        'suites': None, 'banheiros': None, 'vagas': None, 'preco': None,
+                    }
+                # Texto digitado pelo corretor tem prioridade; o link só preenche o que faltou
+                for campo_k in ('tipo', 'bairro', 'edificio', 'area', 'quartos', 'suites', 'banheiros', 'vagas', 'preco'):
+                    if not campos.get(campo_k) and info_link.get(campo_k):
+                        campos[campo_k] = info_link[campo_k]
+                if campos.get('bairro'):
+                    campos['bairro'] = validar_bairro(campos['bairro'], texto_completo=texto_completo, edificio=campos.get('edificio') or '')
+                validar_campos_numericos(campos)
+                link_usado = links[0]
+                campos['link'] = link_usado
+
+    # Demanda citando um edifício/condomínio específico é válida mesmo sem
+    # conseguir extrair preço/área — "preciso de algo no Evidence" já diz o
+    # suficiente pra virar lead; não descartar só por falta de número.
+    dados_suficientes = campos and (
+        tem_dados(campos) or (classe == 'demanda' and campos.get('edificio'))
+    )
+    if dados_suficientes:
+        # Dados suficientes (texto e/ou link) → não precisa analisar imagem
+        obs = limpar_obs(texto_completo[:300])
+        if link_usado and link_usado not in obs:
+            # Link primeiro: db.slug_from_obs() usa a 1ª palavra pra deduplicar por URL
+            obs = f"{link_usado} {obs}".strip()
         return campos, obs, classe
 
-    # Texto insuficiente → tentar UMA imagem (a primeira com arquivo salvo)
+    # Texto/link insuficientes → tentar UMA imagem (a primeira com arquivo salvo)
     img_msgs = [m for m in msgs if m.get('imagemPath') and Path(m['imagemPath']).exists()]
     if img_msgs:
         img_msg = img_msgs[0]  # só analisar a primeira
@@ -1070,11 +1373,12 @@ def resolver_pacote(pacote):
                 'vagas':     resultado.get('vagas'),
                 'preco':     resultado.get('preco'),
             }
+            validar_campos_numericos(campos)
             # Só inserir se tiver pelo menos 1 dado concreto (preço, área, quartos...)
             if not tem_dados(campos):
                 print(f"     ⏭️  Imagem de imóvel sem dados concretos — ignorando")
                 return None
-            obs = resultado.get('obs', '') or texto_completo[:300]
+            obs = limpar_obs(resultado.get('obs', '') or texto_completo[:300])
             if classe == 'indefinido':
                 classe = 'venda'
             print(f"     ✅ {campos['tipo']} | {campos.get('bairro') or '?'} | R${campos.get('preco')}")
@@ -1260,6 +1564,9 @@ def main():
             # Validar contato: LIDs (>13 dígitos) não são telefones reais
             contato_raw = str(pacote.get('contato') or '').replace('.', '').replace(' ', '')
             contato_ok = contato_raw if (contato_raw.isdigit() and 10 <= len(contato_raw) <= 13) else ''
+            if not contato_ok and campos.get('link'):
+                # Sem WhatsApp válido — usa o link do anúncio como contato/fonte
+                contato_ok = campos['link']
             linha = [
                 pacote['data'], pacote['grupo'], pacote['autor'], contato_ok,
                 campos['tipo'], campos.get('bairro',''), campos.get('area'),
@@ -1281,6 +1588,9 @@ def main():
                 continue
             contato_raw = str(pacote.get('contato') or '').replace('.', '').replace(' ', '')
             contato_ok = contato_raw if (contato_raw.isdigit() and 10 <= len(contato_raw) <= 13) else ''
+            if not contato_ok and campos.get('link'):
+                # Sem WhatsApp válido — usa o link do anúncio como contato/fonte
+                contato_ok = campos['link']
             linha = [
                 pacote['data'], pacote['grupo'], pacote['autor'], contato_ok,
                 campos['tipo'], campos.get('bairro',''), campos.get('area'),

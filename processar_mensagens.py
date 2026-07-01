@@ -104,6 +104,34 @@ _HEADERS_LINK = {
     "Accept-Language": "pt-BR,pt;q=0.9",
 }
 
+# Domínios já raspados automaticamente (não precisam ser redescobertos)
+_DOMINIOS_CONHECIDOS = {
+    'harakiimoveis.com.br', 'massaruimoveis.com.br', 'bellakaza.com.br',
+    'silviobertoli.com.br', 'casadocorretor.com.br',
+    'vivareal.com.br', 'zapimoveis.com.br', 'imovelweb.com.br',
+    'olx.com.br', 'zap.com.br', 'chavesnamao.com.br',
+}
+
+NOVOS_DOMINIOS_FILE = BASE_DIR / "novos_dominios.json"
+
+def _registrar_dominio_novo(url):
+    """Salva domínio em novos_dominios.json para análise posterior pelo descobrir_sites.py."""
+    try:
+        from urllib.parse import urlparse
+        dominio = urlparse(url).netloc.lower().lstrip('www.')
+        if not dominio or dominio in _DOMINIOS_CONHECIDOS:
+            return
+        try:
+            dados = json.loads(NOVOS_DOMINIOS_FILE.read_text('utf-8')) if NOVOS_DOMINIOS_FILE.exists() else {}
+        except:
+            dados = {}
+        if dominio not in dados:
+            dados[dominio] = {'url_exemplo': url, 'descoberto_em': __import__('datetime').date.today().isoformat()}
+            NOVOS_DOMINIOS_FILE.write_text(json.dumps(dados, ensure_ascii=False, indent=2), 'utf-8')
+            print(f"  🌐 Novo domínio registrado para análise: {dominio}")
+    except Exception as e:
+        pass  # não bloquear o processamento por isso
+
 # Domínios que não são páginas de imóvel (não vale a pena buscar)
 _LINKS_IGNORAR = re.compile(
     r'wa\.me|whatsapp\.com|chat\.whatsapp|instagram\.com|facebook\.com|fb\.com|'
@@ -1403,6 +1431,7 @@ def resolver_pacote(pacote):
         if links:
             print(f"  🔗 Link encontrado na mensagem — buscando dados em {links[0]}")
             info_link = analisar_link(links[0], texto_completo, pacote['autor'])
+            _registrar_dominio_novo(links[0])  # registrar domínio para análise mesmo se não extraiu dados
             if info_link:
                 if campos is None:
                     campos = {

@@ -41,17 +41,30 @@ else
     exit 0
 fi
 
-# 2. Gerar site atualizado
+# 2. Analisar domínios novos descobertos nos links das mensagens
+if [ -f "novos_dominios.json" ]; then
+    PENDENTES_DOM=$(python3 -c "
+import json
+d = json.load(open('novos_dominios.json'))
+print(sum(1 for v in d.values() if not v.get('analisado')))
+" 2>/dev/null || echo "0")
+    if [ "$PENDENTES_DOM" -gt "0" ]; then
+        log "Analisando $PENDENTES_DOM domínio(s) novo(s)..."
+        $PYTHON descobrir_sites.py >> "$LOG" 2>&1
+    fi
+fi
+
+# 3. Gerar site atualizado
 log "Gerando site..."
 $PYTHON gerar_site.py >> "$LOG" 2>&1
 
-# 3. Fazer push para GitHub se imoveis.db mudou
-git add imoveis.db mensagens_fila.json Imoveis.html 2>/dev/null || true
+# 4. Fazer push para GitHub se imoveis.db mudou
+git add imoveis.db mensagens_fila.json Imoveis.html novos_dominios.json sites_extras.json 2>/dev/null || true
 
 if git diff --staged --quiet; then
     log "Sem mudanças para enviar ao GitHub."
 else
-    git commit -m "🤖 Auto: $(date '+%Y-%m-%d %H:%M') — mensagens processadas" >> "$LOG" 2>&1
+    git commit -m "🤖 Auto: $(date '+%Y-%m-%d %H:%M') — mensagens + sites descobertos" >> "$LOG" 2>&1
     git push >> "$LOG" 2>&1
     log "✅ Push feito ao GitHub. Site será atualizado em instantes."
 fi

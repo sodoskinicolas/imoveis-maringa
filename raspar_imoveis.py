@@ -158,6 +158,18 @@ SUB100_SITES = [
     },
 ]
 
+# Carregar sites descobertos automaticamente pelo descobrir_sites.py
+_SITES_EXTRAS_FILE = Path(__file__).parent / "sites_extras.json"
+try:
+    if _SITES_EXTRAS_FILE.exists():
+        _extras = json.loads(_SITES_EXTRAS_FILE.read_text('utf-8'))
+        _sub100_extras = [s for s in _extras if s.get('_tipo') == 'sub100']
+        if _sub100_extras:
+            SUB100_SITES.extend(_sub100_extras)
+            log.info(f"sites_extras.json: {len(_sub100_extras)} site(s) Sub100 adicionado(s)")
+except Exception as _e:
+    log.warning(f"Erro ao carregar sites_extras.json: {_e}")
+
 
 def parse_sub100_block(html_block, base_domain):
     """

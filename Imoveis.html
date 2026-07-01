@@ -239,7 +239,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="topbar">
   <span class="logo">Imóveis Maringá</span>
-  <span class="topbar-meta">Atualizado 01/07/2026 13:36</span>
+  <span class="topbar-meta">Atualizado 01/07/2026 14:08</span>
 </div>
 
 <!-- Tab nav -->
@@ -1017,7 +1017,7 @@ function renderBairrosList(){
     var edifs=idx[b];
     var totalI=0,totalD=0;
     Object.values(edifs).forEach(function(e){totalI+=e.imoveis.length;totalD+=e.demandas.length;});
-    html+='<div class="bairro-row" onclick="renderEdificiosDoBairro(''+b.replace(/'/g,"\'")+'')">';
+    html+='<div class="bairro-row" data-bairro="'+b.replace(/"/g,'&quot;')+'" onclick="renderEdificiosDoBairro(this.dataset.bairro)">';
     html+='<div class="bairro-name">'+b+'</div>';
     html+='<div class="bairro-badges">';
     if(totalI) html+='<span class="bairro-badge-i">'+totalI+' imóveis</span>';
@@ -1041,7 +1041,7 @@ function renderEdificiosDoBairro(bairro){
   keys.forEach(function(e){
     var data=edifs[e];
     var ni=data.imoveis.length, nd=data.demandas.length;
-    html+='<div class="edif-row" onclick="renderImoveisDoEdificio(''+bairro.replace(/'/g,"\'")+'',' + '''+e.replace(/'/g,"\'")+'')">';
+    html+='<div class="edif-row" data-bairro="'+bairro.replace(/"/g,'&quot;')+'" data-edif="'+e.replace(/"/g,'&quot;')+'" onclick="renderImoveisDoEdificio(this.dataset.bairro,this.dataset.edif)">';
     html+='<div class="edif-name">'+(e==='—'?'<span style="color:#bbb">Sem edifício específico</span>':e)+'</div>';
     html+='<div class="bairro-badges">';
     if(ni) html+='<span class="bairro-badge-i">'+ni+'</span>';
@@ -1057,7 +1057,7 @@ function renderImoveisDoEdificio(bairro, edif){
   var data=(idx[bairro]||{})[edif]||{imoveis:[],demandas:[]};
   var html='<div class="bairros-breadcrumb">'
     +'<a onclick="renderBairrosList()">🏘️ Bairros</a> › '
-    +'<a onclick="renderEdificiosDoBairro(''+bairro.replace(/'/g,"\'")+''">'+bairro+'</a> › '
+    +'<a data-bairro="'+bairro.replace(/"/g,'&quot;')+'" onclick="renderEdificiosDoBairro(this.dataset.bairro)">'+bairro+'</a> › '
     +'<strong>'+(edif==='—'?'Sem edifício específico':edif)+'</strong>'
     +'</div>';
   if(data.imoveis.length){
@@ -1121,18 +1121,17 @@ function matchImoveis(dm){
       var mesmoBairro=!!(imBC&&(imBC.toLowerCase().indexOf(demBairroCanon.toLowerCase())!==-1||demBairroCanon.toLowerCase().indexOf(imBC.toLowerCase())!==-1));
       if(!mesmoBairro&&!ehVizinho(dm.regiao,im.bairro||'')) return;
     }
-    // Filtro hard: quando há edifício na demanda, só mostrar imóveis do mesmo edifício
-    var edificioOk=true;
-    if(demEdifNorm){
-      var imEdifNorm=_normEdif(im.edificio||im.condominio||im.nome||'');
-      var mesmoEdif=!!(imEdifNorm&&(imEdifNorm.indexOf(demEdifNorm)!==-1||demEdifNorm.indexOf(imEdifNorm)!==-1));
-      if(!mesmoEdif) return;  // descarta hard: pediu edifício específico
-      edificioOk=true;
-    }
     var score=0,total=0;
-    var tipoOk=true;
-    // edificio — quando coincide, conta como ponto bônus (já filtrado hard acima)
-    if(demEdifNorm){total++;score++;}  // se chegou até aqui, edificio coincide
+    var tipoOk=true,edificioOk=false;
+    // edificio — critério de pontuação (NÃO hard filter).
+    // Imóveis do mesmo edifício pontuam mais → exact.
+    // Imóveis de outros prédios com config similar → near.
+    if(demEdifNorm){
+      total++;
+      var imEdifNorm=_normEdif(im.edificio||im.condominio||im.nome||'');
+      edificioOk=!!(imEdifNorm&&(imEdifNorm.indexOf(demEdifNorm)!==-1||demEdifNorm.indexOf(imEdifNorm)!==-1));
+      if(edificioOk) score++;
+    }
     // tipo — 'Imóvel' é wildcard (aceita qualquer tipo sem penalizar)
     if(dm.tipo){
       var dt=dm.tipo.toLowerCase();
@@ -1171,9 +1170,14 @@ function matchImoveis(dm){
       regiaoOk=!!(demBairroCanon&&imBC2&&(imBC2.toLowerCase().indexOf(demBairroCanon.toLowerCase())!==-1||demBairroCanon.toLowerCase().indexOf(imBC2.toLowerCase())!==-1));
       if(regiaoOk){score++;}else{regiaoVizinha=ehVizinho(dm.regiao,im.bairro||'');}
     }
-    if(total>0) scored.push({im:im,score:score,total:total,tipoOk:tipoOk,precoOk:precoOk,precoDentro20:precoDentro20,regiaoOk:regiaoOk,regiaoVizinha:regiaoVizinha});
+    if(total>0) scored.push({im:im,score:score,total:total,tipoOk:tipoOk,edificioOk:edificioOk,precoOk:precoOk,precoDentro20:precoDentro20,regiaoOk:regiaoOk,regiaoVizinha:regiaoVizinha});
   });
-  scored.sort(function(a,b){return(a.im.preco||9e9)-(b.im.preco||9e9);});
+  // Prioridade: 1º mesmo edifício, 2º score decrescente, 3º preço crescente
+  scored.sort(function(a,b){
+    if(a.edificioOk!==b.edificioOk) return a.edificioOk?-1:1;
+    if(b.score!==a.score) return b.score-a.score;
+    return(a.im.preco||9e9)-(b.im.preco||9e9);
+  });
   var exact=scored.filter(function(e){return e.score===e.total;});
   var exactSet={};exact.forEach(function(e){exactSet[e.im.obs||e.im.id]=1;});
   var near=scored.filter(function(e){
@@ -1198,7 +1202,15 @@ function mscoreCls(score,total){
 
 function missedCriteria(dm, im){
   var missed=[];
-  if(dm.tipo){var dt=dm.tipo.toLowerCase(),it=(im.tipo||'').toLowerCase();if(!(it&&(it.indexOf(dt)!==-1||dt.indexOf(it)!==-1)))missed.push('tipo');}
+  // edificio — aponta quando o imóvel é de outro prédio (config similar)
+  if(dm.edificio||dm.condominio){
+    var demE=_normEdif(dm.edificio||dm.condominio||'');
+    var imE=_normEdif(im.edificio||im.condominio||im.nome||'');
+    if(demE&&!(imE&&(imE.indexOf(demE)!==-1||demE.indexOf(imE)!==-1))){
+      missed.push('edifício '+(dm.edificio||dm.condominio));
+    }
+  }
+  if(dm.tipo){var dt=dm.tipo.toLowerCase(),it=(im.tipo||'').toLowerCase();if(dt!=='imóvel'&&dt!=='imovel'&&!(it&&(it.indexOf(dt)!==-1||dt.indexOf(it)!==-1)))missed.push('tipo');}
   if(dm.quartos&&!(im.quartos&&im.quartos>=dm.quartos)) missed.push(dm.quartos+' quartos');
   if(dm.suites&&!(im.suites&&im.suites>=dm.suites))         missed.push(dm.suites+' suítes');
   if(dm.banheiros&&!(im.suites&&im.suites>=dm.banheiros)) missed.push(dm.banheiros+' banheiros');

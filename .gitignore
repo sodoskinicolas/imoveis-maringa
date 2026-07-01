@@ -20,3 +20,4 @@ cache_locais.json
 __pycache__/
 *.pyc
 .env
+.fuse_hidden*

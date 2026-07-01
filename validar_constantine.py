@@ -92,56 +92,46 @@ def main():
     print(f"Validando {total} números de {len(PROPRIETARIOS)} proprietários...\n")
 
     for prop in PROPRIETARIOS:
-        best_number = None
-        any_whatsapp = False
         number_results = []
-
         for num in prop["numbers"]:
             count += 1
             on_wa = check_number(num)
             status = "✅ WhatsApp" if on_wa else ("❌ Sem WA" if on_wa is False else "⚠️ Erro")
             print(f"[{count}/{total}] Apto {prop['apt']} | {num} | {status}")
             number_results.append({"number": num, "on_whatsapp": on_wa})
-            if on_wa and not best_number:
-                best_number = num
-                any_whatsapp = True
             time.sleep(0.5)
 
+        wa_numbers = [n["number"] for n in number_results if n["on_whatsapp"]]
         results.append({
             "apt": prop["apt"],
             "owner": prop["owner"],
-            "has_whatsapp": any_whatsapp,
-            "best_number": best_number or prop["numbers"][0],
+            "has_whatsapp": len(wa_numbers) > 0,
+            "wa_numbers": wa_numbers,
             "all_numbers": number_results,
         })
 
-    # Gerar Excel
+    # Descobrir máximo de números com WA para criar colunas dinâmicas
+    max_wa = max((len(r["wa_numbers"]) for r in results), default=1)
+
+    # Gerar Excel — uma linha por proprietário, colunas separadas para cada número com WA
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Validação WhatsApp"
 
-    headers = ["Apartamento", "Proprietário", "Tem WhatsApp?", "Melhor Número", "Todos os Números"]
+    num_cols = [f"WhatsApp {i+1}" for i in range(max_wa)]
+    headers = ["Apartamento", "Proprietário", "Tem WhatsApp?"] + num_cols
     ws.append(headers)
     for cell in ws[1]:
-        cell.font = Font(bold=True)
         cell.fill = PatternFill("solid", fgColor="1F4E79")
         cell.font = Font(bold=True, color="FFFFFF")
 
-    green = PatternFill("solid", fgColor="C6EFCE")
-    red   = PatternFill("solid", fgColor="FFCDD2")
+    green  = PatternFill("solid", fgColor="C6EFCE")
+    red    = PatternFill("solid", fgColor="FFCDD2")
+    yellow = PatternFill("solid", fgColor="FFF9C4")
 
     for r in results:
-        all_nums = " | ".join(
-            f"{n['number']} ({'✅' if n['on_whatsapp'] else '❌'})"
-            for n in r["all_numbers"]
-        )
-        row = [
-            r["apt"],
-            r["owner"],
-            "SIM" if r["has_whatsapp"] else "NÃO",
-            r["best_number"],
-            all_nums,
-        ]
+        wa_cols = r["wa_numbers"] + [""] * (max_wa - len(r["wa_numbers"]))
+        row = [r["apt"], r["owner"], "SIM" if r["has_whatsapp"] else "NÃO"] + wa_cols
         ws.append(row)
         fill = green if r["has_whatsapp"] else red
         for cell in ws[ws.max_row]:
@@ -150,8 +140,9 @@ def main():
     ws.column_dimensions["A"].width = 14
     ws.column_dimensions["B"].width = 40
     ws.column_dimensions["C"].width = 14
-    ws.column_dimensions["D"].width = 20
-    ws.column_dimensions["E"].width = 80
+    for i in range(max_wa):
+        col_letter = chr(ord("D") + i)
+        ws.column_dimensions[col_letter].width = 22
 
     output = "Constantine_WhatsApp_Validado.xlsx"
     wb.save(output)

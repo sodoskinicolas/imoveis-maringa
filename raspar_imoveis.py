@@ -97,6 +97,29 @@ def parse_int(s):
     # Evitar artefatos de número de apartamento (ex: 101, 1302)
     return v if 0 < v <= 20 else None
 
+def num_seguro(v, tipo=int):
+    """
+    Converte um valor vindo de JSON externo (Opção Imóveis) pra número de
+    forma defensiva — o campo pode vir como int, float, string numérica,
+    string vazia ou None dependendo do imóvel. Sem isso, um valor inesperado
+    (ex: "" ou "3.0") quebra comparações mais adiante (validar_campos_
+    numericos faz `suites > quartos`, que explode com TypeError se um dos
+    dois for string) — foi exatamente esse crash que apareceu no primeiro
+    dry-run real.
+    """
+    if v is None or v == "":
+        return None
+    try:
+        return tipo(v)
+    except (TypeError, ValueError):
+        m = re.match(r"\s*(\d+(?:[.,]\d+)?)", str(v))
+        if not m:
+            return None
+        try:
+            return tipo(float(m.group(1).replace(",", ".")))
+        except ValueError:
+            return None
+
 def infer_tipo(s):
     s = (s or "").lower()
     # Tipos mais específicos primeiro para evitar falsos positivos
@@ -486,15 +509,21 @@ def scrape_lelo(max_paginas=60):
         if not r:
             break
         html = r.text
+        # O link do card pode vir absoluto ou relativo (ex: href="/imovel/...")
+        # — a ferramenta que usei pra inspecionar o site converte links
+        # relativos em absolutos ao exibir, o que me fez escrever a regex
+        # original só aceitando a forma absoluta e ela nunca bater no HTML
+        # real (0 imóveis coletados na primeira rodada real).
         matches = list(re.finditer(
-            r'<a\s+href="(https://www\.leloimoveis\.com\.br/imovel/[^"]+)"[^>]*>', html
+            r'<a\s[^>]*?href=["\']((?:https://www\.leloimoveis\.com\.br)?/imovel/[^"\']+)["\']',
+            html,
         ))
         if not matches:
             break
 
         novos_pagina = 0
         for i, m in enumerate(matches):
-            href = m.group(1)
+            href = urljoin(LELO_BASE + "/", m.group(1))
             start = m.end()
             end = matches[i + 1].start() if i + 1 < len(matches) else start + 4000
             item = parse_lelo_card(html[start:end], href)
@@ -569,12 +598,12 @@ def scrape_opcao():
             "tipo": infer_tipo(it.get("tipoImovel", "")),
             "bairro": it.get("bairro", ""),
             "cidade": it.get("cidade", ""),
-            "area": det.get("areaConstruida"),
-            "quartos": det.get("dormitorios"),
-            "suites": det.get("suites"),
+            "area": num_seguro(det.get("areaConstruida"), float),
+            "quartos": num_seguro(det.get("dormitorios")),
+            "suites": num_seguro(det.get("suites")),
             "banheiros": None,
-            "vagas": det.get("vagas"),
-            "preco": int(preco) if preco else None,
+            "vagas": num_seguro(det.get("vagas")),
+            "preco": num_seguro(preco),
             "obs": it.get("titulo", ""),
         })
 
@@ -616,7 +645,13 @@ def parse_patrimonio_card(html_block, href):
     bairro = loc_m.group(1).strip() if loc_m else ""
     cidade = loc_m.group(2).strip() if loc_m else ""
 
-    preco_m = re.search(r'R\$\s*[\d.,]+', html_block)
+    # Cards de imóvel com preço "de/por" (ex: "R$ 550.000,00 / R$ 520.000,00 V")
+    # ou anunciados pra venda E locação ao mesmo tempo (ex: "R$ 4.900,00 L /
+    # R$ 800.000,00 V") têm mais de um "R$ ..." no bloco — o primeiro nem
+    # sempre é o preço de venda certo. Como só filtramos venda (locacao_
+    # venda=V na busca), ancoramos no valor seguido do marcador " V" — o
+    # riscado/locação nunca tem esse sufixo logo depois.
+    preco_m = re.search(r'R\$\s*[\d.,]+\s*V\b', html_block) or re.search(r'R\$\s*[\d.,]+', html_block)
     quartos_m = re.search(r'(\d+)\s*Dorm', html_block, re.I)
     suites_m = re.search(r'(\d+)\s*Su[ií]te', html_block, re.I)
     banho_m = re.search(r'(\d+)\s*Banho', html_block, re.I)

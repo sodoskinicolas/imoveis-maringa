@@ -525,3 +525,798 @@ UnboundLocalError: cannot access local variable 'found' where it is not associat
 2026-07-01 12:14:06,629 INFO ✅ 562 novos · 0 atualizados · 0 com preço alterado · 0 marcados como Removido
 2026-07-01 12:14:06,631 INFO Raspagem concluída. Novos: 562
 2026-07-01 12:14:06,631 INFO ============================================================
+2026-07-01 19:53:27,303 INFO ============================================================
+2026-07-01 19:53:27,304 INFO Iniciando raspagem — 2026-07-01 19:53:27
+2026-07-01 19:53:27,304 INFO ** MODO DRY-RUN — nenhuma alteração será salva **
+2026-07-01 19:53:28,921 INFO [Haraki Imóveis] 5 categoria(s) encontrada(s) na home
+2026-07-01 19:53:30,044 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:53:32,166 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:53:34,227 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 19:53:36,288 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 19:53:38,347 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 19:53:40,426 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 19:53:42,488 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 19:53:44,926 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 19:53:47,009 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 10 imóveis
+2026-07-01 19:53:49,135 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 8 imóveis
+2026-07-01 19:53:53,459 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:53:55,445 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:53:57,427 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 19:53:59,388 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 19:54:01,419 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 19:54:03,422 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 6: 5 imóveis
+2026-07-01 19:54:07,363 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:54:09,280 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:54:11,427 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 19:54:13,863 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 4: 6 imóveis
+2026-07-01 19:54:18,187 INFO [Haraki Imóveis] /chacaras/10-maringa-pr — página 1: 4 imóveis
+2026-07-01 19:54:21,780 INFO [Haraki Imóveis] /barracao/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 19:54:25,021 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 19:54:27,784 WARNING   Tentativa 2/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 19:54:32,578 WARNING   Tentativa 3/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 19:54:32,579 INFO [Haraki Imóveis] Total: 196 imóveis | {'Casa': 77, 'Sobrado': 21, 'Terreno': 55, 'Apartamento': 36, 'Chácara': 4, 'Imóvel': 3}
+2026-07-01 19:54:35,310 INFO [Massaru Imóveis] 8 categoria(s) encontrada(s) na home
+2026-07-01 19:54:36,356 INFO [Massaru Imóveis] /apartamentos — página 1: 10 imóveis
+2026-07-01 19:54:38,382 INFO [Massaru Imóveis] /apartamentos — página 2: 10 imóveis
+2026-07-01 19:54:40,427 INFO [Massaru Imóveis] /apartamentos — página 3: 10 imóveis
+2026-07-01 19:54:42,698 INFO [Massaru Imóveis] /apartamentos — página 4: 10 imóveis
+2026-07-01 19:54:44,744 INFO [Massaru Imóveis] /apartamentos — página 5: 10 imóveis
+2026-07-01 19:54:46,791 INFO [Massaru Imóveis] /apartamentos — página 6: 10 imóveis
+2026-07-01 19:54:48,916 INFO [Massaru Imóveis] /apartamentos — página 7: 1 imóveis
+2026-07-01 19:54:52,694 INFO [Massaru Imóveis] /casas-ou-sobrados-em-condominios — página 1: 7 imóveis
+2026-07-01 19:54:56,368 INFO [Massaru Imóveis] /terrenos-em-condominios — página 1: 10 imóveis
+2026-07-01 19:54:58,258 INFO [Massaru Imóveis] /terrenos-em-condominios — página 2: 8 imóveis
+2026-07-01 19:55:02,204 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:55:04,404 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:55:06,607 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 19:55:08,916 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 19:55:11,183 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 19:55:13,382 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 19:55:15,701 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 19:55:17,905 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 19:55:20,178 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 19:55:22,389 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 10 imóveis
+2026-07-01 19:55:26,276 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 11: 10 imóveis
+2026-07-01 19:55:28,493 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 12: 10 imóveis
+2026-07-01 19:55:30,708 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 13: 3 imóveis
+2026-07-01 19:55:34,856 INFO [Massaru Imóveis] /apartamentos/10-maringa-pr — página 1: 0 imóveis
+2026-07-01 19:55:36,861 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:55:38,836 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:55:40,807 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 19:55:42,796 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 4: 5 imóveis
+2026-07-01 19:55:44,763 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 5: 8 imóveis
+2026-07-01 19:55:46,731 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 6: 3 imóveis
+2026-07-01 19:55:50,704 INFO [Massaru Imóveis] /salas-comerciais/10-maringa-pr — página 1: 7 imóveis
+2026-07-01 19:55:54,290 INFO [Massaru Imóveis] /chacaras/10-maringa-pr — página 1: 5 imóveis
+2026-07-01 19:55:57,530 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 19:56:00,377 WARNING   Tentativa 2/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 19:56:05,131 WARNING   Tentativa 3/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 19:56:05,132 INFO [Massaru Imóveis] Total: 265 imóveis | {'Apartamento': 59, 'Kitnet': 2, 'Casa': 99, 'Sobrado': 30, 'Terreno': 63, 'Sala Comercial': 7, 'Chácara': 5}
+2026-07-01 19:56:08,899 INFO [Bellakaza] 6 categoria(s) encontrada(s) na home
+2026-07-01 19:56:09,854 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:56:11,803 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:56:13,746 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 19:56:15,691 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 4: 2 imóveis
+2026-07-01 19:56:19,492 INFO [Bellakaza] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:56:21,792 INFO [Bellakaza] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 19:56:25,474 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 19:56:27,333 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 2: 4 imóveis
+2026-07-01 19:56:31,193 INFO [Bellakaza] /salas-em-edificios/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 19:56:34,758 INFO [Bellakaza] /chacaras/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 19:56:38,342 INFO [Bellakaza] /saloes-comerciais/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 19:56:41,408 WARNING   Tentativa 1/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 19:56:44,167 WARNING   Tentativa 2/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 19:56:48,938 WARNING   Tentativa 3/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 19:56:48,939 INFO [Bellakaza] Total: 75 imóveis | {'Casa': 28, 'Sobrado': 4, 'Terreno': 20, 'Kitnet': 2, 'Apartamento': 15, 'Chácara': 3, 'Sala Comercial': 3}
+2026-07-01 19:56:51,741 INFO [Silvio Iwata] 2 categoria(s) encontrada(s) na home
+2026-07-01 19:56:52,156 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 19:56:53,703 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 19:56:55,241 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 19:56:56,994 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 4: 9 imóveis
+2026-07-01 19:56:58,583 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 5: 9 imóveis
+2026-07-01 19:57:00,138 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 6: 9 imóveis
+2026-07-01 19:57:01,673 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 7: 9 imóveis
+2026-07-01 19:57:03,213 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 8: 9 imóveis
+2026-07-01 19:57:04,751 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 19:57:06,286 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 10: 9 imóveis
+2026-07-01 19:57:07,825 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 11: 9 imóveis
+2026-07-01 19:57:09,349 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 12: 9 imóveis
+2026-07-01 19:57:10,918 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 13: 9 imóveis
+2026-07-01 19:57:12,653 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 14: 9 imóveis
+2026-07-01 19:57:14,284 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 15: 9 imóveis
+2026-07-01 19:57:15,806 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 16: 9 imóveis
+2026-07-01 19:57:17,352 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 17: 9 imóveis
+2026-07-01 19:57:18,913 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 18: 9 imóveis
+2026-07-01 19:57:20,396 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 19: 2 imóveis
+2026-07-01 19:57:21,840 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 20: 1 imóveis
+2026-07-01 19:57:23,304 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 21: 0 imóveis
+2026-07-01 19:57:24,825 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 19:57:26,344 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 19:57:27,849 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 19:57:29,345 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 4: 9 imóveis
+2026-07-01 19:57:30,836 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 5: 9 imóveis
+2026-07-01 19:57:32,325 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 6: 9 imóveis
+2026-07-01 19:57:33,787 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 7: 9 imóveis
+2026-07-01 19:57:35,276 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 8: 9 imóveis
+2026-07-01 19:57:36,761 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 19:57:38,249 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 10: 9 imóveis
+2026-07-01 19:57:39,809 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 11: 9 imóveis
+2026-07-01 19:57:41,324 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 12: 9 imóveis
+2026-07-01 19:57:42,846 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 13: 9 imóveis
+2026-07-01 19:57:44,357 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 14: 9 imóveis
+2026-07-01 19:57:45,841 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 15: 9 imóveis
+2026-07-01 19:57:47,348 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 16: 9 imóveis
+2026-07-01 19:57:48,866 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 17: 9 imóveis
+2026-07-01 19:57:50,386 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 18: 9 imóveis
+2026-07-01 19:57:51,888 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 19: 0 imóveis
+2026-07-01 19:57:53,469 INFO [Silvio Iwata] /imoveis/venda — página 1: 6 imóveis
+2026-07-01 19:57:54,972 INFO [Silvio Iwata] /imoveis/venda — página 2: 9 imóveis
+2026-07-01 19:57:56,529 INFO [Silvio Iwata] /imoveis/venda — página 3: 6 imóveis
+2026-07-01 19:57:58,045 INFO [Silvio Iwata] /imoveis/venda — página 4: 7 imóveis
+2026-07-01 19:57:59,563 INFO [Silvio Iwata] /imoveis/venda — página 5: 8 imóveis
+2026-07-01 19:58:01,087 INFO [Silvio Iwata] /imoveis/venda — página 6: 6 imóveis
+2026-07-01 19:58:02,602 INFO [Silvio Iwata] /imoveis/venda — página 7: 6 imóveis
+2026-07-01 19:58:04,202 INFO [Silvio Iwata] /imoveis/venda — página 8: 3 imóveis
+2026-07-01 19:58:05,738 INFO [Silvio Iwata] /imoveis/venda — página 9: 4 imóveis
+2026-07-01 19:58:07,289 INFO [Silvio Iwata] /imoveis/venda — página 10: 4 imóveis
+2026-07-01 19:58:08,806 INFO [Silvio Iwata] /imoveis/venda — página 11: 6 imóveis
+2026-07-01 19:58:10,368 INFO [Silvio Iwata] /imoveis/venda — página 12: 5 imóveis
+2026-07-01 19:58:12,103 INFO [Silvio Iwata] /imoveis/venda — página 13: 5 imóveis
+2026-07-01 19:58:13,647 INFO [Silvio Iwata] /imoveis/venda — página 14: 5 imóveis
+2026-07-01 19:58:15,229 INFO [Silvio Iwata] /imoveis/venda — página 15: 4 imóveis
+2026-07-01 19:58:16,773 INFO [Silvio Iwata] /imoveis/venda — página 16: 5 imóveis
+2026-07-01 19:58:18,319 INFO [Silvio Iwata] /imoveis/venda — página 17: 3 imóveis
+2026-07-01 19:58:19,839 INFO [Silvio Iwata] /imoveis/venda — página 18: 3 imóveis
+2026-07-01 19:58:21,365 INFO [Silvio Iwata] /imoveis/venda — página 19: 3 imóveis
+2026-07-01 19:58:22,920 INFO [Silvio Iwata] /imoveis/venda — página 20: 2 imóveis
+2026-07-01 19:58:24,429 INFO [Silvio Iwata] /imoveis/venda — página 21: 5 imóveis
+2026-07-01 19:58:25,971 INFO [Silvio Iwata] /imoveis/venda — página 22: 4 imóveis
+2026-07-01 19:58:27,512 INFO [Silvio Iwata] /imoveis/venda — página 23: 4 imóveis
+2026-07-01 19:58:29,108 INFO [Silvio Iwata] /imoveis/venda — página 24: 4 imóveis
+2026-07-01 19:58:30,650 INFO [Silvio Iwata] /imoveis/venda — página 25: 4 imóveis
+2026-07-01 19:58:32,197 INFO [Silvio Iwata] /imoveis/venda — página 26: 4 imóveis
+2026-07-01 19:58:33,771 INFO [Silvio Iwata] /imoveis/venda — página 27: 2 imóveis
+2026-07-01 19:58:35,310 INFO [Silvio Iwata] /imoveis/venda — página 28: 0 imóveis
+2026-07-01 19:58:35,311 INFO [Silvio Iwata] Total: 454 imóveis | {'Apartamento': 164, 'Kitnet': 4, 'Casa': 139, 'Sobrado': 44, 'Terreno': 88, 'Sala Comercial': 10, 'Chácara': 4, 'Imóvel': 1}
+2026-07-01 19:58:38,329 INFO [Casa do Corretor] 5 categoria(s) encontrada(s) na home
+2026-07-01 19:58:38,715 INFO [Casa do Corretor] /casas-ou-sobrados — página 1: 9 imóveis
+2026-07-01 19:58:40,323 INFO [Casa do Corretor] /casas-ou-sobrados — página 2: 9 imóveis
+2026-07-01 19:58:41,942 INFO [Casa do Corretor] /casas-ou-sobrados — página 3: 9 imóveis
+2026-07-01 19:58:43,517 INFO [Casa do Corretor] /casas-ou-sobrados — página 4: 9 imóveis
+2026-07-01 19:58:45,020 INFO [Casa do Corretor] /casas-ou-sobrados — página 5: 4 imóveis
+2026-07-01 19:58:46,531 INFO [Casa do Corretor] /casas-ou-sobrados — página 6: 1 imóveis
+2026-07-01 19:58:48,033 INFO [Casa do Corretor] /casas-ou-sobrados — página 7: 0 imóveis
+2026-07-01 19:58:49,524 INFO [Casa do Corretor] /casas-ou-sobrados-geminados — página 1: 0 imóveis
+2026-07-01 19:58:51,100 INFO [Casa do Corretor] /comerciais-ou-industriais — página 1: 9 imóveis
+2026-07-01 19:58:52,949 INFO [Casa do Corretor] /comerciais-ou-industriais — página 2: 1 imóveis
+2026-07-01 19:58:54,442 INFO [Casa do Corretor] /comerciais-ou-industriais — página 3: 0 imóveis
+2026-07-01 19:58:55,987 INFO [Casa do Corretor] /terrenos — página 1: 8 imóveis
+2026-07-01 19:58:57,480 INFO [Casa do Corretor] /terrenos — página 2: 0 imóveis
+2026-07-01 19:58:59,020 INFO [Casa do Corretor] /rurais — página 1: 2 imóveis
+2026-07-01 19:59:00,539 INFO [Casa do Corretor] /rurais — página 2: 3 imóveis
+2026-07-01 19:59:02,025 INFO [Casa do Corretor] /rurais — página 3: 0 imóveis
+2026-07-01 19:59:03,560 INFO [Casa do Corretor] /imoveis/venda — página 1: 3 imóveis
+2026-07-01 19:59:05,288 INFO [Casa do Corretor] /imoveis/venda — página 2: 1 imóveis
+2026-07-01 19:59:06,832 INFO [Casa do Corretor] /imoveis/venda — página 3: 0 imóveis
+2026-07-01 19:59:06,832 INFO [Casa do Corretor] Total: 68 imóveis | {'Casa': 37, 'Sobrado': 4, 'Chácara': 11, 'Terreno': 9, 'Sítio': 3, 'Apartamento': 4}
+2026-07-01 19:59:11,373 INFO [Lélo Imóveis] Total: 0 imóveis (Maringá)
+2026-07-01 19:59:14,108 INFO [Opção Imóveis] 30 imóveis coletados (só página 1 de ~12 — ver nota no código sobre a limitação de paginação)
+2026-07-01 19:59:16,400 INFO [Patrimônio Imóveis Prontos] página 1: 27 imóveis novos
+2026-07-01 19:59:17,707 INFO [Patrimônio Imóveis Prontos] página 2: 27 imóveis novos
+2026-07-01 19:59:18,943 INFO [Patrimônio Imóveis Prontos] página 3: 27 imóveis novos
+2026-07-01 19:59:20,117 INFO [Patrimônio Imóveis Prontos] página 4: 27 imóveis novos
+2026-07-01 19:59:21,293 INFO [Patrimônio Imóveis Prontos] página 5: 27 imóveis novos
+2026-07-01 19:59:22,445 INFO [Patrimônio Imóveis Prontos] página 6: 27 imóveis novos
+2026-07-01 19:59:23,576 INFO [Patrimônio Imóveis Prontos] página 7: 27 imóveis novos
+2026-07-01 20:12:25,367 WARNING   Tentativa 1/3 falhou: https://www.patrimonioimoveisprontos.com.br/pesquisa-de-imoveis/?locacao_venda=V&finalidade=&dormitorio=&garagem=&vmi=&vma=&ordem=3&pag=8 → HTTPSConnectionPool(host='www.patrimonioimoveisprontos.com.br', port=443): Read timed out. (read timeout=30)
+2026-07-01 20:12:27,495 WARNING   Tentativa 2/3 falhou: https://www.patrimonioimoveisprontos.com.br/pesquisa-de-imoveis/?locacao_venda=V&finalidade=&dormitorio=&garagem=&vmi=&vma=&ordem=3&pag=8 → HTTPSConnectionPool(host='www.patrimonioimoveisprontos.com.br', port=443): Max retries exceeded with url: /pesquisa-de-imoveis/?locacao_venda=V&finalidade=&dormitorio=&garagem=&vmi=&vma=&ordem=3&pag=8 (Caused by NameResolutionError("HTTPSConnection(host='www.patrimonioimoveisprontos.com.br', port=443): Failed to resolve 'www.patrimonioimoveisprontos.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 20:12:31,517 WARNING   Tentativa 3/3 falhou: https://www.patrimonioimoveisprontos.com.br/pesquisa-de-imoveis/?locacao_venda=V&finalidade=&dormitorio=&garagem=&vmi=&vma=&ordem=3&pag=8 → HTTPSConnectionPool(host='www.patrimonioimoveisprontos.com.br', port=443): Max retries exceeded with url: /pesquisa-de-imoveis/?locacao_venda=V&finalidade=&dormitorio=&garagem=&vmi=&vma=&ordem=3&pag=8 (Caused by NameResolutionError("HTTPSConnection(host='www.patrimonioimoveisprontos.com.br', port=443): Failed to resolve 'www.patrimonioimoveisprontos.com.br' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-07-01 20:12:31,519 INFO [Patrimônio Imóveis Prontos] Total: 187 imóveis (Maringá)
+2026-07-01 20:12:33,526 INFO Total coletado (todos os sites): 1275
+2026-07-01 20:12:33,551 INFO Itens coletados (todos os sites): 1275
+2026-07-01 20:12:33,552 INFO Validando e cruzando com a base (bairros + condominios)...
+2026-07-01 20:24:36,469 INFO ============================================================
+2026-07-01 20:24:36,469 INFO Iniciando raspagem — 2026-07-01 20:24:36
+2026-07-01 20:24:36,469 INFO ** MODO DRY-RUN — nenhuma alteração será salva **
+2026-07-01 20:24:38,064 INFO [Haraki Imóveis] 5 categoria(s) encontrada(s) na home
+2026-07-01 20:24:39,140 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:24:41,269 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:24:43,366 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:24:45,432 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 20:24:47,624 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 20:24:49,695 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 20:24:51,759 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 20:24:53,971 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 20:24:56,022 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 10 imóveis
+2026-07-01 20:24:58,074 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 8 imóveis
+2026-07-01 20:25:02,154 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:25:04,628 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:25:06,653 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:25:08,630 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 20:25:10,588 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 20:25:12,877 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 6: 5 imóveis
+2026-07-01 20:25:16,704 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:25:18,643 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:25:20,698 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:25:22,599 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 4: 6 imóveis
+2026-07-01 20:25:26,432 INFO [Haraki Imóveis] /chacaras/10-maringa-pr — página 1: 4 imóveis
+2026-07-01 20:25:30,105 INFO [Haraki Imóveis] /barracao/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:25:33,326 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 20:25:36,082 WARNING   Tentativa 2/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 20:25:40,817 WARNING   Tentativa 3/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 20:25:40,818 INFO [Haraki Imóveis] Total: 196 imóveis | {'Casa': 77, 'Sobrado': 21, 'Terreno': 55, 'Apartamento': 36, 'Chácara': 4, 'Imóvel': 3}
+2026-07-01 20:25:43,603 INFO [Massaru Imóveis] 8 categoria(s) encontrada(s) na home
+2026-07-01 20:25:44,685 INFO [Massaru Imóveis] /apartamentos — página 1: 10 imóveis
+2026-07-01 20:25:46,788 INFO [Massaru Imóveis] /apartamentos — página 2: 10 imóveis
+2026-07-01 20:25:48,850 INFO [Massaru Imóveis] /apartamentos — página 3: 10 imóveis
+2026-07-01 20:25:50,899 INFO [Massaru Imóveis] /apartamentos — página 4: 10 imóveis
+2026-07-01 20:25:52,958 INFO [Massaru Imóveis] /apartamentos — página 5: 10 imóveis
+2026-07-01 20:25:55,022 INFO [Massaru Imóveis] /apartamentos — página 6: 10 imóveis
+2026-07-01 20:25:57,069 INFO [Massaru Imóveis] /apartamentos — página 7: 1 imóveis
+2026-07-01 20:26:01,161 INFO [Massaru Imóveis] /casas-ou-sobrados-em-condominios — página 1: 7 imóveis
+2026-07-01 20:26:04,846 INFO [Massaru Imóveis] /terrenos-em-condominios — página 1: 10 imóveis
+2026-07-01 20:26:06,785 INFO [Massaru Imóveis] /terrenos-em-condominios — página 2: 8 imóveis
+2026-07-01 20:26:10,904 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:26:13,153 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:26:15,510 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:26:17,824 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 20:26:20,059 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 20:26:22,464 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 20:26:25,126 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 20:26:27,491 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 20:26:29,952 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 20:26:32,315 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 10 imóveis
+2026-07-01 20:26:34,674 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 11: 10 imóveis
+2026-07-01 20:26:36,936 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 12: 10 imóveis
+2026-07-01 20:26:39,280 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 13: 3 imóveis
+2026-07-01 20:26:43,481 INFO [Massaru Imóveis] /apartamentos/10-maringa-pr — página 1: 0 imóveis
+2026-07-01 20:26:45,591 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:26:47,639 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:26:49,662 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 20:26:51,669 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 4: 5 imóveis
+2026-07-01 20:26:53,695 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 5: 8 imóveis
+2026-07-01 20:26:55,669 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 6: 3 imóveis
+2026-07-01 20:26:59,775 INFO [Massaru Imóveis] /salas-comerciais/10-maringa-pr — página 1: 7 imóveis
+2026-07-01 20:27:03,579 INFO [Massaru Imóveis] /chacaras/10-maringa-pr — página 1: 5 imóveis
+2026-07-01 20:27:06,958 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 20:27:09,708 WARNING   Tentativa 2/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 20:27:14,440 WARNING   Tentativa 3/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 20:27:14,441 INFO [Massaru Imóveis] Total: 265 imóveis | {'Apartamento': 59, 'Kitnet': 2, 'Casa': 99, 'Sobrado': 30, 'Terreno': 63, 'Sala Comercial': 7, 'Chácara': 5}
+2026-07-01 20:27:17,352 INFO [Bellakaza] 6 categoria(s) encontrada(s) na home
+2026-07-01 20:27:18,332 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:27:20,291 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:27:22,253 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:27:24,223 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 4: 2 imóveis
+2026-07-01 20:27:28,175 INFO [Bellakaza] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:27:30,182 INFO [Bellakaza] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:27:34,184 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:27:36,087 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 2: 4 imóveis
+2026-07-01 20:27:39,815 INFO [Bellakaza] /salas-em-edificios/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:27:43,567 INFO [Bellakaza] /chacaras/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:27:47,151 INFO [Bellakaza] /saloes-comerciais/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:27:50,280 WARNING   Tentativa 1/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 20:27:53,043 WARNING   Tentativa 2/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 20:27:57,791 WARNING   Tentativa 3/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 20:27:57,793 INFO [Bellakaza] Total: 75 imóveis | {'Casa': 28, 'Sobrado': 4, 'Terreno': 20, 'Kitnet': 2, 'Apartamento': 15, 'Chácara': 3, 'Sala Comercial': 3}
+2026-07-01 20:28:00,775 INFO [Silvio Iwata] 2 categoria(s) encontrada(s) na home
+2026-07-01 20:28:01,184 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 20:28:02,750 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 20:28:04,336 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 20:28:05,979 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 4: 9 imóveis
+2026-07-01 20:28:07,480 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 5: 9 imóveis
+2026-07-01 20:28:09,017 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 6: 9 imóveis
+2026-07-01 20:28:10,499 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 7: 9 imóveis
+2026-07-01 20:28:12,109 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 8: 9 imóveis
+2026-07-01 20:28:13,620 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 20:28:15,253 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 10: 9 imóveis
+2026-07-01 20:28:16,922 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 11: 9 imóveis
+2026-07-01 20:28:18,430 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 12: 9 imóveis
+2026-07-01 20:28:19,937 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 13: 9 imóveis
+2026-07-01 20:28:21,468 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 14: 9 imóveis
+2026-07-01 20:28:22,989 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 15: 9 imóveis
+2026-07-01 20:28:24,507 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 16: 9 imóveis
+2026-07-01 20:28:26,140 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 17: 9 imóveis
+2026-07-01 20:28:27,646 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 18: 9 imóveis
+2026-07-01 20:28:29,139 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 19: 2 imóveis
+2026-07-01 20:28:30,586 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 20: 1 imóveis
+2026-07-01 20:28:32,039 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 21: 0 imóveis
+2026-07-01 20:28:33,503 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 20:28:34,952 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 20:28:36,419 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 20:28:37,886 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 4: 9 imóveis
+2026-07-01 20:28:39,366 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 5: 9 imóveis
+2026-07-01 20:28:40,853 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 6: 9 imóveis
+2026-07-01 20:28:42,318 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 7: 9 imóveis
+2026-07-01 20:28:43,809 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 8: 9 imóveis
+2026-07-01 20:28:45,280 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 20:28:46,744 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 10: 9 imóveis
+2026-07-01 20:28:48,220 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 11: 9 imóveis
+2026-07-01 20:28:49,743 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 12: 9 imóveis
+2026-07-01 20:28:51,214 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 13: 9 imóveis
+2026-07-01 20:28:52,706 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 14: 9 imóveis
+2026-07-01 20:28:54,158 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 15: 9 imóveis
+2026-07-01 20:28:55,639 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 16: 9 imóveis
+2026-07-01 20:28:57,105 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 17: 9 imóveis
+2026-07-01 20:28:58,603 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 18: 9 imóveis
+2026-07-01 20:29:00,106 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 19: 0 imóveis
+2026-07-01 20:29:01,685 INFO [Silvio Iwata] /imoveis/venda — página 1: 6 imóveis
+2026-07-01 20:29:03,254 INFO [Silvio Iwata] /imoveis/venda — página 2: 9 imóveis
+2026-07-01 20:29:04,793 INFO [Silvio Iwata] /imoveis/venda — página 3: 6 imóveis
+2026-07-01 20:29:06,291 INFO [Silvio Iwata] /imoveis/venda — página 4: 7 imóveis
+2026-07-01 20:29:07,819 INFO [Silvio Iwata] /imoveis/venda — página 5: 8 imóveis
+2026-07-01 20:29:09,326 INFO [Silvio Iwata] /imoveis/venda — página 6: 6 imóveis
+2026-07-01 20:29:10,803 INFO [Silvio Iwata] /imoveis/venda — página 7: 6 imóveis
+2026-07-01 20:29:12,328 INFO [Silvio Iwata] /imoveis/venda — página 8: 3 imóveis
+2026-07-01 20:29:13,961 INFO [Silvio Iwata] /imoveis/venda — página 9: 4 imóveis
+2026-07-01 20:29:15,573 INFO [Silvio Iwata] /imoveis/venda — página 10: 4 imóveis
+2026-07-01 20:29:17,064 INFO [Silvio Iwata] /imoveis/venda — página 11: 6 imóveis
+2026-07-01 20:29:18,614 INFO [Silvio Iwata] /imoveis/venda — página 12: 5 imóveis
+2026-07-01 20:29:20,132 INFO [Silvio Iwata] /imoveis/venda — página 13: 5 imóveis
+2026-07-01 20:29:21,616 INFO [Silvio Iwata] /imoveis/venda — página 14: 5 imóveis
+2026-07-01 20:29:23,177 INFO [Silvio Iwata] /imoveis/venda — página 15: 4 imóveis
+2026-07-01 20:29:24,699 INFO [Silvio Iwata] /imoveis/venda — página 16: 5 imóveis
+2026-07-01 20:29:26,208 INFO [Silvio Iwata] /imoveis/venda — página 17: 3 imóveis
+2026-07-01 20:29:27,723 INFO [Silvio Iwata] /imoveis/venda — página 18: 3 imóveis
+2026-07-01 20:29:29,304 INFO [Silvio Iwata] /imoveis/venda — página 19: 3 imóveis
+2026-07-01 20:29:30,810 INFO [Silvio Iwata] /imoveis/venda — página 20: 2 imóveis
+2026-07-01 20:29:32,313 INFO [Silvio Iwata] /imoveis/venda — página 21: 5 imóveis
+2026-07-01 20:29:33,850 INFO [Silvio Iwata] /imoveis/venda — página 22: 4 imóveis
+2026-07-01 20:29:35,363 INFO [Silvio Iwata] /imoveis/venda — página 23: 4 imóveis
+2026-07-01 20:29:36,849 INFO [Silvio Iwata] /imoveis/venda — página 24: 4 imóveis
+2026-07-01 20:29:38,344 INFO [Silvio Iwata] /imoveis/venda — página 25: 4 imóveis
+2026-07-01 20:29:39,823 INFO [Silvio Iwata] /imoveis/venda — página 26: 4 imóveis
+2026-07-01 20:29:41,313 INFO [Silvio Iwata] /imoveis/venda — página 27: 2 imóveis
+2026-07-01 20:29:42,803 INFO [Silvio Iwata] /imoveis/venda — página 28: 0 imóveis
+2026-07-01 20:29:42,804 INFO [Silvio Iwata] Total: 454 imóveis | {'Apartamento': 164, 'Kitnet': 4, 'Casa': 139, 'Sobrado': 44, 'Terreno': 88, 'Sala Comercial': 10, 'Chácara': 4, 'Imóvel': 1}
+2026-07-01 20:29:45,812 INFO [Casa do Corretor] 5 categoria(s) encontrada(s) na home
+2026-07-01 20:29:46,215 INFO [Casa do Corretor] /casas-ou-sobrados — página 1: 9 imóveis
+2026-07-01 20:29:47,800 INFO [Casa do Corretor] /casas-ou-sobrados — página 2: 9 imóveis
+2026-07-01 20:29:49,332 INFO [Casa do Corretor] /casas-ou-sobrados — página 3: 9 imóveis
+2026-07-01 20:29:50,880 INFO [Casa do Corretor] /casas-ou-sobrados — página 4: 9 imóveis
+2026-07-01 20:29:52,424 INFO [Casa do Corretor] /casas-ou-sobrados — página 5: 4 imóveis
+2026-07-01 20:29:54,065 INFO [Casa do Corretor] /casas-ou-sobrados — página 6: 1 imóveis
+2026-07-01 20:29:55,572 INFO [Casa do Corretor] /casas-ou-sobrados — página 7: 0 imóveis
+2026-07-01 20:29:57,128 INFO [Casa do Corretor] /casas-ou-sobrados-geminados — página 1: 0 imóveis
+2026-07-01 20:29:59,040 INFO [Casa do Corretor] /comerciais-ou-industriais — página 1: 9 imóveis
+2026-07-01 20:30:00,670 INFO [Casa do Corretor] /comerciais-ou-industriais — página 2: 1 imóveis
+2026-07-01 20:30:02,452 INFO [Casa do Corretor] /comerciais-ou-industriais — página 3: 0 imóveis
+2026-07-01 20:30:04,060 INFO [Casa do Corretor] /terrenos — página 1: 8 imóveis
+2026-07-01 20:30:05,569 INFO [Casa do Corretor] /terrenos — página 2: 0 imóveis
+2026-07-01 20:30:07,146 INFO [Casa do Corretor] /rurais — página 1: 2 imóveis
+2026-07-01 20:30:08,764 INFO [Casa do Corretor] /rurais — página 2: 3 imóveis
+2026-07-01 20:30:10,297 INFO [Casa do Corretor] /rurais — página 3: 0 imóveis
+2026-07-01 20:30:11,830 INFO [Casa do Corretor] /imoveis/venda — página 1: 3 imóveis
+2026-07-01 20:30:13,374 INFO [Casa do Corretor] /imoveis/venda — página 2: 1 imóveis
+2026-07-01 20:30:14,908 INFO [Casa do Corretor] /imoveis/venda — página 3: 0 imóveis
+2026-07-01 20:30:14,908 INFO [Casa do Corretor] Total: 68 imóveis | {'Casa': 37, 'Sobrado': 4, 'Chácara': 11, 'Terreno': 9, 'Sítio': 3, 'Apartamento': 4}
+2026-07-01 20:30:18,456 INFO [Lélo Imóveis] página 1: 12 imóveis novos
+2026-07-01 20:30:20,808 INFO [Lélo Imóveis] página 2: 12 imóveis novos
+2026-07-01 20:30:24,023 INFO [Lélo Imóveis] página 3: 12 imóveis novos
+2026-07-01 20:30:27,492 INFO [Lélo Imóveis] página 4: 12 imóveis novos
+2026-07-01 20:30:29,713 INFO [Lélo Imóveis] página 5: 12 imóveis novos
+2026-07-01 20:30:32,136 INFO [Lélo Imóveis] página 6: 12 imóveis novos
+2026-07-01 20:30:34,425 INFO [Lélo Imóveis] página 7: 12 imóveis novos
+2026-07-01 20:30:36,784 INFO [Lélo Imóveis] página 8: 12 imóveis novos
+2026-07-01 20:30:39,901 INFO [Lélo Imóveis] página 9: 12 imóveis novos
+2026-07-01 20:30:42,165 INFO [Lélo Imóveis] página 10: 12 imóveis novos
+2026-07-01 20:30:43,458 INFO [Lélo Imóveis] página 11: 12 imóveis novos
+2026-07-01 20:30:45,668 INFO [Lélo Imóveis] página 12: 12 imóveis novos
+2026-07-01 20:30:48,074 INFO [Lélo Imóveis] página 13: 12 imóveis novos
+2026-07-01 20:30:50,340 INFO [Lélo Imóveis] página 14: 12 imóveis novos
+2026-07-01 20:30:52,718 INFO [Lélo Imóveis] página 15: 12 imóveis novos
+2026-07-01 20:30:54,994 INFO [Lélo Imóveis] página 16: 12 imóveis novos
+2026-07-01 20:30:57,312 INFO [Lélo Imóveis] página 17: 12 imóveis novos
+2026-07-01 20:30:59,645 INFO [Lélo Imóveis] página 18: 12 imóveis novos
+2026-07-01 20:31:02,059 INFO [Lélo Imóveis] página 19: 12 imóveis novos
+2026-07-01 20:31:04,203 INFO [Lélo Imóveis] página 20: 12 imóveis novos
+2026-07-01 20:31:06,511 INFO [Lélo Imóveis] página 21: 12 imóveis novos
+2026-07-01 20:31:08,854 INFO [Lélo Imóveis] página 22: 12 imóveis novos
+2026-07-01 20:31:11,188 INFO [Lélo Imóveis] página 23: 12 imóveis novos
+2026-07-01 20:31:13,434 INFO [Lélo Imóveis] página 24: 12 imóveis novos
+2026-07-01 20:31:15,692 INFO [Lélo Imóveis] página 25: 12 imóveis novos
+2026-07-01 20:31:17,951 INFO [Lélo Imóveis] página 26: 12 imóveis novos
+2026-07-01 20:31:20,231 INFO [Lélo Imóveis] página 27: 12 imóveis novos
+2026-07-01 20:31:22,562 INFO [Lélo Imóveis] página 28: 12 imóveis novos
+2026-07-01 20:31:24,820 INFO [Lélo Imóveis] página 29: 12 imóveis novos
+2026-07-01 20:31:27,182 INFO [Lélo Imóveis] página 30: 12 imóveis novos
+2026-07-01 20:31:29,566 INFO [Lélo Imóveis] página 31: 12 imóveis novos
+2026-07-01 20:31:31,158 INFO [Lélo Imóveis] página 32: 12 imóveis novos
+2026-07-01 20:31:33,423 INFO [Lélo Imóveis] página 33: 12 imóveis novos
+2026-07-01 20:31:35,697 INFO [Lélo Imóveis] página 34: 12 imóveis novos
+2026-07-01 20:31:38,033 INFO [Lélo Imóveis] página 35: 12 imóveis novos
+2026-07-01 20:31:40,195 INFO [Lélo Imóveis] página 36: 12 imóveis novos
+2026-07-01 20:31:42,291 INFO [Lélo Imóveis] página 37: 12 imóveis novos
+2026-07-01 20:31:45,586 INFO [Lélo Imóveis] página 38: 12 imóveis novos
+2026-07-01 20:31:47,980 INFO [Lélo Imóveis] página 39: 12 imóveis novos
+2026-07-01 20:31:50,413 INFO [Lélo Imóveis] página 40: 12 imóveis novos
+2026-07-01 20:31:52,680 INFO [Lélo Imóveis] página 41: 12 imóveis novos
+2026-07-01 20:31:55,276 INFO [Lélo Imóveis] página 42: 12 imóveis novos
+2026-07-01 20:31:58,366 INFO [Lélo Imóveis] página 43: 12 imóveis novos
+2026-07-01 20:32:00,737 INFO [Lélo Imóveis] página 44: 12 imóveis novos
+2026-07-01 20:32:02,982 INFO [Lélo Imóveis] página 45: 12 imóveis novos
+2026-07-01 20:32:05,318 INFO [Lélo Imóveis] página 46: 12 imóveis novos
+2026-07-01 20:32:07,553 INFO [Lélo Imóveis] página 47: 12 imóveis novos
+2026-07-01 20:32:09,389 INFO [Lélo Imóveis] página 48: 4 imóveis novos
+2026-07-01 20:32:11,013 WARNING   Tentativa 1/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-01 20:32:13,174 WARNING   Tentativa 2/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-01 20:32:17,363 WARNING   Tentativa 3/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-01 20:32:17,364 INFO [Lélo Imóveis] Total: 498 imóveis (Maringá)
+2026-07-01 20:32:20,081 INFO [Opção Imóveis] 30 imóveis coletados (só página 1 de ~12 — ver nota no código sobre a limitação de paginação)
+2026-07-01 20:32:22,450 INFO [Patrimônio Imóveis Prontos] página 1: 27 imóveis novos
+2026-07-01 20:32:23,609 INFO [Patrimônio Imóveis Prontos] página 2: 27 imóveis novos
+2026-07-01 20:32:24,754 INFO [Patrimônio Imóveis Prontos] página 3: 27 imóveis novos
+2026-07-01 20:32:25,901 INFO [Patrimônio Imóveis Prontos] página 4: 27 imóveis novos
+2026-07-01 20:32:27,028 INFO [Patrimônio Imóveis Prontos] página 5: 27 imóveis novos
+2026-07-01 20:32:28,176 INFO [Patrimônio Imóveis Prontos] página 6: 27 imóveis novos
+2026-07-01 20:32:29,316 INFO [Patrimônio Imóveis Prontos] página 7: 27 imóveis novos
+2026-07-01 20:32:30,456 INFO [Patrimônio Imóveis Prontos] página 8: 27 imóveis novos
+2026-07-01 20:32:31,595 INFO [Patrimônio Imóveis Prontos] página 9: 27 imóveis novos
+2026-07-01 20:32:32,725 INFO [Patrimônio Imóveis Prontos] página 10: 27 imóveis novos
+2026-07-01 20:32:33,855 INFO [Patrimônio Imóveis Prontos] página 11: 27 imóveis novos
+2026-07-01 20:32:34,979 INFO [Patrimônio Imóveis Prontos] página 12: 2 imóveis novos
+2026-07-01 20:32:36,111 INFO [Patrimônio Imóveis Prontos] página 13: 0 imóveis novos
+2026-07-01 20:32:36,112 INFO [Patrimônio Imóveis Prontos] Total: 292 imóveis (Maringá)
+2026-07-01 20:32:38,117 INFO Total coletado (todos os sites): 1878
+2026-07-01 20:32:38,135 INFO Itens coletados (todos os sites): 1878
+2026-07-01 20:32:38,135 INFO Validando e cruzando com a base (bairros + condominios)...
+2026-07-01 20:32:58,375 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:01,771 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:04,721 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:11,286 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:13,130 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:20,489 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:22,332 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:26,737 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:28,776 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:30,201 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:31,666 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:35,134 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:40,759 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-07-01 20:33:42,134 INFO [DRY-RUN] Nenhuma alteração salva.
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa | fs |  | 979000 | https://harakiimoveis.com.br/imovel/20001641/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 340000 | https://harakiimoveis.com.br/imovel/20001767/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 365000 | https://harakiimoveis.com.br/imovel/20001806/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 380000 | https://harakiimoveis.com.br/imovel/20001675/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 380000 | https://harakiimoveis.com.br/imovel/20001500/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 385000 | https://harakiimoveis.com.br/imovel/20001514/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 390000 | https://harakiimoveis.com.br/imovel/20001783/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 399000 | https://harakiimoveis.com.br/imovel/20001724/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | 420000 | https://harakiimoveis.com.br/imovel/20001593/
+2026-07-01 20:33:42,135 INFO   harakiimoveis.com.br | Casa |  |  | None | https://harakiimoveis.com.br/imovel/20001762/
+2026-07-01 20:33:42,135 INFO Raspagem concluída. Novos: 1878
+2026-07-01 20:33:42,135 INFO ============================================================
+2026-07-01 20:36:56,867 INFO ============================================================
+2026-07-01 20:36:56,867 INFO Iniciando raspagem — 2026-07-01 20:36:56
+2026-07-01 20:36:58,393 INFO [Haraki Imóveis] 5 categoria(s) encontrada(s) na home
+2026-07-01 20:36:59,483 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:37:01,547 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:37:03,602 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:37:05,649 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 20:37:07,689 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 20:37:09,729 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 20:37:11,800 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 20:37:13,857 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 20:37:16,021 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 10 imóveis
+2026-07-01 20:37:18,702 INFO [Haraki Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 8 imóveis
+2026-07-01 20:37:22,778 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:37:24,749 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:37:26,686 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:37:28,705 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 20:37:30,708 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 20:37:32,637 INFO [Haraki Imóveis] /terrenos/10-maringa-pr — página 6: 5 imóveis
+2026-07-01 20:37:36,407 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:37:38,334 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:37:40,387 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:37:42,301 INFO [Haraki Imóveis] /apartamentos/10-maringa-pr — página 4: 6 imóveis
+2026-07-01 20:37:46,017 INFO [Haraki Imóveis] /chacaras/10-maringa-pr — página 1: 4 imóveis
+2026-07-01 20:37:49,551 INFO [Haraki Imóveis] /barracao/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:37:52,710 WARNING   Tentativa 1/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 20:37:56,317 WARNING   Tentativa 2/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 20:38:01,376 WARNING   Tentativa 3/3 falhou: https://harakiimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://harakiimoveis.com.br/imoveis/venda
+2026-07-01 20:38:01,377 INFO [Haraki Imóveis] Total: 196 imóveis | {'Casa': 77, 'Sobrado': 21, 'Terreno': 55, 'Apartamento': 36, 'Chácara': 4, 'Imóvel': 3}
+2026-07-01 20:38:04,066 INFO [Massaru Imóveis] 8 categoria(s) encontrada(s) na home
+2026-07-01 20:38:05,471 INFO [Massaru Imóveis] /apartamentos — página 1: 10 imóveis
+2026-07-01 20:38:07,505 INFO [Massaru Imóveis] /apartamentos — página 2: 10 imóveis
+2026-07-01 20:38:09,579 INFO [Massaru Imóveis] /apartamentos — página 3: 10 imóveis
+2026-07-01 20:38:11,677 INFO [Massaru Imóveis] /apartamentos — página 4: 10 imóveis
+2026-07-01 20:38:13,673 INFO [Massaru Imóveis] /apartamentos — página 5: 10 imóveis
+2026-07-01 20:38:15,702 INFO [Massaru Imóveis] /apartamentos — página 6: 10 imóveis
+2026-07-01 20:38:17,731 INFO [Massaru Imóveis] /apartamentos — página 7: 1 imóveis
+2026-07-01 20:38:21,472 INFO [Massaru Imóveis] /casas-ou-sobrados-em-condominios — página 1: 7 imóveis
+2026-07-01 20:38:25,214 INFO [Massaru Imóveis] /terrenos-em-condominios — página 1: 10 imóveis
+2026-07-01 20:38:27,098 INFO [Massaru Imóveis] /terrenos-em-condominios — página 2: 8 imóveis
+2026-07-01 20:38:31,219 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:38:33,403 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:38:35,571 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:38:37,744 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 4: 10 imóveis
+2026-07-01 20:38:40,085 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 5: 10 imóveis
+2026-07-01 20:38:42,276 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 6: 10 imóveis
+2026-07-01 20:38:44,480 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 7: 10 imóveis
+2026-07-01 20:38:46,711 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 8: 10 imóveis
+2026-07-01 20:38:48,923 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 20:38:51,149 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 10: 10 imóveis
+2026-07-01 20:38:53,343 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 11: 10 imóveis
+2026-07-01 20:38:55,611 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 12: 10 imóveis
+2026-07-01 20:38:57,841 INFO [Massaru Imóveis] /casas-ou-sobrados/10-maringa-pr — página 13: 3 imóveis
+2026-07-01 20:39:02,075 INFO [Massaru Imóveis] /apartamentos/10-maringa-pr — página 1: 0 imóveis
+2026-07-01 20:39:04,075 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:39:06,375 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:39:08,447 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 20:39:10,440 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 4: 5 imóveis
+2026-07-01 20:39:12,401 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 5: 8 imóveis
+2026-07-01 20:39:14,445 INFO [Massaru Imóveis] /terrenos/10-maringa-pr — página 6: 3 imóveis
+2026-07-01 20:39:18,202 INFO [Massaru Imóveis] /salas-comerciais/10-maringa-pr — página 1: 7 imóveis
+2026-07-01 20:39:21,884 INFO [Massaru Imóveis] /chacaras/10-maringa-pr — página 1: 5 imóveis
+2026-07-01 20:39:24,916 WARNING   Tentativa 1/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 20:39:27,689 WARNING   Tentativa 2/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 20:39:32,440 WARNING   Tentativa 3/3 falhou: https://massaruimoveis.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://massaruimoveis.com.br/imoveis/venda
+2026-07-01 20:39:32,442 INFO [Massaru Imóveis] Total: 265 imóveis | {'Apartamento': 59, 'Kitnet': 2, 'Casa': 99, 'Sobrado': 30, 'Terreno': 63, 'Sala Comercial': 7, 'Chácara': 5}
+2026-07-01 20:39:35,163 INFO [Bellakaza] 6 categoria(s) encontrada(s) na home
+2026-07-01 20:39:36,180 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:39:38,240 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:39:40,279 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 3: 10 imóveis
+2026-07-01 20:39:42,207 INFO [Bellakaza] /casas-ou-sobrados/10-maringa-pr — página 4: 2 imóveis
+2026-07-01 20:39:46,148 INFO [Bellakaza] /terrenos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:39:48,164 INFO [Bellakaza] /terrenos/10-maringa-pr — página 2: 10 imóveis
+2026-07-01 20:39:51,679 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 1: 10 imóveis
+2026-07-01 20:39:53,638 INFO [Bellakaza] /apartamentos/10-maringa-pr — página 2: 4 imóveis
+2026-07-01 20:39:57,123 INFO [Bellakaza] /chacaras/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:40:00,752 INFO [Bellakaza] /saloes-comerciais/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:40:04,538 INFO [Bellakaza] /salas-em-edificios/10-maringa-pr — página 1: 3 imóveis
+2026-07-01 20:40:07,795 WARNING   Tentativa 1/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 20:40:10,663 WARNING   Tentativa 2/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 20:40:15,412 WARNING   Tentativa 3/3 falhou: https://bellakaza.com.br/imoveis/venda → 404 Client Error: Not Found for url: https://bellakaza.com.br/imoveis/venda
+2026-07-01 20:40:15,412 INFO [Bellakaza] Total: 75 imóveis | {'Casa': 28, 'Sobrado': 4, 'Terreno': 20, 'Kitnet': 2, 'Apartamento': 15, 'Chácara': 3, 'Sala Comercial': 3}
+2026-07-01 20:40:18,638 INFO [Silvio Iwata] 2 categoria(s) encontrada(s) na home
+2026-07-01 20:40:19,036 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 20:40:20,539 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 20:40:22,101 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 20:40:23,691 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 4: 9 imóveis
+2026-07-01 20:40:25,279 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 5: 9 imóveis
+2026-07-01 20:40:26,815 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 6: 9 imóveis
+2026-07-01 20:40:28,336 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 7: 9 imóveis
+2026-07-01 20:40:29,939 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 8: 9 imóveis
+2026-07-01 20:40:31,462 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 20:40:33,030 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 10: 9 imóveis
+2026-07-01 20:40:34,557 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 11: 9 imóveis
+2026-07-01 20:40:36,122 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 12: 9 imóveis
+2026-07-01 20:40:37,653 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 13: 9 imóveis
+2026-07-01 20:40:39,282 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 14: 9 imóveis
+2026-07-01 20:40:40,826 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 15: 9 imóveis
+2026-07-01 20:40:42,417 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 16: 9 imóveis
+2026-07-01 20:40:44,076 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 17: 9 imóveis
+2026-07-01 20:40:45,572 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 18: 9 imóveis
+2026-07-01 20:40:47,045 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 19: 2 imóveis
+2026-07-01 20:40:48,487 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 20: 1 imóveis
+2026-07-01 20:40:49,955 INFO [Silvio Iwata] /apartamentos/10-maringa-pr — página 21: 0 imóveis
+2026-07-01 20:40:51,450 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 1: 9 imóveis
+2026-07-01 20:40:52,946 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 2: 9 imóveis
+2026-07-01 20:40:54,512 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 3: 9 imóveis
+2026-07-01 20:40:56,456 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 4: 9 imóveis
+2026-07-01 20:40:57,977 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 5: 9 imóveis
+2026-07-01 20:40:59,482 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 6: 9 imóveis
+2026-07-01 20:41:01,267 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 7: 9 imóveis
+2026-07-01 20:41:02,746 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 8: 9 imóveis
+2026-07-01 20:41:04,208 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 9: 9 imóveis
+2026-07-01 20:41:05,726 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 10: 9 imóveis
+2026-07-01 20:41:07,213 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 11: 9 imóveis
+2026-07-01 20:41:08,709 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 12: 9 imóveis
+2026-07-01 20:41:10,211 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 13: 9 imóveis
+2026-07-01 20:41:11,704 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 14: 9 imóveis
+2026-07-01 20:41:13,177 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 15: 9 imóveis
+2026-07-01 20:41:14,695 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 16: 9 imóveis
+2026-07-01 20:41:16,186 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 17: 9 imóveis
+2026-07-01 20:41:17,812 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 18: 9 imóveis
+2026-07-01 20:41:19,296 INFO [Silvio Iwata] /casas-ou-sobrados/10-maringa-pr — página 19: 0 imóveis
+2026-07-01 20:41:20,879 INFO [Silvio Iwata] /imoveis/venda — página 1: 6 imóveis
+2026-07-01 20:41:22,491 INFO [Silvio Iwata] /imoveis/venda — página 2: 9 imóveis
+2026-07-01 20:41:24,031 INFO [Silvio Iwata] /imoveis/venda — página 3: 6 imóveis
+2026-07-01 20:41:25,640 INFO [Silvio Iwata] /imoveis/venda — página 4: 7 imóveis
+2026-07-01 20:41:27,197 INFO [Silvio Iwata] /imoveis/venda — página 5: 8 imóveis
+2026-07-01 20:41:28,931 INFO [Silvio Iwata] /imoveis/venda — página 6: 6 imóveis
+2026-07-01 20:41:30,460 INFO [Silvio Iwata] /imoveis/venda — página 7: 6 imóveis
+2026-07-01 20:41:32,096 INFO [Silvio Iwata] /imoveis/venda — página 8: 3 imóveis
+2026-07-01 20:41:33,645 INFO [Silvio Iwata] /imoveis/venda — página 9: 4 imóveis
+2026-07-01 20:41:35,173 INFO [Silvio Iwata] /imoveis/venda — página 10: 4 imóveis
+2026-07-01 20:41:36,708 INFO [Silvio Iwata] /imoveis/venda — página 11: 6 imóveis
+2026-07-01 20:41:38,248 INFO [Silvio Iwata] /imoveis/venda — página 12: 5 imóveis
+2026-07-01 20:41:39,810 INFO [Silvio Iwata] /imoveis/venda — página 13: 5 imóveis
+2026-07-01 20:41:41,343 INFO [Silvio Iwata] /imoveis/venda — página 14: 5 imóveis
+2026-07-01 20:41:42,882 INFO [Silvio Iwata] /imoveis/venda — página 15: 4 imóveis
+2026-07-01 20:41:44,447 INFO [Silvio Iwata] /imoveis/venda — página 16: 5 imóveis
+2026-07-01 20:41:45,978 INFO [Silvio Iwata] /imoveis/venda — página 17: 3 imóveis
+2026-07-01 20:41:47,485 INFO [Silvio Iwata] /imoveis/venda — página 18: 3 imóveis
+2026-07-01 20:41:49,147 INFO [Silvio Iwata] /imoveis/venda — página 19: 3 imóveis
+2026-07-01 20:41:50,701 INFO [Silvio Iwata] /imoveis/venda — página 20: 2 imóveis
+2026-07-01 20:41:52,230 INFO [Silvio Iwata] /imoveis/venda — página 21: 5 imóveis
+2026-07-01 20:41:53,759 INFO [Silvio Iwata] /imoveis/venda — página 22: 4 imóveis
+2026-07-01 20:41:55,353 INFO [Silvio Iwata] /imoveis/venda — página 23: 4 imóveis
+2026-07-01 20:41:56,980 INFO [Silvio Iwata] /imoveis/venda — página 24: 4 imóveis
+2026-07-01 20:41:58,628 INFO [Silvio Iwata] /imoveis/venda — página 25: 4 imóveis
+2026-07-01 20:42:00,251 INFO [Silvio Iwata] /imoveis/venda — página 26: 4 imóveis
+2026-07-01 20:42:01,820 INFO [Silvio Iwata] /imoveis/venda — página 27: 2 imóveis
+2026-07-01 20:42:03,498 INFO [Silvio Iwata] /imoveis/venda — página 28: 0 imóveis
+2026-07-01 20:42:03,498 INFO [Silvio Iwata] Total: 454 imóveis | {'Apartamento': 164, 'Kitnet': 4, 'Casa': 139, 'Sobrado': 44, 'Terreno': 88, 'Sala Comercial': 10, 'Chácara': 4, 'Imóvel': 1}
+2026-07-01 20:42:06,462 INFO [Casa do Corretor] 5 categoria(s) encontrada(s) na home
+2026-07-01 20:42:06,915 INFO [Casa do Corretor] /casas-ou-sobrados — página 1: 9 imóveis
+2026-07-01 20:42:08,880 INFO [Casa do Corretor] /casas-ou-sobrados — página 2: 9 imóveis
+2026-07-01 20:42:10,475 INFO [Casa do Corretor] /casas-ou-sobrados — página 3: 9 imóveis
+2026-07-01 20:42:12,047 INFO [Casa do Corretor] /casas-ou-sobrados — página 4: 9 imóveis
+2026-07-01 20:42:13,607 INFO [Casa do Corretor] /casas-ou-sobrados — página 5: 4 imóveis
+2026-07-01 20:42:15,135 INFO [Casa do Corretor] /casas-ou-sobrados — página 6: 1 imóveis
+2026-07-01 20:42:16,667 INFO [Casa do Corretor] /casas-ou-sobrados — página 7: 0 imóveis
+2026-07-01 20:42:18,204 INFO [Casa do Corretor] /casas-ou-sobrados-geminados — página 1: 0 imóveis
+2026-07-01 20:42:19,844 INFO [Casa do Corretor] /comerciais-ou-industriais — página 1: 9 imóveis
+2026-07-01 20:42:21,380 INFO [Casa do Corretor] /comerciais-ou-industriais — página 2: 1 imóveis
+2026-07-01 20:42:22,959 INFO [Casa do Corretor] /comerciais-ou-industriais — página 3: 0 imóveis
+2026-07-01 20:42:24,538 INFO [Casa do Corretor] /terrenos — página 1: 8 imóveis
+2026-07-01 20:42:26,120 INFO [Casa do Corretor] /terrenos — página 2: 0 imóveis
+2026-07-01 20:42:27,686 INFO [Casa do Corretor] /rurais — página 1: 2 imóveis
+2026-07-01 20:42:29,316 INFO [Casa do Corretor] /rurais — página 2: 3 imóveis
+2026-07-01 20:42:30,889 INFO [Casa do Corretor] /rurais — página 3: 0 imóveis
+2026-07-01 20:42:32,595 INFO [Casa do Corretor] /imoveis/venda — página 1: 3 imóveis
+2026-07-01 20:42:34,143 INFO [Casa do Corretor] /imoveis/venda — página 2: 1 imóveis
+2026-07-01 20:42:35,916 INFO [Casa do Corretor] /imoveis/venda — página 3: 0 imóveis
+2026-07-01 20:42:35,916 INFO [Casa do Corretor] Total: 68 imóveis | {'Casa': 37, 'Sobrado': 4, 'Chácara': 11, 'Terreno': 9, 'Sítio': 3, 'Apartamento': 4}
+2026-07-01 20:42:39,985 INFO [Lélo Imóveis] página 1: 12 imóveis novos
+2026-07-01 20:42:42,485 INFO [Lélo Imóveis] página 2: 12 imóveis novos
+2026-07-01 20:42:44,709 INFO [Lélo Imóveis] página 3: 12 imóveis novos
+2026-07-01 20:42:46,965 INFO [Lélo Imóveis] página 4: 12 imóveis novos
+2026-07-01 20:42:49,259 INFO [Lélo Imóveis] página 5: 12 imóveis novos
+2026-07-01 20:42:51,554 INFO [Lélo Imóveis] página 6: 12 imóveis novos
+2026-07-01 20:42:54,154 INFO [Lélo Imóveis] página 7: 12 imóveis novos
+2026-07-01 20:42:56,549 INFO [Lélo Imóveis] página 8: 12 imóveis novos
+2026-07-01 20:42:58,900 INFO [Lélo Imóveis] página 9: 12 imóveis novos
+2026-07-01 20:43:01,884 INFO [Lélo Imóveis] página 10: 12 imóveis novos
+2026-07-01 20:43:04,338 INFO [Lélo Imóveis] página 11: 12 imóveis novos
+2026-07-01 20:43:06,861 INFO [Lélo Imóveis] página 12: 12 imóveis novos
+2026-07-01 20:43:09,269 INFO [Lélo Imóveis] página 13: 12 imóveis novos
+2026-07-01 20:43:11,592 INFO [Lélo Imóveis] página 14: 12 imóveis novos
+2026-07-01 20:43:14,193 INFO [Lélo Imóveis] página 15: 12 imóveis novos
+2026-07-01 20:43:16,483 INFO [Lélo Imóveis] página 16: 12 imóveis novos
+2026-07-01 20:43:18,858 INFO [Lélo Imóveis] página 17: 12 imóveis novos
+2026-07-01 20:43:21,208 INFO [Lélo Imóveis] página 18: 12 imóveis novos
+2026-07-01 20:43:23,643 INFO [Lélo Imóveis] página 19: 12 imóveis novos
+2026-07-01 20:43:26,602 INFO [Lélo Imóveis] página 20: 12 imóveis novos
+2026-07-01 20:43:29,472 INFO [Lélo Imóveis] página 21: 12 imóveis novos
+2026-07-01 20:43:31,914 INFO [Lélo Imóveis] página 22: 12 imóveis novos
+2026-07-01 20:43:34,389 INFO [Lélo Imóveis] página 23: 12 imóveis novos
+2026-07-01 20:43:36,671 INFO [Lélo Imóveis] página 24: 12 imóveis novos
+2026-07-01 20:43:38,993 INFO [Lélo Imóveis] página 25: 12 imóveis novos
+2026-07-01 20:43:41,309 INFO [Lélo Imóveis] página 26: 12 imóveis novos
+2026-07-01 20:43:43,738 INFO [Lélo Imóveis] página 27: 12 imóveis novos
+2026-07-01 20:43:46,097 INFO [Lélo Imóveis] página 28: 12 imóveis novos
+2026-07-01 20:43:48,591 INFO [Lélo Imóveis] página 29: 12 imóveis novos
+2026-07-01 20:43:50,941 INFO [Lélo Imóveis] página 30: 12 imóveis novos
+2026-07-01 20:43:53,231 INFO [Lélo Imóveis] página 31: 12 imóveis novos
+2026-07-01 20:43:56,390 INFO [Lélo Imóveis] página 32: 12 imóveis novos
+2026-07-01 20:43:59,433 INFO [Lélo Imóveis] página 33: 12 imóveis novos
+2026-07-01 20:44:02,508 INFO [Lélo Imóveis] página 34: 12 imóveis novos
+2026-07-01 20:44:05,017 INFO [Lélo Imóveis] página 35: 12 imóveis novos
+2026-07-01 20:44:07,571 INFO [Lélo Imóveis] página 36: 12 imóveis novos
+2026-07-01 20:44:09,929 INFO [Lélo Imóveis] página 37: 12 imóveis novos
+2026-07-01 20:44:13,211 INFO [Lélo Imóveis] página 38: 12 imóveis novos
+2026-07-01 20:44:15,758 INFO [Lélo Imóveis] página 39: 12 imóveis novos
+2026-07-01 20:44:18,324 INFO [Lélo Imóveis] página 40: 12 imóveis novos
+2026-07-01 20:44:21,427 INFO [Lélo Imóveis] página 41: 12 imóveis novos
+2026-07-01 20:44:23,753 INFO [Lélo Imóveis] página 42: 12 imóveis novos
+2026-07-01 20:44:26,129 INFO [Lélo Imóveis] página 43: 12 imóveis novos
+2026-07-01 20:44:28,534 INFO [Lélo Imóveis] página 44: 12 imóveis novos
+2026-07-01 20:44:31,567 INFO [Lélo Imóveis] página 45: 12 imóveis novos
+2026-07-01 20:44:33,857 INFO [Lélo Imóveis] página 46: 12 imóveis novos
+2026-07-01 20:44:36,224 INFO [Lélo Imóveis] página 47: 12 imóveis novos
+2026-07-01 20:44:38,262 INFO [Lélo Imóveis] página 48: 4 imóveis novos
+2026-07-01 20:44:39,845 WARNING   Tentativa 1/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-01 20:44:42,006 WARNING   Tentativa 2/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-01 20:44:46,173 WARNING   Tentativa 3/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-01 20:44:46,174 INFO [Lélo Imóveis] Total: 498 imóveis (Maringá)
+2026-07-01 20:44:49,237 INFO [Opção Imóveis] 30 imóveis coletados (só página 1 de ~12 — ver nota no código sobre a limitação de paginação)
+2026-07-01 20:44:51,582 INFO [Patrimônio Imóveis Prontos] página 1: 27 imóveis novos
+2026-07-01 20:44:52,772 INFO [Patrimônio Imóveis Prontos] página 2: 27 imóveis novos
+2026-07-01 20:44:53,920 INFO [Patrimônio Imóveis Prontos] página 3: 27 imóveis novos
+2026-07-01 20:44:55,061 INFO [Patrimônio Imóveis Prontos] página 4: 27 imóveis novos
+2026-07-01 20:44:56,235 INFO [Patrimônio Imóveis Prontos] página 5: 27 imóveis novos
+2026-07-01 20:44:57,371 INFO [Patrimônio Imóveis Prontos] página 6: 27 imóveis novos
+2026-07-01 20:44:58,504 INFO [Patrimônio Imóveis Prontos] página 7: 27 imóveis novos
+2026-07-01 20:44:59,628 INFO [Patrimônio Imóveis Prontos] página 8: 27 imóveis novos
+2026-07-01 20:45:00,783 INFO [Patrimônio Imóveis Prontos] página 9: 27 imóveis novos
+2026-07-01 20:45:01,956 INFO [Patrimônio Imóveis Prontos] página 10: 27 imóveis novos
+2026-07-01 20:45:03,079 INFO [Patrimônio Imóveis Prontos] página 11: 27 imóveis novos
+2026-07-01 20:45:04,187 INFO [Patrimônio Imóveis Prontos] página 12: 2 imóveis novos
+2026-07-01 20:45:05,330 INFO [Patrimônio Imóveis Prontos] página 13: 0 imóveis novos
+2026-07-01 20:45:05,330 INFO [Patrimônio Imóveis Prontos] Total: 292 imóveis (Maringá)
+2026-07-01 20:45:07,333 INFO Total coletado (todos os sites): 1878
+2026-07-01 20:45:07,349 INFO Itens coletados (todos os sites): 1878
+2026-07-01 20:45:07,350 INFO Validando e cruzando com a base (bairros + condominios)...
+2026-07-01 20:45:21,959 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:22,660 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:23,437 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:24,192 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:24,613 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:25,006 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:25,791 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:26,509 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:27,107 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:27,544 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:28,472 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:29,034 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:30,217 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:30,929 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:31,532 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:32,157 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:32,572 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:33,383 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:33,790 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:34,291 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:34,687 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:35,947 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:37,000 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:38,029 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:38,790 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:39,375 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:41,045 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:41,685 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:42,204 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:42,691 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:43,590 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:44,051 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:44,637 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:45,256 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:45,663 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:46,070 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:46,685 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:47,381 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:47,802 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:48,270 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:49,112 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:49,548 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:49,947 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:50,404 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:51,563 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:52,182 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:52,591 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:53,021 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:53,438 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:53,850 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:54,400 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:54,851 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:55,267 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:55,815 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:56,210 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:56,616 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:57,048 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:57,445 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:57,849 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:58,413 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:58,839 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:59,244 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:45:59,644 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:00,086 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:00,722 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:01,339 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:01,811 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:02,367 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:03,085 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:03,631 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:04,415 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:05,089 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:05,725 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:06,185 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:06,855 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:07,274 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:07,659 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:08,195 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:09,336 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:09,891 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:10,301 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:10,763 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:11,277 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:12,021 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:12,497 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:13,108 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:13,534 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:14,132 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:14,870 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-01 20:46:15,193 INFO ✅ 1316 novos · 549 atualizados · 13 com preço alterado · 0 marcados como Removido
+2026-07-01 20:46:15,193 INFO Raspagem concluída. Novos: 1316
+2026-07-01 20:46:15,193 INFO ============================================================

@@ -209,7 +209,11 @@ RE_DEMANDA = re.compile(
     r'busca(?:ndo)?\s+(?:casa|apartamento|apto|imovel|imóvel|terreno)|'
     r'algu[eé]m\s+(?:tem|com|que\s+tenha)\s+\w|'   # "alguém com um X pra venda"
     r'algu[eé]m\s+(?:tem|tem\s+um|sabe\s+de)|'
-    r'\bpra\s+venda[,\s].{0,30}(?:precis|quer|busca|procu)',  # "pra venda... preciso"
+    r'\bpra\s+venda[,\s].{0,30}(?:precis|quer|busca|procu)|'  # "pra venda... preciso"
+    r'\bsem\s+ser\b|'   # "sem ser Mrv" — exclusão de marca/construtora, só faz sentido em busca
+    # Atalho comum de post de demanda: "Apartamento até 380 mil ..." (título curto,
+    # sem endereço/link/"R$" — quem vende anuncia, quem procura resume o que quer)
+    r'^(?:apartamento|apto|casa|sobrado|terreno|kitnet)\s+at[ée]\s+\d',
     re.IGNORECASE)
 
 # "Se vc procura... achou!" = anúncio de venda, não demanda

@@ -1420,3 +1420,107 @@ an editor opened by 'git commit'. Please make sure all processes
 are terminated then try again. If it still fails, a git process
 may have crashed in this repository earlier:
 remove the file manually to continue.
+[2026-06-30 21:29:42] === Início do ciclo automático ===
+[2026-06-30 21:29:43] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Urban Yticon | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jd Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 2 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 30 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 21:30:11] Processamento concluído.
+[2026-06-30 21:30:11] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (815 imóveis [57 JJ · 502 VR] · 13 demandas)
+[2026-06-30 21:30:16] Sem mudanças para enviar ao GitHub.
+[2026-06-30 21:30:16] === Ciclo concluído ===
+[2026-06-30 22:00:16] === Início do ciclo automático ===
+[2026-06-30 22:00:16] Processando 95 mensagens pendentes...
+📬 95 mensagens pendentes (total: 206)
+
+📦 41 pacotes agrupados (era 95 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Terreno | Jardim Dias II | R$350000
+  🔍 Claude analisa 1 imagem de 1 [Edson Do Vale]
+     ✅ Apartamento | Zona 07 | R$822000
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+     ✅ Casa | Jardim Paulista | R$460000
+  🔎 'Desconhecido em Maringá-PR' incompleto — pesquisando na web...
+  🏗️  'Desconhecido em Maringá-PR' já pesquisado anteriormente (cache)
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+     ✅ Casa | Borba Gato | R$480000
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+     ✅ Casa | Jardim Paulista 3 | R$None
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+     ⏭️  Imagem de imóvel sem dados concretos — ignorando
+  🔎 'Shopping Catuaí Maringá' incompleto — pesquisando na web...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'MAISON INFINITY': Zona 07
+  🏗️  Quartos do condo 'MAISON INFINITY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+
+✅ 1 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 31 duplicatas ignoradas
+   ↳ 9 pacotes sem dados de imóvel
+
+🏗️  Pesquisando 1 condomínio(s) novo(s)...
+  🏗️  'Shopping Catuaí Maringá' já pesquisado anteriormente (cache)
+[2026-06-30 22:00:44] Processamento concluído.
+[2026-06-30 22:00:44] Gerando site...
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (814 imóveis [57 JJ · 502 VR] · 14 demandas)
+[2026-06-30 22:00:46] Sem mudanças para enviar ao GitHub.
+[2026-06-30 22:00:46] === Ciclo concluído ===

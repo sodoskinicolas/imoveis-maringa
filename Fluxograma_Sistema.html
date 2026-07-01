@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxograma do Sistema — Imóveis Maringá</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background: #f4f5f7; color: #1a1d23; padding: 32px 24px 80px;
+}
+h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.subtitulo { color: #6b7280; font-size: 13px; margin-bottom: 28px; }
+.lane { margin-bottom: 34px; }
+.lane-titulo {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    color: #6b46c1; margin-bottom: 12px;
+}
+.lane[data-lane="legado"] .lane-titulo { color: #9ca3af; }
+.rio { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.card {
+    background: #fff; border: 1.5px solid #e2e4e9; border-radius: 10px;
+    padding: 12px 16px; min-width: 190px; max-width: 230px; cursor: pointer;
+    transition: box-shadow .15s, border-color .15s, transform .1s;
+}
+.card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.08); border-color: #6b46c1; transform: translateY(-1px); }
+.card.ativo { border-color: #6b46c1; box-shadow: 0 0 0 3px rgba(107,70,193,.15); }
+.card.destaque { border-color: #2563eb; border-width: 2px; background: #f5f8ff; }
+.card-titulo { font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+.card-sub { font-size: 11px; color: #6b7280; }
+.lane[data-lane="legado"] .card { border-style: dashed; background: #fafafa; }
+.seta { color: #9ca3af; font-size: 18px; padding: 0 2px; }
+.painel {
+    position: fixed; top: 0; right: 0; height: 100%; width: 420px; max-width: 92vw;
+    background: #fff; box-shadow: -6px 0 24px rgba(0,0,0,.12);
+    transform: translateX(100%); transition: transform .2s ease;
+    padding: 28px 26px; overflow-y: auto; z-index: 20;
+}
+.painel.aberto { transform: translateX(0); }
+.painel-fechar {
+    position: absolute; top: 18px; right: 18px; width: 30px; height: 30px; border-radius: 50%;
+    border: none; background: #f0f0f2; font-size: 16px; cursor: pointer; color: #444;
+}
+.painel h2 { font-size: 18px; margin-bottom: 14px; padding-right: 30px; }
+.painel p { font-size: 13.5px; line-height: 1.6; margin-bottom: 12px; color: #2c2f36; }
+.painel code {
+    background: #f0f0f5; padding: 1px 5px; border-radius: 4px; font-size: 12.5px; color: #6b46c1;
+}
+.painel ul { margin: 0 0 12px 20px; }
+.painel li { font-size: 13.5px; line-height: 1.6; margin-bottom: 4px; }
+.overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.15); opacity: 0; pointer-events: none;
+    transition: opacity .2s; z-index: 15;
+}
+.overlay.aberto { opacity: 1; pointer-events: auto; }
+.rodape { margin-top: 40px; font-size: 11.5px; color: #9ca3af; }
+.rodape code { background: #eceef2; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>🗺️ Fluxograma do sistema — Imóveis Maringá</h1>
+<div class="subtitulo">Clique em qualquer etapa pra ver a lógica dela. Gerado em 01/07/2026 às 00:38 · 1090 imóveis · 16 demandas · 13787 condomínios no banco agora.</div>
+
+
+        <div class="lane" data-lane="pipeline">
+            <div class="lane-titulo">Pipeline de imóveis · automático</div>
+            <div class="rio"><div class="card" id="card-whatsapp" onclick="abrirPainel('whatsapp')"><div class="card-titulo">WhatsApp Grupos</div><div class="card-sub">Baileys · bot.js · 24/7</div></div><span class="seta">→</span><div class="card" id="card-scraping" onclick="abrirPainel('scraping')"><div class="card-titulo">Scraping Imobiliárias</div><div class="card-sub">raspar_imoveis.py · diário 3h</div></div><span class="seta">→</span><div class="card" id="card-processar" onclick="abrirPainel('processar')"><div class="card-titulo">processar_mensagens.py</div><div class="card-sub">IA classifica e extrai</div></div><span class="seta">→</span><div class="card" id="card-validacao" onclick="abrirPainel('validacao')"><div class="card-titulo">Validação &amp; Cruzamento</div><div class="card-sub">bairro + condomínios + faixas</div></div><span class="seta">→</span><div class="card destaque" id="card-db" onclick="abrirPainel('db')"><div class="card-titulo">imoveis.db</div><div class="card-sub">SQLite · banco central</div></div><span class="seta">→</span><div class="card" id="card-orquestracao" onclick="abrirPainel('orquestracao')"><div class="card-titulo">Orquestração</div><div class="card-sub">a cada 30 min + cron diário</div></div><span class="seta">→</span><div class="card" id="card-site" onclick="abrirPainel('site')"><div class="card-titulo">Site Público</div><div class="card-sub">gerar_site.py → GitHub Pages</div></div></div>
+        </div>
+        <div class="lane" data-lane="prospeccao">
+            <div class="lane-titulo">Prospecção de corretores &amp; leads · manual</div>
+            <div class="rio"><div class="card" id="card-geomaringa" onclick="abrirPainel('geomaringa')"><div class="card-titulo">GeoMaringá + eEmovel</div><div class="card-sub">skill · acha proprietários</div></div><span class="seta">→</span><div class="card" id="card-kurole" onclick="abrirPainel('kurole')"><div class="card-titulo">Kurole CRM</div><div class="card-sub">skill · leads compradores</div></div><span class="seta">→</span><div class="card" id="card-envio" onclick="abrirPainel('envio')"><div class="card-titulo">Envio WhatsApp</div><div class="card-sub">skills · corretores e leads</div></div></div>
+        </div>
+        <div class="lane" data-lane="manutencao">
+            <div class="lane-titulo">Manutenção &amp; qualidade de dados</div>
+            <div class="rio"><div class="card" id="card-auditoria" onclick="abrirPainel('auditoria')"><div class="card-titulo">auditar_historico.py</div><div class="card-sub">correção retroativa</div></div></div>
+        </div>
+        <div class="lane" data-lane="legado">
+            <div class="lane-titulo">Fluxos paralelos / legado</div>
+            <div class="rio"><div class="card" id="card-legado" onclick="abrirPainel('legado')"><div class="card-titulo">Fluxos paralelos / legado</div><div class="card-sub">status incerto — revisar</div></div></div>
+        </div>
+
+<div class="rodape">
+Pra atualizar com os números e o conteúdo mais recentes, rode <code>python3 gerar_fluxograma.py</code> de novo
+e recarregue esta página no navegador.
+</div>
+
+<div class="overlay" id="overlay" onclick="fecharPainel()"></div>
+<div class="painel" id="painel">
+    <button class="painel-fechar" onclick="fecharPainel()">✕</button>
+    <h2 id="painel-titulo"></h2>
+    <div id="painel-corpo"></div>
+</div>
+
+<script>
+const DADOS = [{"id": "whatsapp", "titulo": "WhatsApp Grupos", "detalhe": "\n            <p><strong>O que é:</strong> um serviço Node.js (<code>baileys_bot/bot.js</code>) conectado direto ao WhatsApp\n            via biblioteca Baileys — sem navegador, sem QR toda hora. Fica sempre rodando (LaunchAgent com\n            <code>KeepAlive=true</code>, reinicia sozinho se cair).</p>\n            <p><strong>O que faz:</strong> monitora os grupos de corretores configurados em <code>config.json</code>,\n            captura toda mensagem de texto e imagem (ignorando grupos bloqueados por regex: moradores, família,\n            assembleia, síndico), e grava cada uma crua em <code>mensagens_fila.json</code>.</p>\n            <p><strong>Status hoje:</strong> teve algumas quedas de conexão normais (timeouts do WhatsApp Web),\n            sempre reconectando sozinho em segundos.</p>\n        "}, {"id": "scraping", "titulo": "Scraping Imobiliárias", "detalhe": "\n            <p><strong>O que é:</strong> script Python que raspa 6 sites de imobiliárias de Maringá: Haraki, Massaru,\n            Bellakaza (via CMS Sub100), Silvio Iwata e Casa do Corretor.</p>\n            <p><strong>O que faz:</strong> baixa as páginas de listagem, extrai tipo/bairro/área/quartos/preço via\n            regex, e grava direto no <code>imoveis.db</code> (sem passar pela IA — dado já vem estruturado do HTML).</p>\n            <p><strong>Corrigido hoje:</strong> um bug antigo trocava banheiros por suítes nos sites Sub100\n            (97 registros históricos já corrigidos). Agora também cruza com a tabela <code>condominios</code> igual\n            ao pipeline do WhatsApp.</p>\n            <p><strong>Disparado por:</strong> GitHub Actions (cron diário 03h) — roda na nuvem, não depende do seu Mac ligado.</p>\n        "}, {"id": "processar", "titulo": "processar_mensagens.py", "detalhe": "\n            <p><strong>O que faz:</strong> lê <code>mensagens_fila.json</code>, agrupa fotos + texto do mesmo\n            corretor numa janela de 5 minutos (1 pacote = 1 imóvel), e decide:</p>\n            <p>1) Classifica <strong>venda</strong> vs <strong>demanda</strong> por regex de expressões\n            (\"vendo\", \"à venda\" vs \"preciso de\", \"tenho cliente\"...).<br>\n            2) Extrai tipo, bairro, área, quartos, suítes, banheiros, vagas, preço do texto.<br>\n            3) Se o texto tiver um <strong>link</strong> do anúncio, baixa a página e manda pro Claude Haiku\n            extrair os dados de lá também (adicionado hoje).<br>\n            4) Se só tiver <strong>imagem</strong> (sem texto suficiente), o Claude Haiku analisa a foto.</p>\n            <p><strong>Reconhece preço em:</strong> \"R$800mil\", \"2 milhões\", \"2mi\", \"1.5mi\", \"800k\",\n            \"até 650.000\" — ampliado hoje pra pegar as abreviações mais comuns do WhatsApp.</p>\n            <p><strong>Disparado por:</strong> <code>processar_e_push.sh</code> a cada 30 min.</p>\n        "}, {"id": "validacao", "titulo": "Validação &amp; Cruzamento", "detalhe": "\n            <p><strong>Antes de gravar, todo imóvel/demanda passa por:</strong></p>\n            <p>1) <strong>Bairro</strong> validado contra a lista oficial da Prefeitura de Maringá (match exato →\n            fuzzy → busca web como último recurso).<br>\n            2) Se o texto cita um <strong>edifício/condomínio</strong>, cruza com a tabela <code>condominios</code>\n            (13.787 registros). Se achar, completa bairro/área/quartos/vagas que estiverem vazios no imóvel.<br>\n            3) Se o condomínio <strong>não existir ou estiver incompleto</strong> (só nome, sem construtora/área/padrão)\n            — e for um <strong>prédio de verdade</strong> (não um condomínio de casas) — pesquisa na web\n            (Claude + web_search) e completa o cadastro do condomínio, não só do imóvel.<br>\n            4) <strong>Faixas numéricas plausíveis:</strong> quartos 1–10, suítes ≤ quartos, banheiros 0–15,\n            área 10–3.000m² pra prédio/casa ou até 500.000m² pra terreno/chácara/sítio (a faixa muda pelo tipo,\n            corrigido hoje depois de descobrir que estava descartando terrenos legítimos).</p>\n            <p><strong>Como diferencia prédio de condomínio de casas:</strong> nomes com \"CONDOMÍNIO RESIDENCIAL\",\n            \"COND.RES.\", \"CONJ.RES.\" (padrão típico do import do GeoMaringá) são tratados como casas — cada casa\n            tem um tamanho diferente, não faz sentido pesquisar \"a specs padrão\". Nomes limpos ou com \"Edifício\"\n            explícito são tratados como prédio.</p>\n            <p><strong>Bug corrigido hoje:</strong> existia um condomínio cadastrado literalmente chamado\n            \"MARINGÁ\" — toda mensagem que citava a cidade estava \"casando\" com ele. Corrigido.</p>\n        "}, {"id": "db", "titulo": "imoveis.db", "detalhe": "\n            <p><strong>Tabelas:</strong> <code>imoveis</code>, <code>demandas</code>, <code>condominios</code>.</p>\n            <p><strong>Números atuais:</strong></p>\n            <ul>\n                <li>1090 imóveis (600 via WhatsApp, 490 via scraping) —\n                780 com status \"Novo\"</li>\n                <li>16 demandas ativas</li>\n                <li>13787 condomínios cadastrados (87 com specs completos:\n                construtora/área/padrão — o resto veio em bloco do cadastro oficial do GeoMaringá, só com o nome)</li>\n            </ul>\n            <p>Todo processo (WhatsApp, scraping, auditoria) escreve aqui. É a fonte única de verdade pro site.</p>\n        "}, {"id": "orquestracao", "titulo": "Orquestração", "detalhe": "\n            <p><strong>processar_e_push.sh</strong> (LaunchAgent local, a cada 30 min): roda\n            <code>processar_mensagens.py</code> se tiver mensagem pendente, depois <code>gerar_site.py</code>,\n            e faz <code>git push</code> do banco + site atualizados.</p>\n            <p><strong>GitHub Actions</strong> (na nuvem, independente do seu Mac): roda <code>raspar_imoveis.py</code>\n            todo dia às 3h, e <code>gerar_site.py</code> todo dia às 8h (ou a cada push no banco).</p>\n        "}, {"id": "site", "titulo": "Site Público", "detalhe": "\n            <p><strong>gerar_site.py</strong> lê o <code>imoveis.db</code> (excluindo os grupos com planilha própria)\n            + <code>JuniorJoda_Imoveis.xlsx</code> + <code>VivaReal_Imoveis.xlsx</code>, e monta um único arquivo\n            HTML estático (<code>Imoveis.html</code>) com abas de Imóveis e Demandas, busca e filtros — tudo em\n            JavaScript puro, sem servidor.</p>\n            <p><strong>Publicação:</strong> o GitHub Actions copia esse HTML pro GitHub Pages. Site final:\n            <a href=\"https://sodoskinicolas.github.io/imoveis-maringa/\" target=\"_blank\">sodoskinicolas.github.io/imoveis-maringa</a></p>\n        "}, {"id": "geomaringa", "titulo": "GeoMaringá + eEmovel", "detalhe": "\n            <p><strong>O que faz:</strong> dado um endereço ou nome de prédio, consulta a API pública do GeoMaringá\n            (cadastro imobiliário oficial da Prefeitura) pra achar o lote e todos os endereços dele, depois\n            automatiza o site <code>brokers.eemovel.com.br</code> via Chrome pra extrair nome + WhatsApp de cada\n            proprietário.</p>\n            <p><strong>Também foi usado hoje</strong> pra importar os 13.787 nomes de condomínios de Maringá pra\n            tabela <code>condominios</code> (achei uma camada \"Area Condominio\" na API do GeoMaringá com o cadastro\n            completo do município).</p>\n            <p><strong>Saída:</strong> planilha Excel + lista formatada pra WhatsApp.</p>\n        "}, {"id": "kurole", "titulo": "Kurole CRM", "detalhe": "\n            <p><strong>O que faz:</strong> extrai nome + telefone dos cards do CRM Kurole (usado pela imobiliária\n            Patrimônio Imóveis Prontos), das colunas de Suspecção/Prospecção/Diagnóstico/Proposta.</p>\n            <p><strong>Saída:</strong> alimenta a skill <code>envio-leads-whatsapp</code>.</p>\n        "}, {"id": "envio", "titulo": "Envio WhatsApp", "detalhe": "\n            <p><strong>envio-leads-whatsapp:</strong> manda mensagem (com 5 variações sorteadas) pra uma lista de\n            leads/clientes, intervalo aleatório de 30–60s.</p>\n            <p><strong>envio-massa-whatsapp:</strong> manda 2 mensagens sequenciais fixas pra corretores/contatos,\n            com regras de exclusão (já salvo na agenda, já tem conversa aberta).</p>\n            <p>Ambas rodam via WhatsApp Web + Chrome, sem precisar de API paga.</p>\n        "}, {"id": "auditoria", "titulo": "auditar_historico.py", "detalhe": "\n            <p><strong>Ferramenta nova (criada hoje).</strong> Reprocessa as mensagens ainda disponíveis na fila com\n            a lógica de extração/validação atual, e reconcilia com o banco: corrige registros que tinham dado errado\n            e insere o que tinha sido descartado antes de alguma correção.</p>\n            <p>Também audita a tabela <code>imoveis</code> inteira (mesmo os registros mais antigos, sem o texto\n            original disponível) validando bairro e faixas numéricas com o que já está salvo.</p>\n            <p><strong>Uso:</strong> <code>python3 auditar_historico.py --dry-run</code> pra ver o que mudaria,\n            <code>--apply</code> pra gravar de verdade.</p>\n        "}, {"id": "legado", "titulo": "Fluxos paralelos / legado", "detalhe": "\n            <p>Scripts que existem no repositório mas não parecem mais conectados ao fluxo automático principal:</p>\n            <ul>\n                <li><strong>bot_grupos_wa.py / bot_demandas_wa.py</strong> — CLIs standalone, nenhum outro arquivo os chama hoje.</li>\n                <li><strong>leitor-grupos-wa (skill)</strong> — lê grupos via Chrome, grava em Imoveis_Grupos.xlsx,\n                em paralelo ao bot.js (Baileys). Não fica claro qual dos dois é o ativo.</li>\n                <li><strong>scrape_vivareal.py vs importar_vivareal.py</strong> — dois caminhos pro mesmo dado.</li>\n                <li><strong>docker-compose (Evolution API)</strong> + extrair/enviar contatos — prospecção antiga,\n                parece substituída pelas skills de envio.</li>\n            </ul>\n            <p>Vale uma limpeza quando quiser — não é urgente, só ocupa espaço.</p>\n        "}];
+
+function abrirPainel(id) {
+    const node = DADOS.find(n => n.id === id);
+    if (!node) return;
+    document.getElementById('painel-titulo').textContent = node.titulo;
+    document.getElementById('painel-corpo').innerHTML = node.detalhe;
+    document.getElementById('painel').classList.add('aberto');
+    document.getElementById('overlay').classList.add('aberto');
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('ativo'));
+    document.getElementById('card-' + id).classList.add('ativo');
+}
+function fecharPainel() {
+    document.getElementById('painel').classList.remove('aberto');
+    document.getElementById('overlay').classList.remove('aberto');
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('ativo'));
+}
+
+</script>
+</body>
+</html>

@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS demandas (
     orcamento_max   INTEGER,
     observacoes     TEXT,
     status          TEXT DEFAULT 'Ativo',
+    status_anterior TEXT,          -- guarda o status antes de arquivar, pra restaurar depois
     fingerprint     TEXT UNIQUE   -- chave de deduplicação
 );
 
@@ -142,7 +143,7 @@ def _migrar_schema(conn):
             conn.execute(f"ALTER TABLE imoveis ADD COLUMN {col} {tipo}")
 
     cols_d = _colunas_existentes(conn, "demandas")
-    for col in ("edificio", "condominio"):
+    for col in ("edificio", "condominio", "status_anterior"):
         if col not in cols_d:
             conn.execute(f"ALTER TABLE demandas ADD COLUMN {col} TEXT")
 
@@ -500,6 +501,46 @@ def listar_demandas(conn):
         "SELECT * FROM demandas WHERE status != 'Inativo' ORDER BY id"
     ).fetchall()
     return [dict(r) for r in rows]
+
+def listar_demandas_arquivadas(conn):
+    """Retorna todas as demandas arquivadas (status = 'Inativo') como lista de dicts."""
+    rows = conn.execute(
+        "SELECT * FROM demandas WHERE status = 'Inativo' ORDER BY id DESC"
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+def arquivar_demanda(conn, demanda_id):
+    """Arquiva uma demanda: salva o status atual em status_anterior e marca status='Inativo'.
+    Retorna True se encontrou e arquivou, False se o id não existe ou já estava arquivada."""
+    row = conn.execute(
+        "SELECT status FROM demandas WHERE id = ?", (demanda_id,)
+    ).fetchone()
+    if not row:
+        return False
+    if row["status"] == "Inativo":
+        return False
+    conn.execute(
+        "UPDATE demandas SET status_anterior = status, status = 'Inativo' WHERE id = ?",
+        (demanda_id,),
+    )
+    conn.commit()
+    return True
+
+def desarquivar_demanda(conn, demanda_id):
+    """Restaura uma demanda arquivada: volta o status pro valor salvo em status_anterior
+    (ou 'Ativo' se não houver). Retorna True se encontrou e restaurou, False caso contrário."""
+    row = conn.execute(
+        "SELECT status, status_anterior FROM demandas WHERE id = ?", (demanda_id,)
+    ).fetchone()
+    if not row or row["status"] != "Inativo":
+        return False
+    novo_status = row["status_anterior"] or "Ativo"
+    conn.execute(
+        "UPDATE demandas SET status = ?, status_anterior = NULL WHERE id = ?",
+        (novo_status, demanda_id),
+    )
+    conn.commit()
+    return True
 
 def _norm_nome(s):
     """Normaliza nome para comparação: lowercase, remove espaços e não-alfanuméricos.

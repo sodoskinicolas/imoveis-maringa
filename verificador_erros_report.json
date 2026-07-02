@@ -1,12 +1,12 @@
 {
-  "ts": "2026-07-01T20:18:11.581548",
+  "ts": "2026-07-01T21:18:11.678420",
   "erros": [
-    "🔴 40 grupos de imóveis duplicados: ids=[3015,3027] (,,R$350,sem área); ids=[3008,3009] (,,R$80000,sem área); ids=[3029,3030] (,,R$270000,sem área); ids=[2485,2791] (,,R$450000,área140.0m²); ids=[2806,2807] (,,R$550000,área144.0m²)",
+    "🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)",
     "🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]"
   ],
   "avisos": [
-    "📵 1826 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]",
+    "📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]",
     "📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]",
-    "⚠️ 1209 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]"
+    "⚠️ 2314 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]"
   ]
 }

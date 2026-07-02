@@ -190,12 +190,10 @@ def carregar_imoveis():
     return rows
 
 
-def carregar_demandas():
-    """Lê demandas do SQLite."""
-    db.init_db()
-    with db.db_conn() as conn:
-        registros = db.listar_demandas(conn)
-
+def _transformar_demandas(registros, status_label=None):
+    """Converte registros crus do SQLite pro formato usado pelos cards do site.
+    status_label, se passado, sobrescreve o campo 'status' exibido (usado pra
+    mostrar 'Arquivada' nas demandas arquivadas, sem mexer no valor real do banco)."""
     rows = []
     vistos = set()
     for r in registros:
@@ -226,6 +224,7 @@ def carregar_demandas():
         if edificio_d and condominio_d and edificio_d.lower() == condominio_d.lower():
             edificio_d = ""
         rows.append({
+            "id":         r.get("id"),
             "data":       data,
             "grupo":      r.get("grupo") or "",
             "corretor":   corretor,
@@ -241,21 +240,40 @@ def carregar_demandas():
             "vagas":     r.get("vagas"),
             "orcamento": r.get("orcamento_max"),
             "obs":       obs_d,
-            "status":    r.get("status") or "Ativo",
+            "status":    status_label or (r.get("status") or "Ativo"),
         })
     return rows
 
 
-def gerar_html(imoveis, demandas):
+def carregar_demandas():
+    """Lê demandas ativas do SQLite."""
+    db.init_db()
+    with db.db_conn() as conn:
+        registros = db.listar_demandas(conn)
+    return _transformar_demandas(registros)
+
+
+def carregar_demandas_arquivadas():
+    """Lê demandas arquivadas (status='Inativo') do SQLite."""
+    db.init_db()
+    with db.db_conn() as conn:
+        registros = db.listar_demandas_arquivadas(conn)
+    return _transformar_demandas(registros, status_label="Arquivada")
+
+
+def gerar_html(imoveis, demandas, demandas_arq=None):
+    demandas_arq = demandas_arq or []
     imoveis_venda = [i for i in imoveis if i.get("status") != "Aluguel"]
     imoveis_loc   = [i for i in imoveis if i.get("status") == "Aluguel"]
     total_i   = len(imoveis_venda)
     total_l   = len(imoveis_loc)
     total_d   = len(demandas)
+    total_da  = len(demandas_arq)
     agora     = datetime.now().strftime("%d/%m/%Y %H:%M")
     dados_i   = json.dumps(imoveis_venda, ensure_ascii=False)
     dados_l   = json.dumps(imoveis_loc,   ensure_ascii=False)
     dados_d   = json.dumps(demandas,      ensure_ascii=False)
+    dados_da  = json.dumps(demandas_arq,  ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -512,6 +530,9 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   <div class="tab" onclick="mudarAba('demandas',this)">
     🔍 Demandas <span class="tab-badge" id="badge-d">{total_d}</span>
   </div>
+  <div class="tab" onclick="mudarAba('arquivadas',this)">
+    🗄️ Arquivadas <span class="tab-badge" id="badge-da">{total_da}</span>
+  </div>
   <div class="tab" onclick="mudarAba('match',this);renderMatch()">
     🎯 Match <span class="tab-badge" id="badge-match">—</span>
   </div>
@@ -757,10 +778,69 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   </div>
 </div>
 
+<!-- ═══ PAINEL DEMANDAS ARQUIVADAS ═══ -->
+<div class="panel" id="panel-arquivadas">
+  <div class="hero">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="busca-da" class="search-input" placeholder="Buscar por corretor, região, observações…" autocomplete="off">
+    </div>
+    <div class="filterbar">
+      <select class="fsel" id="tipo-da">
+        <option value="">Tipo</option>
+        <option value="Apartamento">Apartamento</option>
+        <option value="Casa">Casa</option>
+        <option value="Terreno">Terreno</option>
+        <option value="Imóvel">Imóvel</option>
+      </select>
+      <select class="fsel" id="regiao-da">
+        <option value="">Região</option>
+      </select>
+      <select class="fsel" id="quartos-da">
+        <option value="">Quartos</option>
+        <option value="1">1+</option><option value="2">2+</option>
+        <option value="3">3+</option><option value="4">4+</option>
+      </select>
+      <select class="fsel" id="vagas-da">
+        <option value="">Vagas</option>
+        <option value="1">1+</option><option value="2">2+</option><option value="3">3+</option>
+      </select>
+      <select class="fsel" id="area-da">
+        <option value="">Área mín.</option>
+        <option value="50">50 m²</option><option value="80">80 m²</option>
+        <option value="100">100 m²</option><option value="120">120 m²</option>
+        <option value="150">150 m²</option><option value="200">200 m²</option>
+      </select>
+      <select class="fsel" id="orc-da">
+        <option value="">Orçamento até</option>
+        <option value="300000">R$ 300 mil</option><option value="400000">R$ 400 mil</option>
+        <option value="500000">R$ 500 mil</option><option value="700000">R$ 700 mil</option>
+        <option value="1000000">R$ 1 milhão</option><option value="1500000">R$ 1,5 milhão</option>
+        <option value="2000000">R$ 2 milhões</option><option value="3000000">R$ 3 milhões</option>
+      </select>
+      <div class="filter-sep"></div>
+      <button class="btn-clear" onclick="resetarDA()">Limpar</button>
+    </div>
+  </div>
+  <div class="statsbar" id="stats-da"></div>
+  <div class="content">
+    <div class="results-row">
+      <span class="results-txt" id="rtxt-da"></span>
+      <select class="sort-sel" id="ord-da" onchange="aplicarDA()">
+        <option value="data_desc">Mais recentes</option>
+        <option value="orc_desc">Maior orçamento</option>
+        <option value="orc_asc">Menor orçamento</option>
+      </select>
+    </div>
+    <div class="grid" id="grid-da"></div>
+  </div>
+</div>
+
 <script>
 var IMOVEIS  = {dados_i};
 var LOCACAO  = {dados_l};
 var DEMANDAS = {dados_d};
+var ARQUIVADAS = {dados_da};
 
 /* ── helpers ── */
 function fmtP(v){{ return v ? 'R$ ' + v.toLocaleString('pt-BR') : null; }}
@@ -773,7 +853,8 @@ function pillCls(s){{
     'Encaminhado':'encaminhado','Fechado':'fechado',
     'Vendido':'vendido','Cancelado':'cancelado','Descartado':'descartado',
     'Removido':'cancelado',
-    'Venda':'venda','Aluguel':'aluguel'
+    'Venda':'venda','Aluguel':'aluguel',
+    'Arquivada':'cancelado','Inativo':'cancelado'
   }};
   return 'pill pill-'+(m[s]||'novo');
 }}
@@ -1213,6 +1294,76 @@ function resetarD(){{
   document.getElementById(id).addEventListener('input',aplicarD);
 }});
 
+/* ════ DEMANDAS ARQUIVADAS ════ */
+function filtrarDA(){{
+  var b   = document.getElementById('busca-da').value.toLowerCase();
+  var tp  = document.getElementById('tipo-da').value;
+  var rg  = document.getElementById('regiao-da').value.toLowerCase();
+  var q   = document.getElementById('quartos-da').value;
+  var vg  = document.getElementById('vagas-da').value;
+  var am  = parseFloat(document.getElementById('area-da').value)||0;
+  var om  = parseFloat(document.getElementById('orc-da').value)||Infinity;
+  return ARQUIVADAS.filter(function(dm){{
+    var hay=[dm.obs,dm.regiao,dm.corretor,dm.grupo,dm.tipo,dm.edificio,dm.condominio].join(' ').toLowerCase();
+    if(b&&hay.indexOf(b)===-1) return false;
+    if(tp&&(dm.tipo||'').toLowerCase().indexOf(tp.toLowerCase())===-1) return false;
+    if(rg){{var drg=(dm.regiao||'').toLowerCase();if(drg.indexOf(rg)===-1) return false;}}
+    if(q){{var n=parseInt(q);if(!dm.quartos||dm.quartos<n)return false;}}
+    if(vg){{var n2=parseInt(vg);if(!dm.vagas||dm.vagas<n2)return false;}}
+    if(am&&(!dm.area_min||dm.area_min<am)) return false;
+    if(dm.orcamento&&dm.orcamento>om) return false;
+    return true;
+  }});
+}}
+
+function ordenarDA(l){{
+  var o=document.getElementById('ord-da').value; l=l.slice();
+  if(o==='orc_desc') l.sort(function(a,b){{return(b.orcamento||0)-(a.orcamento||0);}});
+  else if(o==='orc_asc') l.sort(function(a,b){{return(a.orcamento||9e9)-(b.orcamento||9e9);}});
+  else l.sort(function(a,b){{return(b.data||'').localeCompare(a.data||'');}});
+  return l;
+}}
+
+function aplicarDA(){{
+  var lista=ordenarDA(filtrarDA());
+  ['tipo-da','regiao-da','quartos-da','vagas-da','area-da','orc-da'].forEach(selActive);
+  var co=lista.filter(function(d){{return d.orcamento;}});
+  var med=co.length?Math.round(co.reduce(function(s,d){{return s+d.orcamento;}},0)/co.length):0;
+  document.getElementById('stats-da').innerHTML=
+    '<div class="stat"><strong>'+lista.length+'</strong> arquivadas</div>'+
+    (med?'<div class="stat"><strong>'+fmtP(med)+'</strong> orçamento médio</div>':'');
+  document.getElementById('rtxt-da').textContent=lista.length+' de '+ARQUIVADAS.length;
+  var gridDA=document.getElementById('grid-da');
+  gridDA.innerHTML=lista.length?lista.map(cardD).join(''):
+    '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhuma demanda arquivada.</p></div>';
+}}
+
+function resetarDA(){{
+  document.getElementById('busca-da').value='';
+  ['tipo-da','regiao-da','quartos-da','vagas-da','area-da','orc-da'].forEach(function(id){{document.getElementById(id).value='';}});
+  aplicarDA();
+}}
+
+// Popular dropdown de regiões dinamicamente
+(function(){{
+  var regioes={{}};
+  ARQUIVADAS.forEach(function(dm){{
+    if(!dm.regiao) return;
+    dm.regiao.split(' · ').forEach(function(r){{
+      r=r.trim();
+      if(r) regioes[r]=(regioes[r]||0)+1;
+    }});
+  }});
+  var sel=document.getElementById('regiao-da');
+  Object.keys(regioes).sort().forEach(function(r){{
+    var o=document.createElement('option');o.value=r;o.textContent=r+' ('+regioes[r]+')';sel.appendChild(o);
+  }});
+}})();
+
+['busca-da','tipo-da','regiao-da','quartos-da','vagas-da','area-da','orc-da'].forEach(function(id){{
+  document.getElementById(id).addEventListener('input',aplicarDA);
+}});
+
 /* ════ BAIRROS ════ */
 var _bairrosInited=false;
 var _bairroAtual=null;
@@ -1404,8 +1555,8 @@ function matchImoveis(dm){{
     if(dm.quartos){{total++;if(im.quartos&&im.quartos>=dm.quartos)score++;}}
     // suites
     if(dm.suites)    {{total++;if(im.suites&&im.suites>=dm.suites)score++;}}
-    // banheiros
-    if(dm.banheiros) {{total++;if(im.suites&&im.suites>=dm.banheiros)score++;}}
+    // banheiros (suíte conta como banheiro)
+    if(dm.banheiros) {{total++;if(totalBanheiros(im)>=dm.banheiros)score++;}}
     // vagas
     if(dm.vagas)  {{total++;if(im.vagas&&im.vagas>=dm.vagas)score++;}}
     // area: acima de 80% da área mínima (sem teto — quanto maior melhor)
@@ -1472,7 +1623,7 @@ function missedCriteria(dm, im){{
   if(dm.tipo){{var dt=dm.tipo.toLowerCase(),it=(im.tipo||'').toLowerCase();if(dt!=='imóvel'&&dt!=='imovel'&&!(it&&(it.indexOf(dt)!==-1||dt.indexOf(it)!==-1)))missed.push('tipo');}}
   if(dm.quartos&&!(im.quartos&&im.quartos>=dm.quartos)) missed.push(dm.quartos+' quartos');
   if(dm.suites&&!(im.suites&&im.suites>=dm.suites))         missed.push(dm.suites+' suítes');
-  if(dm.banheiros&&!(im.suites&&im.suites>=dm.banheiros)) missed.push(dm.banheiros+' banheiros');
+  if(dm.banheiros&&!(totalBanheiros(im)>=dm.banheiros)) missed.push(dm.banheiros+' banheiros');
   if(dm.vagas&&!(im.vagas&&im.vagas>=dm.vagas))           missed.push(dm.vagas+' vagas');
   if(dm.area_min&&!(im.area&&im.area>=dm.area_min*0.8)) missed.push('área < '+Math.round(dm.area_min*0.8)+' m²');
   if(dm.orcamento&&!(im.preco&&im.preco>=dm.orcamento*0.8&&im.preco<=dm.orcamento*1.2)){{var pct=im.preco?Math.round((im.preco/dm.orcamento-1)*100):null;missed.push(pct!==null?(pct>20?'+'+pct+'% do orçamento':pct<-20?pct+'% abaixo do orçamento':'fora ±20%'):'sem preço');}}
@@ -1565,6 +1716,7 @@ function toggleMatch(idx){{
 aplicarI();
 aplicarL();
 aplicarD();
+aplicarDA();
 
 /* ── Modal de detalhes do imóvel ── */
 (function(){{
@@ -1627,13 +1779,15 @@ document.addEventListener('keydown',function(e){{if(e.key==='Escape')fecharModal
 
 def main():
     db.init_db()
-    imoveis  = carregar_imoveis()
-    demandas = carregar_demandas()
+    imoveis      = carregar_imoveis()
+    demandas     = carregar_demandas()
+    demandas_arq = carregar_demandas_arquivadas()
     n_jj = sum(1 for i in imoveis if i.get("fonte") == "Junior Joda")
     n_vr = sum(1 for i in imoveis if i.get("fonte") == "VivaReal")
-    html = gerar_html(imoveis, demandas)
+    html = gerar_html(imoveis, demandas, demandas_arq)
     SITE.write_text(html, encoding="utf-8")
-    print(f"✅ Site gerado: {SITE} ({len(imoveis)} imóveis [{n_jj} JJ · {n_vr} VR] · {len(demandas)} demandas)")
+    print(f"✅ Site gerado: {SITE} ({len(imoveis)} imóveis [{n_jj} JJ · {n_vr} VR] · "
+          f"{len(demandas)} demandas · {len(demandas_arq)} arquivadas)")
 
 
 if __name__ == "__main__":

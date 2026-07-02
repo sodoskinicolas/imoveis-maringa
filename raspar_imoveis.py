@@ -479,9 +479,25 @@ def parse_lelo_card(html_block, href):
         preco_m = re.search(r'R\$\s*[\d.,]+', html_block)
         preco = parse_preco(preco_m.group(0)) if preco_m else None
 
-    qtos_m = re.search(r'(\d+)\s*quartos?', html_block, re.I)
+    # Descrição do anúncio às vezes usa "Dormitórios" em vez de "Quartos"
+    # (ex: "3 Dormitórios (1 Suíte)") — sem o sinônimo, quartos ficava None
+    # mesmo com a informação presente no texto.
+    qtos_m = re.search(r'(\d+)\s*(?:quartos?|dormit[oó]rios?|dorm\.?)', html_block, re.I)
     suite_m = re.search(r'(\d+)\s*su[ií]tes?', html_block, re.I)
     vaga_m = re.search(r'(\d+)\s*vagas?', html_block, re.I)
+    banh_m = re.search(r'(\d+)\s*banheiros?|\bwc\b|\blavabo\b', html_block, re.I)
+
+    # Fallback: o slug da URL codifica quartos/vagas de forma consistente
+    # (ex: ".../apartamento-3-quartos-zona-07-maringa-180m2-venda-.../")
+    # — usado quando o texto do card não menciona o número explicitamente.
+    if not qtos_m:
+        qtos_slug = re.search(r'(\d+)-quartos?\b', slug_path, re.I)
+        if qtos_slug:
+            qtos_m = qtos_slug
+    if not vaga_m:
+        vaga_slug = re.search(r'(\d+)-vagas?\b', slug_path, re.I)
+        if vaga_slug:
+            vaga_m = vaga_slug
 
     return {
         "ref": ref,
@@ -492,7 +508,7 @@ def parse_lelo_card(html_block, href):
         "area": area,
         "quartos": parse_int(qtos_m.group(1)) if qtos_m else None,
         "suites": parse_int(suite_m.group(1)) if suite_m else None,
-        "banheiros": None,
+        "banheiros": parse_int(banh_m.group(1)) if (banh_m and banh_m.lastindex) else None,
         "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
         "preco": preco,
         "obs": href,

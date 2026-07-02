@@ -11,12 +11,15 @@ Uso manual:
 Agendado via LaunchAgent para rodar às 3h da manhã.
 """
 
+import os
 import re
 import sys
 import json
 import time
 import logging
 import argparse
+import threading
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime, date
 from pathlib import Path
 from urllib.parse import urljoin
@@ -44,15 +47,27 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-SESSION = requests.Session()
-SESSION.headers.update({
-    "User-Agent": (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    ),
-    "Accept-Language": "pt-BR,pt;q=0.9",
-})
+# Sessão HTTP por thread — necessário porque agora rodamos os sites em
+# paralelo (ver coletar_todos()) e uma única requests.Session compartilhada
+# não é garantidamente segura sob uso concorrente pesado. Cada thread cria a
+# sua na primeira chamada e reutiliza depois (mesmo efeito de connection
+# pooling que tínhamos antes, só que isolado por thread).
+_thread_local = threading.local()
+
+def _get_session():
+    sess = getattr(_thread_local, "session", None)
+    if sess is None:
+        sess = requests.Session()
+        sess.headers.update({
+            "User-Agent": (
+                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/124.0.0.0 Safari/537.36"
+            ),
+            "Accept-Language": "pt-BR,pt;q=0.9",
+        })
+        _thread_local.session = sess
+    return sess
 
 # ── Helpers de parsing ────────────────────────────────────────────────────────
 
@@ -141,15 +156,47 @@ def slug(url):
     parts = [p for p in url.rstrip("/").split("/") if p]
     return parts[-1] if parts else url
 
+_TAG_RE = re.compile(r'<[^>]+>')
+_WS_RE = re.compile(r'\s+')
+
+def limpar_texto_html(html_fragment, max_len=800):
+    """
+    Remove tags HTML de um bloco e normaliza espaços, gerando texto livre
+    aproveitável por extrair_edificio()/pesquisar_condominio() em
+    processar_mensagens.py. Sem isso, "obs" (que vira a coluna
+    `observacoes` no banco) só guardava o link do imóvel — a detecção de
+    edifício/condomínio dependia de achar o nome do prédio em texto livre,
+    e um link não tem texto nenhum pra casar. Essa limitação já existia
+    desde o scraper original do Sub100, não só nos sites novos (Lélo,
+    Opção, Patrimônio) — corrigida em todos de uma vez.
+    """
+    texto = _TAG_RE.sub(' ', html_fragment)
+    texto = fix_enc(texto)
+    texto = _WS_RE.sub(' ', texto).strip()
+    return texto[:max_len]
+
+
 def get_page(url, ajax=False, retries=3, delay=2):
     headers = {}
     if ajax:
         headers["X-Requested-With"] = "XMLHttpRequest"
+    session = _get_session()
     for attempt in range(retries):
         try:
-            r = SESSION.get(url, headers=headers, timeout=30)
+            r = session.get(url, headers=headers, timeout=30)
             r.raise_for_status()
             return r
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else None
+            # 404/410 = a página não existe (ex: "/imoveis/venda" combinado
+            # não existe pra Haraki/Massaru/Bellakaza) — insistir 3x com
+            # espera crescente nunca vai mudar o resultado, só desperdiça
+            # ~10-15s à toa em todo site que não suporta essa rota.
+            if status in (404, 410):
+                return None
+            log.warning(f"  Tentativa {attempt+1}/{retries} falhou: {url} → {e}")
+            if attempt < retries - 1:
+                time.sleep(delay * (attempt + 1))
         except Exception as e:
             log.warning(f"  Tentativa {attempt+1}/{retries} falhou: {url} → {e}")
             if attempt < retries - 1:
@@ -282,7 +329,7 @@ def parse_sub100_block(html_block, base_domain):
         "suites":    None,
         "vagas":     parse_int(vaga_m.group(1))  if vaga_m  else None,
         "preco":     parse_preco(preco_m.group(0)) if preco_m else None,
-        "obs":       link,
+        "obs":       limpar_texto_html(html_block),
     }
 
 def descobrir_categorias_venda(domain):
@@ -511,7 +558,7 @@ def parse_lelo_card(html_block, href):
         "banheiros": parse_int(banh_m.group(1)) if (banh_m and banh_m.lastindex) else None,
         "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
         "preco": preco,
-        "obs": href,
+        "obs": limpar_texto_html(html_block),
     }
 
 
@@ -608,6 +655,17 @@ def scrape_opcao():
         det = it.get("detalhes") or {}
         preco = it.get("precoVenda")
         imovel_url = it.get("imovelUrl") or ""
+        # A busca (JSON de listagem) não traz a descrição completa do anúncio
+        # — isso só existe na página de detalhe de cada imóvel, que não
+        # buscamos (349 requests extras só pra isso). Como segundo melhor,
+        # juntamos título + endereço + lista de características, que juntos
+        # às vezes trazem o nome do edifício/empreendimento (ex: título
+        # "...com 54.86 m², Residencial Palma e Azevedo").
+        obs = " ".join(filter(None, [
+            it.get("titulo", ""),
+            it.get("endereco", ""),
+            ", ".join(it.get("caracteristicas") or []),
+        ]))
         items.append({
             "ref": ref,
             "link": urljoin(OPCAO_BASE + "/imovel/", imovel_url) if imovel_url else url,
@@ -620,7 +678,7 @@ def scrape_opcao():
             "banheiros": None,
             "vagas": num_seguro(det.get("vagas")),
             "preco": num_seguro(preco),
-            "obs": it.get("titulo", ""),
+            "obs": obs,
         })
 
     log.info(
@@ -686,7 +744,7 @@ def parse_patrimonio_card(html_block, href):
         "banheiros": parse_int(banho_m.group(1)) if banho_m else None,
         "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
         "preco": parse_preco(preco_m.group(0)) if preco_m else None,
-        "obs": href,
+        "obs": limpar_texto_html(html_block),
     }
 
 
@@ -729,6 +787,247 @@ def scrape_patrimonio(max_paginas=15):
     return items
 
 
+# ── Portal SUB100 (sub100.com.br) ────────────────────────────────────────────
+#
+# Diferente dos 5 sites-tenant Sub100 (Haraki, Massaru...), o sub100.com.br é
+# o PORTAL agregador — reúne anúncios de dezenas de imobiliárias de Maringá
+# (~16 mil imóveis à venda). É um SPA Nuxt: o HTML das listagens vem vazio, os
+# dados vêm da API JSON em beta-api.sub100.com.br (descoberta em 2026-07-01
+# inspecionando as requisições XHR do site no Chrome).
+#
+#   Listagem: GET /api/properties?order=relevants&business_type={UUID_VENDA}
+#             &city=maringa-pr&page=N        → 20 itens/página, meta.last_page
+#   Detalhe:  GET /api/properties/{uuid}     → mesmos campos + description
+#
+# Esses 3 parâmetros são o conjunto mínimo que a API aceita (testado removendo
+# um a um). A listagem já traz dados estruturados completos — endereço com rua
+# e bairro, condomínio/edifício, dorms/suítes/banheiros/vagas, áreas, preço e
+# anunciante — só a descrição exige a chamada de detalhe por imóvel.
+#
+# A descrição é buscada de forma incremental: só pra imóveis que ainda não têm
+# descrição salva no banco (primeira rodada busca tudo; nas seguintes, só os
+# novos). SUB100_PORTAL_MAX_DETALHES limita quantas por rodada (0 = sem
+# limite; em --dry-run o main() limita a 30 por padrão pra não levar horas).
+
+PORTAL_SUB100_FONTE     = "sub100.com.br"
+PORTAL_SUB100_API       = "https://beta-api.sub100.com.br/api/properties"
+PORTAL_SUB100_BT_VENDA  = "289fbbf4-6fd3-47db-85fe-e72772efd6c0"  # UUID business_type "venda"
+PORTAL_SUB100_CIDADE    = "maringa-pr"
+
+# Anunciantes do portal que já raspamos direto da fonte (site próprio ou
+# planilha) — importar de novo pelo portal duplicaria os imóveis no banco.
+# Comparação por substring do nome normalizado (sem acento, minúsculo).
+_ANUNCIANTES_JA_RASPADOS = [
+    "lelo imoveis",                  # leloimoveis.com.br
+    "haraki",                        # harakiimoveis.com.br
+    "massaru",                       # massaruimoveis.com.br
+    "bellakaza",                     # bellakaza.com.br
+    "silvio iwata",                  # silvioiwata.com.br
+    "casa do corretor",              # casadocorretormga.com.br
+    "opcao imoveis",                 # opcaoimoveis.com.br
+    "patrimonio imoveis prontos",    # patrimonioimoveisprontos.com.br
+    "junior joda",                   # planilha JuniorJoda_Imoveis.xlsx
+]
+
+def _normalizar_nome(s):
+    import unicodedata
+    s = unicodedata.normalize("NFKD", s or "")
+    return "".join(c for c in s if not unicodedata.combining(c)).lower().strip()
+
+def _anunciante_ja_raspado(nome):
+    n = _normalizar_nome(nome)
+    return any(alvo in n for alvo in _ANUNCIANTES_JA_RASPADOS)
+
+def _slug_url(s):
+    """Slug no formato usado nas URLs do portal (Jardim Aclimação → jardim-aclimacao)."""
+    s = _normalizar_nome(s)
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", s)).strip("-")
+
+def _num_br(s):
+    """Número no formato brasileiro da API ('185.000,00', '48,00') → float, ou None."""
+    if s is None:
+        return None
+    try:
+        v = float(str(s).replace(".", "").replace(",", "."))
+        return v if v > 0 else None
+    except ValueError:
+        return None
+
+def _get_json_portal(url, params=None, retries=3):
+    """GET na API do portal com headers de navegador (Origin/Referer) e retry."""
+    sess = _get_session()
+    for attempt in range(retries):
+        try:
+            r = sess.get(url, params=params, timeout=30, headers={
+                "Accept":  "application/json",
+                "Origin":  "https://sub100.com.br",
+                "Referer": "https://sub100.com.br/",
+            })
+            if r.status_code == 200:
+                return r.json()
+            log.warning(f"[Portal Sub100] HTTP {r.status_code} em {url}")
+        except Exception as e:
+            log.warning(f"[Portal Sub100] tentativa {attempt+1}/{retries} falhou: {e}")
+        time.sleep(2.0 * (attempt + 1))
+    return None
+
+def _obs_existentes_portal():
+    """
+    Lê do banco as observações já salvas pra fonte sub100.com.br
+    (ref_externa → observacoes). Usado pra (a) só buscar descrição de quem
+    ainda não tem e (b) re-passar a descrição existente no upsert — sem isso
+    o upsert sobrescreveria a descrição completa com o resumo curto do card.
+    Roda em subprocesso próprio, então abre a conexão SQLite localmente.
+    """
+    try:
+        import sqlite3
+        con = sqlite3.connect(str(BASE_DIR / "imoveis.db"), timeout=15)
+        rows = con.execute(
+            "SELECT ref_externa, observacoes FROM imoveis WHERE fonte=?",
+            (PORTAL_SUB100_FONTE,),
+        ).fetchall()
+        con.close()
+        return {str(r[0]): (r[1] or "") for r in rows}
+    except Exception as e:
+        log.warning(f"[Portal Sub100] não consegui ler descrições existentes do banco: {e}")
+        return {}
+
+def _tem_descricao_completa(obs):
+    # Descrição vinda do detalhe tem parágrafos; o fallback curto do card não.
+    return bool(obs) and (len(obs) >= 250 or "\n" in obs)
+
+def parse_portal_sub100_item(it):
+    """
+    Converte um item JSON da API do portal pro formato interno dos scrapers.
+    Sem regex de HTML: os campos já vêm estruturados (dados "match completos"
+    — inclusive suítes e edifício/condomínio, que os sites-tenant não expõem
+    no card).
+    """
+    ref = str(it.get("reference") or "").strip()
+    if not ref:
+        return None
+
+    addr     = it.get("address") or {}
+    condo    = it.get("condo") or {}
+    anunc    = (it.get("advertiser") or {}).get("name") or ""
+    subtipo  = it.get("subtype_name") or ""
+
+    bairro   = (addr.get("neighborhood") or "").strip()
+    rua      = " ".join(str(x) for x in [addr.get("street"), addr.get("number")] if x)
+
+    area = (_num_br(it.get("private_area"))
+            or _num_br(it.get("total_area"))
+            or _num_br(it.get("land_area")))
+
+    preco_f = _num_br(it.get("total"))
+    tipo    = infer_tipo(subtipo)
+    if tipo == "Imóvel" and subtipo:
+        tipo = subtipo
+
+    # Link no formato real do portal:
+    # /imoveis/{ref}/venda/{subtipo}-em-maringa-pr/{bairro}
+    link = (f"https://sub100.com.br/imoveis/{ref}/venda/"
+            f"{_slug_url(subtipo) or 'imovel'}-em-{PORTAL_SUB100_CIDADE}/{_slug_url(bairro)}")
+
+    return {
+        "ref":       ref,
+        "id_api":    it.get("id"),          # UUID — usado pra buscar a descrição
+        "link":      link,
+        "tipo":      tipo,
+        "bairro":    bairro,
+        "endereco":  rua,
+        "edificio":  (condo.get("name") or "").strip(),
+        "corretor":  anunc.strip(),
+        "area":      area,
+        "quartos":   parse_int(it.get("dorms")),
+        "suites":    parse_int(it.get("suites")),
+        "banheiros": parse_int(it.get("bwc")),
+        "vagas":     parse_int(it.get("parking_spaces")),
+        "preco":     int(preco_f) if preco_f else None,
+        "obs":       "",                    # preenchido depois (descrição completa)
+    }
+
+def scrape_portal_sub100():
+    """
+    Raspa o portal sub100.com.br inteiro (venda, Maringá) via API JSON.
+    Pula anunciantes que já raspamos direto (_ANUNCIANTES_JA_RASPADOS) e
+    busca a descrição completa de cada imóvel que ainda não tem no banco.
+    """
+    max_detalhes = int(os.environ.get("SUB100_PORTAL_MAX_DETALHES", "0") or 0)
+    obs_banco    = _obs_existentes_portal()
+
+    items, seen_refs, pulados = [], set(), {}
+    page, last_page = 1, 1
+
+    while page <= last_page:
+        j = _get_json_portal(PORTAL_SUB100_API, params={
+            "order":         "relevants",
+            "business_type": PORTAL_SUB100_BT_VENDA,
+            "city":          PORTAL_SUB100_CIDADE,
+            "page":          page,
+        })
+        if not j or not j.get("data"):
+            break
+        last_page = (j.get("meta") or {}).get("last_page", last_page)
+
+        for raw in j["data"]:
+            item = parse_portal_sub100_item(raw)
+            if not item or item["ref"] in seen_refs:
+                continue
+            seen_refs.add(item["ref"])
+            if _anunciante_ja_raspado(item["corretor"]):
+                pulados[item["corretor"]] = pulados.get(item["corretor"], 0) + 1
+                continue
+            items.append(item)
+
+        if page == 1 or page % 50 == 0 or page == last_page:
+            log.info(f"[Portal Sub100] página {page}/{last_page} — {len(items)} aproveitados até aqui")
+        page += 1
+        time.sleep(0.6)
+
+    if pulados:
+        log.info(f"[Portal Sub100] pulados (já raspados direto): "
+                 + ", ".join(f"{k}: {v}" for k, v in sorted(pulados.items())))
+
+    # ── Descrições completas (incremental) ───────────────────────────────────
+    sem_desc = [it for it in items if not _tem_descricao_completa(obs_banco.get(it["ref"], ""))]
+    alvo = sem_desc if not max_detalhes else sem_desc[:max_detalhes]
+    log.info(f"[Portal Sub100] descrições: {len(items) - len(sem_desc)} já no banco, "
+             f"{len(sem_desc)} faltando, buscando {len(alvo)} nesta rodada")
+
+    buscadas = 0
+    for it in alvo:
+        if not it.get("id_api"):
+            continue
+        d = _get_json_portal(f"{PORTAL_SUB100_API}/{it['id_api']}", retries=2)
+        dados = (d or {}).get("data") or d or {}
+        desc = (dados.get("description") or "").strip()
+        if desc:
+            it["obs"] = desc
+            buscadas += 1
+        time.sleep(0.35)
+        if buscadas and buscadas % 500 == 0:
+            log.info(f"[Portal Sub100] {buscadas}/{len(alvo)} descrições buscadas...")
+    log.info(f"[Portal Sub100] {buscadas} descrições novas buscadas")
+
+    # Quem já tinha descrição no banco (ou não conseguiu buscar) reusa a
+    # existente; sem isso o upsert apagaria a descrição completa salva antes.
+    for it in items:
+        if not it["obs"]:
+            existente = obs_banco.get(it["ref"], "")
+            it["obs"] = existente if existente else (
+                f"{it['tipo']} - {it['bairro']}"
+                + (f" - Ed. {it['edificio']}" if it['edificio'] else "")
+                + (f" - Anunciante: {it['corretor']}" if it['corretor'] else "")
+            )
+        it.pop("id_api", None)
+
+    from collections import Counter
+    tipos = Counter(it["tipo"] for it in items)
+    log.info(f"[Portal Sub100] Total: {len(items)} imóveis | {dict(tipos)}")
+    return items
+
+
 # ── Coletar todos ─────────────────────────────────────────────────────────────
 
 # Sites com scraper próprio (fora do padrão Sub100) — cada um com plataforma
@@ -739,31 +1038,53 @@ OUTRAS_FONTES = [
     {"grupo": "leloimoveis.com.br",              "func": scrape_lelo},
     {"grupo": "opcaoimoveis.com.br",              "func": scrape_opcao},
     {"grupo": "patrimonioimoveisprontos.com.br",  "func": scrape_patrimonio},
+    {"grupo": PORTAL_SUB100_FONTE,                "func": scrape_portal_sub100},
 ]
+
+
+def _raspar_uma_fonte(cfg, eh_sub100):
+    """
+    Roda o scraper de UMA fonte, isolando exceções — usado como unidade de
+    trabalho de cada processo em coletar_todos(). Cada fonte é um domínio
+    HTTP independente, então rodar todas ao mesmo tempo é seguro (sem risco
+    de uma fonte lenta/travada atrapalhar as outras).
+
+    Importante: isso roda em PROCESSOS separados (ProcessPoolExecutor), não
+    threads. Testamos com ThreadPoolExecutor primeiro, mas na raspagem real
+    (regex + BeautifulSoup fazendo parsing pesado de HTML) o GIL do Python
+    impede paralelismo de verdade entre threads — na prática as 8 fontes
+    rodaram uma atrás da outra, sem ganho de velocidade nenhum. Com
+    processos reais cada fonte usa seu próprio interpretador/núcleo, o que
+    de fato corta o tempo total da raspagem de ~9min (soma sequencial) pra
+    perto do tempo do site mais lento sozinho.
+    """
+    nome = cfg.get("grupo") or cfg.get("domain") or "?"
+    inicio = time.time()
+    log.info(f"[{nome}] iniciando (pid {os.getpid()})")
+    try:
+        if eh_sub100:
+            items = scrape_sub100(cfg)
+            grupo_final = cfg["domain"]
+        else:
+            items = cfg["func"]()
+            grupo_final = cfg["grupo"]
+        for it in items:
+            it["grupo"] = grupo_final
+        log.info(f"[{nome}] terminou em {time.time() - inicio:.1f}s (pid {os.getpid()})")
+        return items
+    except Exception as e:
+        log.error(f"[{nome}] Erro na raspagem: {e}", exc_info=True)
+        return []
 
 
 def coletar_todos():
     todos = []
+    tarefas = [(cfg, True) for cfg in SUB100_SITES] + [(cfg, False) for cfg in OUTRAS_FONTES]
 
-    for cfg in SUB100_SITES:
-        try:
-            items = scrape_sub100(cfg)
-            for it in items:
-                it["grupo"] = cfg["domain"]
-            todos.extend(items)
-        except Exception as e:
-            log.error(f"[{cfg['grupo']}] Erro na raspagem: {e}", exc_info=True)
-        time.sleep(2)
-
-    for cfg in OUTRAS_FONTES:
-        try:
-            items = cfg["func"]()
-            for it in items:
-                it["grupo"] = cfg["grupo"]
-            todos.extend(items)
-        except Exception as e:
-            log.error(f"[{cfg['grupo']}] Erro na raspagem: {e}", exc_info=True)
-        time.sleep(2)
+    with ProcessPoolExecutor(max_workers=len(tarefas)) as executor:
+        futures = [executor.submit(_raspar_uma_fonte, cfg, eh_sub100) for cfg, eh_sub100 in tarefas]
+        for future in as_completed(futures):
+            todos.extend(future.result())
 
     log.info(f"Total coletado (todos os sites): {len(todos)}")
     return todos
@@ -785,7 +1106,10 @@ def validar_e_completar_item(item, permitir_pesquisa_web=True):
     """
     texto_ref = " ".join(str(item.get(k) or "") for k in ("bairro", "endereco", "tipo", "obs"))
 
-    edificio = extrair_edificio(texto_ref)
+    # Fontes com dado estruturado (ex: portal Sub100, que traz o condomínio
+    # como campo próprio da API) já chegam com "edificio" preenchido — isso
+    # tem prioridade sobre a extração por regex do texto livre.
+    edificio = (item.get("edificio") or "").strip() or extrair_edificio(texto_ref)
     if edificio:
         condo_row = buscar_condo_completo(edificio)
         # Só pesquisa/completa specs padronizados pra prédios verticais — um
@@ -873,7 +1197,9 @@ def atualizar_db(novos_raw, dry_run=False):
                 "ref_externa":     ref,
                 "data_captura":    hoje,
                 "grupo":           fonte,
-                "corretor":        "",
+                # Portal Sub100 traz a imobiliária anunciante de cada imóvel;
+                # nos sites próprios o anunciante é o próprio site (vazio aqui).
+                "corretor":        item.get("corretor", ""),
                 "contato":         "",
                 "tipo":            item.get("tipo", "Imóvel"),
                 "bairro":          bairro_end,
@@ -916,7 +1242,19 @@ def main():
     parser = argparse.ArgumentParser(description="Raspar imóveis de Maringá")
     parser.add_argument("--dry-run", action="store_true",
                         help="Mostra o que seria sincronizado sem alterar o banco")
+    parser.add_argument("--max-detalhes", type=int, default=None,
+                        help="Máximo de descrições a buscar no portal Sub100 nesta "
+                             "rodada (0 = sem limite; padrão: sem limite, ou 30 em --dry-run)")
     args = parser.parse_args()
+
+    # Repassado pro subprocesso do portal Sub100 via ambiente (variáveis de
+    # ambiente sobrevivem ao spawn do ProcessPoolExecutor; globals não).
+    if args.max_detalhes is not None:
+        os.environ["SUB100_PORTAL_MAX_DETALHES"] = str(args.max_detalhes)
+    elif args.dry_run:
+        # dry-run é teste de pipeline — sem isso a primeira rodada buscaria
+        # ~14 mil descrições (~2h) só pra jogar tudo fora no final.
+        os.environ["SUB100_PORTAL_MAX_DETALHES"] = "30"
 
     log.info("=" * 60)
     log.info(f"Iniciando raspagem — {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

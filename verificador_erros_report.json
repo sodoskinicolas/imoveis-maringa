@@ -1,5 +1,5 @@
 {
-  "ts": "2026-07-01T22:18:12.190680",
+  "ts": "2026-07-02T09:07:42.208302",
   "erros": [
     "🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)",
     "🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]"

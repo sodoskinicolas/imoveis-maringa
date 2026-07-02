@@ -898,8 +898,6 @@ function arquivarDemandaBtn(id, ev){{
   if(typeof aplicarD==='function') aplicarD();
   if(typeof aplicarDA==='function') aplicarDA();
   if(typeof renderMatch==='function') renderMatch();
-  alert('Demanda #'+id+' arquivada nesta página (some do Match e de Demandas, aparece em Arquivadas).\\n\\n'+
-        'Isso só vale neste navegador. Pra arquivar de vez no banco, cole no Terminal (já copiado):\\n'+cmd);
 }}
 
 function restaurarDemandaLocalBtn(id, ev){{
@@ -910,7 +908,6 @@ function restaurarDemandaLocalBtn(id, ev){{
   if(typeof aplicarD==='function') aplicarD();
   if(typeof aplicarDA==='function') aplicarDA();
   if(typeof renderMatch==='function') renderMatch();
-  alert('Demanda #'+id+' restaurada nesta página.\\n\\nSe já tinha rodado o --arquivar no banco, cole no Terminal pra confirmar (já copiado):\\n'+cmd);
 }}
 
 /* ── tab nav ── */

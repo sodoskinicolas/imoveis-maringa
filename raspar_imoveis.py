@@ -19,7 +19,7 @@ import time
 import logging
 import argparse
 import threading
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime, date
 from pathlib import Path
 from urllib.parse import urljoin
@@ -810,6 +810,7 @@ def scrape_patrimonio(max_paginas=15):
 # limite; em --dry-run o main() limita a 30 por padrão pra não levar horas).
 
 PORTAL_SUB100_FONTE     = "sub100.com.br"
+PORTAL_SUB100_WORKERS   = 6   # requisições simultâneas à API (I/O-bound → threads)
 PORTAL_SUB100_API       = "https://beta-api.sub100.com.br/api/properties"
 PORTAL_SUB100_BT_VENDA  = "289fbbf4-6fd3-47db-85fe-e72772efd6c0"  # UUID business_type "venda"
 PORTAL_SUB100_CIDADE    = "maringa-pr"
@@ -956,20 +957,39 @@ def scrape_portal_sub100():
     max_detalhes = int(os.environ.get("SUB100_PORTAL_MAX_DETALHES", "0") or 0)
     obs_banco    = _obs_existentes_portal()
 
-    items, seen_refs, pulados = [], set(), {}
-    page, last_page = 1, 1
-
-    while page <= last_page:
-        j = _get_json_portal(PORTAL_SUB100_API, params={
+    def _buscar_pagina(n):
+        return _get_json_portal(PORTAL_SUB100_API, params={
             "order":         "relevants",
             "business_type": PORTAL_SUB100_BT_VENDA,
             "city":          PORTAL_SUB100_CIDADE,
-            "page":          page,
+            "page":          n,
         })
-        if not j or not j.get("data"):
-            break
-        last_page = (j.get("meta") or {}).get("last_page", last_page)
 
+    items, seen_refs, pulados = [], set(), {}
+
+    # Página 1 sequencial (pra descobrir last_page), resto em paralelo com
+    # threads — aqui o gargalo é ESPERA DE REDE (I/O), não parsing (o JSON já
+    # vem estruturado), então threads dão speedup real apesar do GIL — ao
+    # contrário da raspagem HTML dos outros sites, que é CPU-bound e precisou
+    # de ProcessPoolExecutor (ver coletar_todos). Com 6 workers, as ~800
+    # páginas caem de ~8min pra ~1-2min.
+    paginas = []
+    j1 = _buscar_pagina(1)
+    if j1 and j1.get("data"):
+        paginas.append(j1)
+        last_page = (j1.get("meta") or {}).get("last_page", 1)
+        if last_page > 1:
+            with ThreadPoolExecutor(max_workers=PORTAL_SUB100_WORKERS) as ex:
+                futs = [ex.submit(_buscar_pagina, n) for n in range(2, last_page + 1)]
+                for k, fut in enumerate(as_completed(futs), start=2):
+                    j = fut.result()
+                    if j and j.get("data"):
+                        paginas.append(j)
+                    if k % 100 == 0:
+                        log.info(f"[Portal Sub100] {k}/{last_page} páginas baixadas...")
+        log.info(f"[Portal Sub100] {len(paginas)}/{last_page} páginas baixadas")
+
+    for j in paginas:
         for raw in j["data"]:
             item = parse_portal_sub100_item(raw)
             if not item or item["ref"] in seen_refs:
@@ -979,11 +999,6 @@ def scrape_portal_sub100():
                 pulados[item["corretor"]] = pulados.get(item["corretor"], 0) + 1
                 continue
             items.append(item)
-
-        if page == 1 or page % 50 == 0 or page == last_page:
-            log.info(f"[Portal Sub100] página {page}/{last_page} — {len(items)} aproveitados até aqui")
-        page += 1
-        time.sleep(0.6)
 
     if pulados:
         log.info(f"[Portal Sub100] pulados (já raspados direto): "
@@ -995,19 +1010,25 @@ def scrape_portal_sub100():
     log.info(f"[Portal Sub100] descrições: {len(items) - len(sem_desc)} já no banco, "
              f"{len(sem_desc)} faltando, buscando {len(alvo)} nesta rodada")
 
-    buscadas = 0
-    for it in alvo:
+    def _buscar_descricao(it):
         if not it.get("id_api"):
-            continue
+            return False
         d = _get_json_portal(f"{PORTAL_SUB100_API}/{it['id_api']}", retries=2)
         dados = (d or {}).get("data") or d or {}
         desc = (dados.get("description") or "").strip()
         if desc:
-            it["obs"] = desc
-            buscadas += 1
-        time.sleep(0.35)
-        if buscadas and buscadas % 500 == 0:
-            log.info(f"[Portal Sub100] {buscadas}/{len(alvo)} descrições buscadas...")
+            it["obs"] = desc          # cada thread escreve só no próprio item
+            return True
+        return False
+
+    buscadas = feitas = 0
+    if alvo:
+        with ThreadPoolExecutor(max_workers=PORTAL_SUB100_WORKERS) as ex:
+            for ok in ex.map(_buscar_descricao, alvo):
+                feitas += 1
+                buscadas += 1 if ok else 0
+                if feitas % 1000 == 0:
+                    log.info(f"[Portal Sub100] {feitas}/{len(alvo)} descrições buscadas...")
     log.info(f"[Portal Sub100] {buscadas} descrições novas buscadas")
 
     # Quem já tinha descrição no banco (ou não conseguiu buscar) reusa a
@@ -1134,7 +1155,8 @@ def validar_e_completar_item(item, permitir_pesquisa_web=True):
         item["edificio"] = edificio
 
     item["bairro"] = validar_bairro(
-        item.get("bairro", ""), texto_completo=texto_ref, edificio=edificio or ""
+        item.get("bairro", ""), texto_completo=texto_ref, edificio=edificio or "",
+        permitir_web=permitir_pesquisa_web,   # dry-run não gasta API/tempo com web
     )
     validar_campos_numericos(item)
     return item
@@ -1165,8 +1187,14 @@ def atualizar_db(novos_raw, dry_run=False):
     # que faltar. Em --dry-run não pesquisa na web (evita custo de API só pra
     # testar), mas ainda valida e cruza com o que já está cadastrado.
     log.info("Validando e cruzando com a base (bairros + condominios)...")
-    for item in novos_raw:
-        validar_e_completar_item(item, permitir_pesquisa_web=not dry_run)
+    from processar_mensagens import cv_save_em_lote
+    inicio_val = time.time()
+    with cv_save_em_lote():   # grava o cache de bairros 1x no fim, não a cada item
+        for i, item in enumerate(novos_raw, 1):
+            validar_e_completar_item(item, permitir_pesquisa_web=not dry_run)
+            if i % 2000 == 0:
+                log.info(f"  validados {i}/{len(novos_raw)}...")
+    log.info(f"Validação concluída em {time.time() - inicio_val:.1f}s")
 
     if dry_run:
         log.info("[DRY-RUN] Nenhuma alteração salva.")
@@ -1258,6 +1286,11 @@ def main():
 
     log.info("=" * 60)
     log.info(f"Iniciando raspagem — {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    # Carimbo de versão: hoje (2026-07-02) rodamos 2x uma versão antiga sem
+    # perceber, porque o processo foi iniciado antes do arquivo ser salvo.
+    # Com o mtime no log, dá pra confirmar de cara qual versão está rodando.
+    mtime = datetime.fromtimestamp(Path(__file__).stat().st_mtime)
+    log.info(f"Versão do script: salvo em {mtime.strftime('%Y-%m-%d %H:%M:%S')}")
     if args.dry_run:
         log.info("** MODO DRY-RUN — nenhuma alteração será salva **")
 

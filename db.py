@@ -551,6 +551,36 @@ def _norm_nome(s):
     return re.sub(r'[^a-z0-9]', '', (s or '').lower())
 
 
+# Snapshot pré-normalizado da tabela condominios, reusado entre chamadas.
+# Antes, CADA chamada de buscar_specs_condo fazia SELECT * (13.9k linhas) e
+# rodava _norm_nome (regex) em todas — com ~13 mil imóveis do portal Sub100
+# validando 2x cada, a fase de validação levava dezenas de minutos só nisso.
+# O snapshot é invalidado automaticamente quando a tabela muda de tamanho
+# (COUNT/MAX rowid) e explicitamente via invalidar_cache_condominios() quando
+# uma linha existente é atualizada (atualizar_aba_condominios).
+_CONDOS_CACHE = {"key": None, "prep": []}
+
+def invalidar_cache_condominios():
+    _CONDOS_CACHE["key"] = None
+
+def _condominios_preparados(conn):
+    key = tuple(conn.execute(
+        "SELECT COUNT(*), COALESCE(MAX(rowid), 0) FROM condominios").fetchone())
+    if _CONDOS_CACHE["key"] != key:
+        prep = []
+        for r in conn.execute("SELECT * FROM condominios").fetchall():
+            n = (r["nome"] or "").strip().lower()
+            if not n:
+                continue
+            d = dict(r)
+            score = sum(1 for col in ("area_min", "construtora", "padrao", "andares",
+                                      "bairro", "quartos", "plantas") if d.get(col))
+            prep.append((n, _norm_nome(n), score, d))
+        _CONDOS_CACHE["key"]  = key
+        _CONDOS_CACHE["prep"] = prep
+    return _CONDOS_CACHE["prep"]
+
+
 def buscar_specs_condo(conn, nome):
     """
     Busca specs de condomínio pelo nome (match parcial, case-insensitive).
@@ -564,28 +594,22 @@ def buscar_specs_condo(conn, nome):
         return None
     nome_low  = nome.strip().lower()
     nome_norm = _norm_nome(nome)
-    rows = conn.execute("SELECT * FROM condominios").fetchall()
     candidatos = []
-    for r in rows:
-        n = (r["nome"] or "").strip().lower()
-        if not n:
-            continue
-        n_norm = _norm_nome(n)
+    for n, n_norm, score, d in _condominios_preparados(conn):
         # Match literal OU normalizado (sem espaços/pontuação)
         match_literal = nome_low in n or n in nome_low
         match_norm    = bool(nome_norm) and (nome_norm in n_norm or n_norm in nome_norm)
         if not (match_literal or match_norm):
             continue
-        # Score: quantos campos de dados estão preenchidos
-        score = sum(1 for col in ("area_min", "construtora", "padrao", "andares", "bairro", "quartos", "plantas")
-                    if r[col])
         # Priorizar match literal exato sobre match normalizado parcial
         bonus = 1 if match_literal else 0
-        candidatos.append((score + bonus, dict(r)))
+        candidatos.append((score + bonus, d))
     if not candidatos:
         return None
-    # Retorna o candidato com mais dados; em empate, o mais específico (nome mais curto = match mais exato)
-    return max(candidatos, key=lambda x: (x[0], -len(x[1].get("nome") or "")))[1]
+    # Retorna o candidato com mais dados; em empate, o mais específico (nome mais
+    # curto = match mais exato). Cópia nova a cada chamada — o snapshot é
+    # compartilhado e um caller que modificasse o dict corromperia o cache.
+    return dict(max(candidatos, key=lambda x: (x[0], -len(x[1].get("nome") or "")))[1])
 
 def listar_condominios_nomes(conn):
     """Retorna lista de nomes de condomínios cadastrados."""

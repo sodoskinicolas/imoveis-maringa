@@ -511,10 +511,37 @@ def _cv_load():
         _cache_val_bairro = {}
     return _cache_val_bairro
 
+# Em lotes grandes (ex: validação dos ~13 mil imóveis do portal Sub100 no
+# raspar_imoveis), regravar o JSON inteiro a cada entrada nova de cache vira
+# milhares de writes em disco. cv_save_em_lote() adia a gravação pro fim do
+# lote; fora de lote o comportamento continua o de sempre (grava na hora).
+_cv_autosave = True
+_cv_sujo     = False
+
 def _cv_save():
-    if _cache_val_bairro is not None:
-        CACHE_VALIDACAO_BAIRRO_FILE.write_text(
-            json.dumps(_cache_val_bairro, ensure_ascii=False, indent=2), 'utf-8')
+    global _cv_sujo
+    if _cache_val_bairro is None:
+        return
+    if not _cv_autosave:
+        _cv_sujo = True
+        return
+    CACHE_VALIDACAO_BAIRRO_FILE.write_text(
+        json.dumps(_cache_val_bairro, ensure_ascii=False, indent=2), 'utf-8')
+
+from contextlib import contextmanager
+
+@contextmanager
+def cv_save_em_lote():
+    """Adia a gravação do cache de bairros pro fim do bloco (1 write só)."""
+    global _cv_autosave, _cv_sujo
+    _cv_autosave = False
+    try:
+        yield
+    finally:
+        _cv_autosave = True
+        if _cv_sujo:
+            _cv_sujo = False
+            _cv_save()
 
 def _match_bairro_oficial(candidato):
     """Retorna (nome_oficial, score) ou (None, 0.0)."""
@@ -548,8 +575,17 @@ def _match_bairro_oficial(candidato):
         return melhor, best
     return None, best
 
+# Circuit breaker: se a API falhar por falta de créditos, desliga a busca web
+# pelo resto da execução — sem isso, uma rodada com milhares de itens tenta (e
+# falha) centenas de vezes, perdendo ~1s por tentativa (visto no dry-run de
+# 2026-07-02, com a chave da app sem créditos).
+_web_sem_creditos = False
+
 def _buscar_bairro_web(referencia):
     """Claude Haiku + web_search para descobrir o bairro. Retorna string ou None."""
+    global _web_sem_creditos
+    if _web_sem_creditos:
+        return None
     api_key = _api_key()
     if not api_key:
         return None
@@ -580,18 +616,32 @@ def _buscar_bairro_web(referencia):
             if not bairro.lower().startswith(_prefixos_invalidos) and ',' not in bairro[:20]:
                 return bairro
     except Exception as e:
-        print(f"  ⚠️  Busca web bairro: {e}")
+        if 'credit balance is too low' in str(e):
+            _web_sem_creditos = True
+            print("  ⚠️  API sem créditos — busca web de bairro DESLIGADA pelo resto da execução")
+        else:
+            print(f"  ⚠️  Busca web bairro: {e}")
     return None
 
-def validar_bairro(bairro_extraido, texto_completo='', edificio=''):
+def _eh_bairro_oficial(nome):
+    """True se o nome bate EXATO (normalizado) com a lista oficial."""
+    _carregar_bairros_oficiais()
+    return bool(nome) and _normalizar_bairro(nome) in _BAIRROS_OFICIAIS_LOWER
+
+def validar_bairro(bairro_extraido, texto_completo='', edificio='', permitir_web=True):
     """
     Valida/corrige o bairro extraído contra a lista oficial de Maringá.
 
-    Fluxo:
-      1. Match direto/fuzzy na lista oficial
-      2. Se não encontrar, busca na web usando edifício + texto como referência
-      3. Valida resultado da web também
-      4. Cacheia pelo edifício (chave mais estável) para evitar buscas repetidas
+    Fluxo (reordenado em 2026-07-02 — antes o cache por edifício atropelava
+    até bairro anunciado que batia exato com a lista oficial, o que corrompia
+    o dado estruturado do portal Sub100 com valores errados/lixo do cache):
+      1. Bairro anunciado com match na lista oficial VENCE o cache — dado da
+         fonte é mais confiável que uma associação edifício→bairro antiga.
+      2. Cache por edifício — mas só se o valor cacheado for ele próprio um
+         bairro oficial (o cache antigo acumulou endereços inteiros e
+         respostas conversacionais de LLM como "bairro"; esses são ignorados).
+      3. Busca web (se permitir_web) — só cacheia o resultado se for oficial.
+      4. Não confirmado: mantém o original; cacheia '' (marca "já tentei").
 
     Retorna o nome oficial ou o candidato original se não confirmar.
     """
@@ -601,13 +651,7 @@ def validar_bairro(bairro_extraido, texto_completo='', edificio=''):
     # Chave de cache: edifício tem precedência (mais estável)
     chave_cache = _normalizar_bairro(edificio or bairro_extraido or '')
 
-    if chave_cache and chave_cache in cache:
-        resultado = cache[chave_cache]
-        if resultado and resultado != bairro_extraido:
-            print(f"  📍 Bairro (cache): '{bairro_extraido}' → '{resultado}'")
-        return resultado or bairro_extraido or ''
-
-    # Passo 1: match contra lista oficial
+    # Passo 1: bairro anunciado que casa com a lista oficial vence tudo
     if bairro_extraido:
         oficial, score = _match_bairro_oficial(bairro_extraido)
         if oficial:
@@ -619,10 +663,22 @@ def validar_bairro(bairro_extraido, texto_completo='', edificio=''):
             _cv_save()
             return oficial
 
-    # Passo 2: busca web SOMENTE quando há nome de edifício/condomínio identificável
+    # Passo 2: cache por edifício — só valores que são bairros oficiais
+    if chave_cache and chave_cache in cache:
+        resultado = cache[chave_cache]
+        if resultado == '':
+            # já tentamos antes e não achamos — mantém o original sem nova busca
+            return bairro_extraido or ''
+        if _eh_bairro_oficial(resultado):
+            if resultado != bairro_extraido:
+                print(f"  📍 Bairro (cache): '{bairro_extraido}' → '{resultado}'")
+            return resultado
+        # valor cacheado não é bairro oficial (lixo antigo) — ignora e segue
+
+    # Passo 3: busca web SOMENTE quando há nome de edifício/condomínio identificável
     # Não buscar com texto genérico (causa chamadas desnecessárias e respostas erradas)
     referencia = None
-    if edificio and len(edificio.strip()) > 3:
+    if permitir_web and edificio and len(edificio.strip()) > 3:
         referencia = f"Edifício/condomínio: {edificio}. Cidade: Maringá-PR."
         if texto_completo:
             referencia += f"\nTexto: {texto_completo[:200]}"
@@ -632,16 +688,23 @@ def validar_bairro(bairro_extraido, texto_completo='', edificio=''):
         bairro_web = _buscar_bairro_web(referencia)
         if bairro_web:
             oficial, score = _match_bairro_oficial(bairro_web)
-            resultado = oficial if oficial else bairro_web
-            print(f"  📍 Bairro via web: '{bairro_extraido}' → '{resultado}'")
+            if oficial:
+                print(f"  📍 Bairro via web: '{bairro_extraido}' → '{oficial}'")
+                if chave_cache:
+                    cache[chave_cache] = oficial
+                _cv_save()
+                return oficial
+            # web devolveu algo que não é bairro oficial — não gravar lixo no cache
             if chave_cache:
-                cache[chave_cache] = resultado
-            _cv_save()
-            return resultado
+                cache[chave_cache] = ''
+                _cv_save()
+            return bairro_extraido or bairro_web
 
-    # Não confirmado — manter original e cachear para não buscar de novo
+    # Não confirmado — manter original; cachear '' pra não repetir a busca
+    # (antes cacheava o texto cru sem validar, o que poluía o cache com
+    # endereços inteiros e frases — origem do lixo limpo em 2026-07-02)
     if chave_cache:
-        cache[chave_cache] = bairro_extraido or ''
+        cache[chave_cache] = ''
         _cv_save()
     return bairro_extraido or ''
 
@@ -987,6 +1050,9 @@ def atualizar_aba_condominios(info, atualizar_se_existir=False):
                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
             """, (nome,) + valores)
             print(f"  🏗️  Condomínio '{nome}' cadastrado no SQLite")
+    # O snapshot em cache de condominios (db._CONDOS_CACHE) detecta INSERT
+    # sozinho (muda o COUNT), mas UPDATE não muda tamanho — invalidar sempre.
+    db.invalidar_cache_condominios()
 
 # Nomes geográficos que NÃO são bairros (cidade, estado, país)
 _NAO_BAIRRO = {

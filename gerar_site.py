@@ -403,6 +403,10 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .btn-sem-contato{{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:#f3f0fa;color:#a78bca;border-radius:8px;font-size:11px;font-weight:500;border:1px solid #e4d8f5;cursor:default}}
 .btn-link{{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;background:#1a4f8a;color:#fff;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;transition:opacity .15s}}
 .btn-link:hover{{opacity:.85}}
+.btn-arquivar-match{{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:none;border:1.5px solid #e4d8f5;color:#9c72c8;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}}
+.btn-arquivar-match:hover{{background:#fce8e8;border-color:#f0b8b8;color:#b52020}}
+.btn-restaurar-dem{{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;background:none;border:1.5px solid #e4d8f5;color:#9c72c8;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}}
+.btn-restaurar-dem:hover{{background:#eaf5e2;border-color:#b8e0b0;color:#2d7a1a}}
 
 /* pills */
 .pill{{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}}
@@ -869,6 +873,46 @@ function btnWa(num){{
     'Chamar</a>';
 }}
 
+/* ── arquivar demanda (client-side, via localStorage — o site é estático,
+   então o clique só esconde na hora; pra gravar de vez no banco tem que
+   rodar o comando que é copiado pra área de transferência) ── */
+var LS_KEY_ARQ='demArquivadasLocal';
+function _lsArqSet(){{
+  try{{ return new Set(JSON.parse(localStorage.getItem(LS_KEY_ARQ)||'[]')); }}catch(e){{ return new Set(); }}
+}}
+function _lsArqSave(s){{
+  try{{ localStorage.setItem(LS_KEY_ARQ, JSON.stringify(Array.from(s))); }}catch(e){{}}
+}}
+function isArquivadaLocal(id){{ return id!=null && _lsArqSet().has(id); }}
+
+function _copiarTexto(t){{
+  if(navigator.clipboard && navigator.clipboard.writeText){{ navigator.clipboard.writeText(t).catch(function(){{}}); }}
+}}
+
+function arquivarDemandaBtn(id, ev){{
+  if(ev){{ev.stopPropagation();}}
+  if(id==null){{ alert('Essa demanda não tem id salvo — não dá pra arquivar (dado antigo).'); return; }}
+  var set=_lsArqSet(); set.add(id); _lsArqSave(set);
+  var cmd='python3 arquivar_demanda.py --arquivar '+id;
+  _copiarTexto(cmd);
+  if(typeof aplicarD==='function') aplicarD();
+  if(typeof aplicarDA==='function') aplicarDA();
+  if(typeof renderMatch==='function') renderMatch();
+  alert('Demanda #'+id+' arquivada nesta página (some do Match e de Demandas, aparece em Arquivadas).\\n\\n'+
+        'Isso só vale neste navegador. Pra arquivar de vez no banco, cole no Terminal (já copiado):\\n'+cmd);
+}}
+
+function restaurarDemandaLocalBtn(id, ev){{
+  if(ev){{ev.stopPropagation();}}
+  var set=_lsArqSet(); set.delete(id); _lsArqSave(set);
+  var cmd='python3 arquivar_demanda.py --restaurar '+id;
+  _copiarTexto(cmd);
+  if(typeof aplicarD==='function') aplicarD();
+  if(typeof aplicarDA==='function') aplicarDA();
+  if(typeof renderMatch==='function') renderMatch();
+  alert('Demanda #'+id+' restaurada nesta página.\\n\\nSe já tinha rodado o --arquivar no banco, cole no Terminal pra confirmar (já copiado):\\n'+cmd);
+}}
+
 /* ── tab nav ── */
 function mudarAba(aba,el){{
   document.querySelectorAll('.tab').forEach(function(t){{t.classList.remove('active');}});
@@ -1149,7 +1193,7 @@ function resetarL(){{
 }});
 
 /* ════ DEMANDAS ════ */
-function cardD(dm){{
+function cardD(dm, mostrarRestaurar){{
   var urgente = dm.obs && dm.obs.toUpperCase().indexOf('URGENTE')!==-1;
   var chips=[
     dm.tipo?('<span class="chip chip-dem">'+dm.tipo+'</span>'):null,
@@ -1199,7 +1243,9 @@ function cardD(dm){{
     (dm.obs?'<div class="card-desc">'+dm.obs+'</div>':'')+
     '<div class="card-foot">'+
       '<div class="card-who">'+(dm.grupo||'—')+(dm.data?' · '+dm.data:'')+' </div>'+
-      '<div class="foot-right" onclick="event.stopPropagation()">'+btnWa(dm.contato)+'<span class="'+pillCls(dm.status||'Novo')+'">'+(dm.status||'Novo')+'</span></div>'+
+      '<div class="foot-right" onclick="event.stopPropagation()">'+btnWa(dm.contato)+
+        (mostrarRestaurar&&dm.id!=null?'<button class="btn-restaurar-dem" onclick="restaurarDemandaLocalBtn('+dm.id+',event)" title="Restaurar esta demanda">↩ Restaurar</button>':'')+
+        '<span class="'+pillCls(dm.status||'Novo')+'">'+(dm.status||'Novo')+'</span></div>'+
     '</div>'+
     expandHtml+
   '</div>';
@@ -1214,7 +1260,9 @@ function filtrarD(){{
   var am  = parseFloat(document.getElementById('area-d').value)||0;
   var om  = parseFloat(document.getElementById('orc-d').value)||Infinity;
   var st  = document.getElementById('status-d').value;
+  var lsArq=_lsArqSet();
   return DEMANDAS.filter(function(dm){{
+    if(dm.id!=null&&lsArq.has(dm.id)) return false;
     var hay=[dm.obs,dm.regiao,dm.corretor,dm.grupo,dm.tipo,dm.edificio,dm.condominio].join(' ').toLowerCase();
     if(b&&hay.indexOf(b)===-1) return false;
     if(tp&&(dm.tipo||'').toLowerCase().indexOf(tp.toLowerCase())===-1) return false;
@@ -1295,6 +1343,17 @@ function resetarD(){{
 }});
 
 /* ════ DEMANDAS ARQUIVADAS ════ */
+function _fontesArquivadas(){{
+  // Junta as arquivadas de verdade (banco, status='Inativo') com as arquivadas
+  // só neste navegador (localStorage, ainda não persistidas via arquivar_demanda.py).
+  var lsArq=_lsArqSet();
+  var idsServidor={{}};
+  ARQUIVADAS.forEach(function(a){{ if(a.id!=null) idsServidor[a.id]=true; }});
+  var locais = DEMANDAS.filter(function(dm){{ return dm.id!=null && lsArq.has(dm.id) && !idsServidor[dm.id]; }})
+    .map(function(dm){{ var c={{}}; for(var k in dm) c[k]=dm[k]; c.status='Arquivada'; c._local=true; return c; }});
+  return ARQUIVADAS.concat(locais);
+}}
+
 function filtrarDA(){{
   var b   = document.getElementById('busca-da').value.toLowerCase();
   var tp  = document.getElementById('tipo-da').value;
@@ -1303,7 +1362,7 @@ function filtrarDA(){{
   var vg  = document.getElementById('vagas-da').value;
   var am  = parseFloat(document.getElementById('area-da').value)||0;
   var om  = parseFloat(document.getElementById('orc-da').value)||Infinity;
-  return ARQUIVADAS.filter(function(dm){{
+  return _fontesArquivadas().filter(function(dm){{
     var hay=[dm.obs,dm.regiao,dm.corretor,dm.grupo,dm.tipo,dm.edificio,dm.condominio].join(' ').toLowerCase();
     if(b&&hay.indexOf(b)===-1) return false;
     if(tp&&(dm.tipo||'').toLowerCase().indexOf(tp.toLowerCase())===-1) return false;
@@ -1325,16 +1384,19 @@ function ordenarDA(l){{
 }}
 
 function aplicarDA(){{
+  var todas=_fontesArquivadas();
   var lista=ordenarDA(filtrarDA());
   ['tipo-da','regiao-da','quartos-da','vagas-da','area-da','orc-da'].forEach(selActive);
   var co=lista.filter(function(d){{return d.orcamento;}});
   var med=co.length?Math.round(co.reduce(function(s,d){{return s+d.orcamento;}},0)/co.length):0;
+  var locais=lista.filter(function(d){{return d._local;}}).length;
   document.getElementById('stats-da').innerHTML=
     '<div class="stat"><strong>'+lista.length+'</strong> arquivadas</div>'+
+    (locais?'<div class="stat"><strong>'+locais+'</strong> só neste navegador</div>':'')+
     (med?'<div class="stat"><strong>'+fmtP(med)+'</strong> orçamento médio</div>':'');
-  document.getElementById('rtxt-da').textContent=lista.length+' de '+ARQUIVADAS.length;
+  document.getElementById('rtxt-da').textContent=lista.length+' de '+todas.length;
   var gridDA=document.getElementById('grid-da');
-  gridDA.innerHTML=lista.length?lista.map(cardD).join(''):
+  gridDA.innerHTML=lista.length?lista.map(function(d){{return cardD(d,true);}}).join(''):
     '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhuma demanda arquivada.</p></div>';
 }}
 
@@ -1347,7 +1409,7 @@ function resetarDA(){{
 // Popular dropdown de regiões dinamicamente
 (function(){{
   var regioes={{}};
-  ARQUIVADAS.forEach(function(dm){{
+  _fontesArquivadas().forEach(function(dm){{
     if(!dm.regiao) return;
     dm.regiao.split(' · ').forEach(function(r){{
       r=r.trim();
@@ -1400,12 +1462,14 @@ function _buildIndex(){{
     }});
   }}
   var excl=['Vendido','Removido','Cancelado','Descartado'];
+  var lsArq=_lsArqSet();
   IMOVEIS.forEach(function(im){{
     if(excl.indexOf(im.status)!==-1) return;
     addIm(baseBairro(im.bairro), im.edificio||im.condominio||null, im);
   }});
   DEMANDAS.forEach(function(dm){{
     if(['Fechado','Cancelado'].indexOf(dm.status)!==-1) return;
+    if(dm.id!=null&&lsArq.has(dm.id)) return;
     addDm(dm.regiao, dm.edificio||dm.condominio||null, dm);
   }});
   return idx;
@@ -1661,7 +1725,9 @@ function cardMatchIm(entry, dm, isNear){{
 function renderMatch(){{
   var totalExact=0;
   var items=[];
+  var lsArq=_lsArqSet();
   DEMANDAS.forEach(function(dm,idx){{
+    if(dm.id!=null&&lsArq.has(dm.id)) return;
     var res=matchImoveis(dm);
     totalExact+=res.exact.length;
     var demTitle=(dm.regiao&&dm.tipo)?dm.tipo+' · '+dm.regiao:(dm.regiao||dm.tipo||dm.corretor||'Demanda');
@@ -1693,6 +1759,7 @@ function renderMatch(){{
               ? btnWa(dm.contato)
               : '<span class="btn-sem-contato" title="Número não capturado — LID WhatsApp">📵 Sem contato</span>')+
             '<span class="match-count-badge">'+res.exact.length+' exatos · '+res.near.length+' quase</span>'+
+            '<button class="btn-arquivar-match" onclick="arquivarDemandaBtn('+(dm.id!=null?dm.id:'null')+',event)" title="Arquivar esta demanda">🗄️ Arquivar</button>'+
             '<span class="match-chevron">&#9662;</span>'+
           '</div>'+
         '</div>'+

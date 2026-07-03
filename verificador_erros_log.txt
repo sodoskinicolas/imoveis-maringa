@@ -297,3 +297,403 @@
 [2026-07-02 09:07]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
 [2026-07-02 09:07]   Total: 2 erros, 3 avisos
 [2026-07-02 09:07] ──────────────────────────────────────────────────────────────
+[2026-07-02 10:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 10:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 10:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 10:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 10:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 10:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 10:42]   Total: 2 erros, 3 avisos
+[2026-07-02 10:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 10:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 10:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 10:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 10:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 10:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 10:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 10:42]   Total: 2 erros, 3 avisos
+[2026-07-02 10:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 11:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 11:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 11:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 11:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 11:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 11:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 11:42]   Total: 2 erros, 3 avisos
+[2026-07-02 11:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 11:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 11:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 11:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 11:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 11:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 11:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 11:42]   Total: 2 erros, 3 avisos
+[2026-07-02 11:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 12:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 12:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 12:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 12:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 12:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 12:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 12:42]   Total: 2 erros, 3 avisos
+[2026-07-02 12:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 12:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 12:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 12:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 12:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 12:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 12:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 12:42]   Total: 2 erros, 3 avisos
+[2026-07-02 12:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 13:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 13:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 13:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 13:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 13:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 13:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 13:42]   Total: 2 erros, 3 avisos
+[2026-07-02 13:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 13:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 13:42]   🔴 108 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 13:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 13:42]   📵 3142 imóveis ativos sem contato: ids=[1053, 1109, 1110, 1111, 1112, 1113, 1114, 1115, 1116, 1117]
+[2026-07-02 13:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 13:42]   ⚠️ 2313 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 13:42]   Total: 2 erros, 3 avisos
+[2026-07-02 13:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 14:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 14:42]   🔴 103 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 14:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 14:42]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 14:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 14:42]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 14:42]   Total: 2 erros, 3 avisos
+[2026-07-02 14:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 14:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 14:42]   🔴 103 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 14:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 14:42]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 14:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 14:42]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 14:42]   Total: 2 erros, 3 avisos
+[2026-07-02 14:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 15:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 15:42]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 15:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 15:42]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 15:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 15:42]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 15:42]   Total: 2 erros, 3 avisos
+[2026-07-02 15:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 15:42] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 15:42]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 15:42]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 15:42]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 15:42]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 15:42]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 15:42]   Total: 2 erros, 3 avisos
+[2026-07-02 15:42] ──────────────────────────────────────────────────────────────
+[2026-07-02 16:44] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 16:44]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 16:44]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 16:44]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 16:44]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 16:44]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 16:44]   Total: 2 erros, 3 avisos
+[2026-07-02 16:44] ──────────────────────────────────────────────────────────────
+[2026-07-02 16:44] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 16:44]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 16:44]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 16:44]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 16:44]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 16:44]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 16:44]   Total: 2 erros, 3 avisos
+[2026-07-02 16:44] ──────────────────────────────────────────────────────────────
+[2026-07-02 17:44] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 17:44]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 17:44]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 17:44]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 17:44]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 17:44]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 17:44]   Total: 2 erros, 3 avisos
+[2026-07-02 17:44] ──────────────────────────────────────────────────────────────
+[2026-07-02 17:44] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 17:44]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 17:44]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 17:44]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 17:44]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 17:44]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 17:44]   Total: 2 erros, 3 avisos
+[2026-07-02 17:44] ──────────────────────────────────────────────────────────────
+[2026-07-02 19:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 19:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 19:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 19:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 19:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 19:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 19:16]   Total: 2 erros, 3 avisos
+[2026-07-02 19:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 19:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 19:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 19:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 19:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 19:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 19:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 19:16]   Total: 2 erros, 3 avisos
+[2026-07-02 19:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 20:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 20:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 20:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 20:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 20:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 20:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 20:16]   Total: 2 erros, 3 avisos
+[2026-07-02 20:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 20:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 20:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 20:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 20:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 20:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 20:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 20:16]   Total: 2 erros, 3 avisos
+[2026-07-02 20:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 21:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 21:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 21:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 21:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 21:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 21:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 21:16]   Total: 2 erros, 3 avisos
+[2026-07-02 21:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 21:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 21:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 21:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 21:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 21:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 21:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 21:16]   Total: 2 erros, 3 avisos
+[2026-07-02 21:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 22:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 22:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 22:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 22:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 22:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 22:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 22:16]   Total: 2 erros, 3 avisos
+[2026-07-02 22:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 22:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 22:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 22:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 22:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 22:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 22:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 22:16]   Total: 2 erros, 3 avisos
+[2026-07-02 22:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 23:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 23:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 23:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 23:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 23:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 23:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 23:16]   Total: 2 erros, 3 avisos
+[2026-07-02 23:16] ──────────────────────────────────────────────────────────────
+[2026-07-02 23:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-02 23:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-02 23:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-02 23:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-02 23:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-02 23:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-02 23:16]   Total: 2 erros, 3 avisos
+[2026-07-02 23:16] ──────────────────────────────────────────────────────────────
+[2026-07-03 00:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 00:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 00:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 00:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 00:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 00:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 00:16]   Total: 2 erros, 3 avisos
+[2026-07-03 00:16] ──────────────────────────────────────────────────────────────
+[2026-07-03 00:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 00:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 00:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 00:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 00:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 00:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 00:16]   Total: 2 erros, 3 avisos
+[2026-07-03 00:16] ──────────────────────────────────────────────────────────────
+[2026-07-03 01:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 01:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 01:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 01:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 01:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 01:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 01:16]   Total: 2 erros, 3 avisos
+[2026-07-03 01:16] ──────────────────────────────────────────────────────────────
+[2026-07-03 01:16] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 01:16]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 01:16]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 01:16]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 01:16]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 01:16]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 01:16]   Total: 2 erros, 3 avisos
+[2026-07-03 01:16] ──────────────────────────────────────────────────────────────
+[2026-07-03 03:07] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 03:07]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 03:07]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 03:07]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 03:07]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 03:07]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 03:07]   Total: 2 erros, 3 avisos
+[2026-07-03 03:07] ──────────────────────────────────────────────────────────────
+[2026-07-03 03:07] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 03:07]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 03:07]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 03:07]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 03:07]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 03:07]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 03:07]   Total: 2 erros, 3 avisos
+[2026-07-03 03:07] ──────────────────────────────────────────────────────────────
+[2026-07-03 04:39] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 04:39]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 04:39]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 04:39]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 04:39]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 04:39]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 04:39]   Total: 2 erros, 3 avisos
+[2026-07-03 04:39] ──────────────────────────────────────────────────────────────
+[2026-07-03 04:39] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 04:39]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 04:39]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 04:39]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 04:39]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 04:39]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 04:39]   Total: 2 erros, 3 avisos
+[2026-07-03 04:39] ──────────────────────────────────────────────────────────────
+[2026-07-03 05:54] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 05:54]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 05:54]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 05:54]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 05:54]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 05:54]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 05:54]   Total: 2 erros, 3 avisos
+[2026-07-03 05:54] ──────────────────────────────────────────────────────────────
+[2026-07-03 05:54] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 05:54]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 05:54]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 05:54]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 05:54]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 05:54]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 05:54]   Total: 2 erros, 3 avisos
+[2026-07-03 05:54] ──────────────────────────────────────────────────────────────
+[2026-07-03 07:24] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 07:24]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 07:24]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 07:24]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 07:24]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 07:24]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 07:24]   Total: 2 erros, 3 avisos
+[2026-07-03 07:24] ──────────────────────────────────────────────────────────────
+[2026-07-03 07:24] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 07:24]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 07:24]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 07:24]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 07:24]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 07:24]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 07:24]   Total: 2 erros, 3 avisos
+[2026-07-03 07:24] ──────────────────────────────────────────────────────────────
+[2026-07-03 08:24] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 08:24]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 08:24]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 08:24]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 08:24]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 08:24]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 08:24]   Total: 2 erros, 3 avisos
+[2026-07-03 08:24] ──────────────────────────────────────────────────────────────
+[2026-07-03 08:24] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 08:24]   🔴 105 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 08:24]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 08:24]   📵 3141 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1115, 1116, 1117, 1121, 1122, 1125]
+[2026-07-03 08:24]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 08:24]   ⚠️ 2272 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 08:24]   Total: 2 erros, 3 avisos
+[2026-07-03 08:24] ──────────────────────────────────────────────────────────────
+[2026-07-03 09:52] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 09:52]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 09:52]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 09:52]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 09:52]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 09:52]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 09:52]   Total: 2 erros, 3 avisos
+[2026-07-03 09:52] ──────────────────────────────────────────────────────────────
+[2026-07-03 09:52] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 09:52]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 09:52]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 09:52]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 09:52]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 09:52]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 09:52]   Total: 2 erros, 3 avisos
+[2026-07-03 09:52] ──────────────────────────────────────────────────────────────
+[2026-07-03 10:52] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 10:52]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 10:52]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 10:52]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 10:52]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 10:52]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 10:52]   Total: 2 erros, 3 avisos
+[2026-07-03 10:52] ──────────────────────────────────────────────────────────────
+[2026-07-03 10:52] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 10:52]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 10:52]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 10:52]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 10:52]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 10:52]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 10:52]   Total: 2 erros, 3 avisos
+[2026-07-03 10:52] ──────────────────────────────────────────────────────────────
+[2026-07-03 11:52] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 11:52]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 11:52]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 11:52]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 11:52]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 11:52]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 11:52]   Total: 2 erros, 3 avisos
+[2026-07-03 11:52] ──────────────────────────────────────────────────────────────
+[2026-07-03 11:52] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 11:52]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 11:52]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 11:52]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 11:52]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 11:52]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 11:52]   Total: 2 erros, 3 avisos
+[2026-07-03 11:52] ──────────────────────────────────────────────────────────────
+[2026-07-03 13:15] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 13:15]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 13:15]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 13:15]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 13:15]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 13:15]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 13:15]   Total: 2 erros, 3 avisos
+[2026-07-03 13:15] ──────────────────────────────────────────────────────────────
+[2026-07-03 13:15] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 13:15]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 13:15]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 13:15]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 13:15]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 13:15]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 13:15]   Total: 2 erros, 3 avisos
+[2026-07-03 13:15] ──────────────────────────────────────────────────────────────
+[2026-07-03 14:41] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 14:41]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 14:41]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 14:41]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 14:41]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 14:41]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 14:41]   Total: 2 erros, 3 avisos
+[2026-07-03 14:41] ──────────────────────────────────────────────────────────────
+[2026-07-03 14:41] ── Relatório verificador ──────────────────────────────────────
+[2026-07-03 14:41]   🔴 109 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-03 14:41]   🔴 1 demandas duplicadas por corretor+edificio: João Brenner / Vision → ids=[5,6]
+[2026-07-03 14:41]   📵 3260 imóveis ativos sem contato: ids=[1053, 1109, 1111, 1113, 1116, 1117, 1119, 1125, 1126, 1130]
+[2026-07-03 14:41]   📵 11 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49]
+[2026-07-03 14:41]   ⚠️ 2239 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-03 14:41]   Total: 2 erros, 3 avisos
+[2026-07-03 14:41] ──────────────────────────────────────────────────────────────

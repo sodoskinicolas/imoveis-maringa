@@ -159,6 +159,94 @@ function podeSerImovel(texto, temImagem) {
   return PALAVRAS_IMOVEL.test(texto);
 }
 
+// ─── Processamento de UMA mensagem (compartilhado: tempo real + append + histórico) ──
+// Extraído para função própria para que mensagens vindas de reconexão (type 'append')
+// e de sincronização de histórico (messaging-history.set) sigam exatamente o mesmo
+// caminho das mensagens ao vivo — nada é descartado só por não ser 'notify'.
+async function processarMensagem(sock, msg) {
+  try {
+    const gruposMonitorados = getConfig().grupos || []; // [] = todos
+
+    if (!msg.key?.remoteJid || !isJidGroup(msg.key.remoteJid)) return;
+    if (!msg.message) return;
+    if (msg.key.fromMe) return;
+
+    const jid = msg.key.remoteJid;
+
+    if (!grupoCache[jid]) {
+      try { grupoCache[jid] = (await sock.groupMetadata(jid)).subject; }
+      catch (e) { grupoCache[jid] = jid; }
+    }
+    const nomeGrupo = grupoCache[jid];
+
+    if (GRUPOS_BLOQUEADOS.test(nomeGrupo)) return;
+
+    if (gruposMonitorados.length > 0) {
+      const monitorado = gruposMonitorados.some(g =>
+        nomeGrupo.toLowerCase().includes(g.toLowerCase()));
+      if (!monitorado) return;
+    }
+
+    const m = msg.message;
+    const texto = m.conversation
+      || m.extendedTextMessage?.text
+      || m.imageMessage?.caption
+      || m.videoMessage?.caption
+      || m.documentMessage?.caption
+      || '';
+    const temImagem = !!(m.imageMessage || m.videoMessage);
+
+    if (!podeSerImovel(texto, temImagem)) return;
+
+    const participante = msg.key.participant || '';
+    const isLid = participante.endsWith('@lid');
+    const rawNum = participante.split('@')[0].replace(/\D/g, '');
+    let contato = (!isLid && rawNum.length >= 10 && rawNum.length <= 13) ? rawNum : '';
+    if (isLid && !contato) contato = await resolverLid(sock, jid, participante);
+    const autor = msg.pushName || (contato || 'Desconhecido');
+
+    let imagemPath = null;
+    if (m.imageMessage) {
+      for (let tentativa = 1; tentativa <= 2; tentativa++) {
+        try {
+          const buffer  = await downloadMediaMessage(msg, 'buffer', {});
+          const imgFile = path.join(IMG_DIR, `${Date.now()}_${contato}.jpg`);
+          fs.writeFileSync(imgFile, buffer);
+          imagemPath = imgFile;
+          log(`🖼️  Imagem salva: ${path.basename(imgFile)}`);
+          break;
+        } catch (e) {
+          log(`⚠️  Erro ao baixar imagem (tentativa ${tentativa}/2): ${e.message}`);
+          if (tentativa < 2) await new Promise(r => setTimeout(r, 2000));
+        }
+      }
+    }
+
+    const ts = Number(msg.messageTimestamp);
+    const entrada = {
+      msgId:      msg.key.id,
+      grupo:      nomeGrupo,
+      autor,
+      contato,
+      _lidJid:    isLid ? participante : undefined,
+      texto:      texto.trim(),
+      temImagem,
+      imagemPath,
+      timestamp:  ts,
+      data:       new Date(ts * 1000).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
+      processado: false,
+    };
+
+    salvarNaFila(entrada);
+    log(`📩 [${nomeGrupo}] ${autor}: ${texto.substring(0, 80).replace(/\n/g,' ')}`);
+  } catch (e) {
+    log(`⚠️  Erro ao processar mensagem: ${e.message}`);
+  }
+}
+
+// ─── Estado de reconexão (evita sockets sobrepostos = causa de Bad MAC/440) ──
+let reconnectScheduled = false;
+
 // ─── Bot principal ───────────────────────────────────────────────────────────
 async function iniciarBot() {
   if (!fs.existsSync(AUTH_DIR)) fs.mkdirSync(AUTH_DIR, { recursive: true });
@@ -173,7 +261,11 @@ async function iniciarBot() {
     auth: state,
     logger: pino({ level: 'silent' }), // silencia logs internos do Baileys
     browser: ['Imoveis Maringá Bot', 'Chrome', '1.0'],
-    syncFullHistory: false,          // não baixar histórico antigo
+    // Backfill sob demanda: rode com WA_FULL_HISTORY=1 para o Baileys puxar o
+    // histórico disponível automaticamente (rápido e preciso — dispensa OCR).
+    // Padrão desligado: mesmo assim o WhatsApp empurra o histórico recente no
+    // connect, capturado pelo handler messaging-history.set abaixo.
+    syncFullHistory: process.env.WA_FULL_HISTORY === '1',
     markOnlineOnConnect: false,      // não aparecer como online
   });
 
@@ -215,14 +307,38 @@ async function iniciarBot() {
       const code = lastDisconnect?.error?.output?.statusCode;
       const reconectar = code !== DisconnectReason.loggedOut;
       log(`Conexão encerrada (código ${code}). Reconectar: ${reconectar}`);
+
+      // Encerrar ESTE socket por completo antes de reconectar. Sem isso, o
+      // socket antigo continua vivo e o novo abre por cima → o WhatsApp acusa
+      // "conflito" (código 440) e as chaves Signal corrompem ("Bad MAC").
+      try { sock.ev.removeAllListeners(); } catch (_) {}
+      try { sock.ws?.close(); } catch (_) {}
+      try { sock.end?.(undefined); } catch (_) {}
+
       if (reconectar) {
-        setTimeout(iniciarBot, 5000);
+        // Guard: garante UMA única reconexão agendada (evita sockets sobrepostos).
+        if (!reconnectScheduled) {
+          reconnectScheduled = true;
+          setTimeout(() => { reconnectScheduled = false; iniciarBot(); }, 5000);
+        }
       } else {
-        log('Sessão encerrada (logout). Delete a pasta auth/ e escaneie o QR novamente.');
+        log('Sessão encerrada (logout real). Necessário novo QR — rode corrigir_baileys.sh.');
         process.exit(1);
       }
     } else if (connection === 'open') {
       log('✅ Conectado ao WhatsApp!');
+    }
+  });
+
+  // ── Sincronização de histórico ─────────────────────────────────────────────
+  // Dispara no connect (histórico recente que o WhatsApp empurra) e durante
+  // backfill sob demanda (WA_FULL_HISTORY=1). Passa cada mensagem pelo MESMO
+  // processamento das mensagens ao vivo — é o caminho rápido p/ capturar antigas.
+  sock.ev.on('messaging-history.set', async ({ messages, isLatest }) => {
+    if (!messages || !messages.length) return;
+    log(`📜 History sync: ${messages.length} mensagens recebidas (isLatest=${isLatest})`);
+    for (const msg of messages) {
+      await processarMensagem(sock, msg);
     }
   });
 
@@ -234,103 +350,12 @@ async function iniciarBot() {
   });
 
   // ── Mensagens recebidas ────────────────────────────────────────────────────
+  // 'notify' = ao vivo; 'append' = reentregues pelo WhatsApp após reconexão.
+  // Antes o código descartava 'append', perdendo mensagens de quedas curtas.
   sock.ev.on('messages.upsert', async ({ messages, type }) => {
-    if (type !== 'notify') return;
-
-    const config = getConfig();
-    const gruposMonitorados = config.grupos || []; // [] = todos
-
+    if (type !== 'notify' && type !== 'append') return;
     for (const msg of messages) {
-      // Só grupos
-      if (!msg.key?.remoteJid || !isJidGroup(msg.key.remoteJid)) continue;
-      if (!msg.message) continue;
-      if (msg.key.fromMe) continue; // ignorar mensagens próprias
-
-      const jid = msg.key.remoteJid;
-
-      // Nome do grupo (cache)
-      if (!grupoCache[jid]) {
-        try {
-          const meta = await sock.groupMetadata(jid);
-          grupoCache[jid] = meta.subject;
-        } catch (e) {
-          grupoCache[jid] = jid;
-        }
-      }
-      const nomeGrupo = grupoCache[jid];
-
-      // Ignorar grupos bloqueados (moradores, família, etc.)
-      if (GRUPOS_BLOQUEADOS.test(nomeGrupo)) continue;
-
-      // Filtrar por grupos monitorados
-      if (gruposMonitorados.length > 0) {
-        const monitorado = gruposMonitorados.some(g =>
-          nomeGrupo.toLowerCase().includes(g.toLowerCase())
-        );
-        if (!monitorado) continue;
-      }
-
-      // Extrair conteúdo
-      const m = msg.message;
-      const texto = m.conversation
-        || m.extendedTextMessage?.text
-        || m.imageMessage?.caption
-        || m.videoMessage?.caption
-        || m.documentMessage?.caption
-        || '';
-
-      const temImagem = !!(m.imageMessage || m.videoMessage);
-
-      // Filtro: só salvar se parecer imóvel
-      if (!podeSerImovel(texto, temImagem)) continue;
-
-      // Remetente — resolver LIDs (@lid) para número real
-      const participante = msg.key.participant || '';
-      const isLid = participante.endsWith('@lid');
-      const rawNum = participante.split('@')[0].replace(/\D/g, '');
-      let contato = (!isLid && rawNum.length >= 10 && rawNum.length <= 13) ? rawNum : '';
-      // Tentar resolver LID → número de telefone via metadados do grupo
-      if (isLid && !contato) {
-        contato = await resolverLid(sock, jid, participante);
-      }
-      const autor = msg.pushName || (contato || 'Desconhecido');
-
-      // Baixar imagem se houver (com 2 tentativas)
-      let imagemPath = null;
-      if (m.imageMessage) {
-        for (let tentativa = 1; tentativa <= 2; tentativa++) {
-          try {
-            const buffer  = await downloadMediaMessage(msg, 'buffer', {});
-            const imgFile = path.join(IMG_DIR, `${Date.now()}_${contato}.jpg`);
-            fs.writeFileSync(imgFile, buffer);
-            imagemPath = imgFile;
-            log(`🖼️  Imagem salva: ${path.basename(imgFile)}`);
-            break;
-          } catch (e) {
-            log(`⚠️  Erro ao baixar imagem (tentativa ${tentativa}/2): ${e.message}`);
-            if (tentativa < 2) await new Promise(r => setTimeout(r, 2000));
-          }
-        }
-      }
-
-      const entrada = {
-        msgId:      msg.key.id,          // ← ID único da mensagem (evita duplicatas)
-        grupo:      nomeGrupo,
-        autor,
-        contato,
-        // Guardar LID original para resolução posterior via raspar_contatos.js
-        _lidJid:    isLid ? participante : undefined,
-        texto:      texto.trim(),
-        temImagem,
-        imagemPath,
-        timestamp:  Number(msg.messageTimestamp),
-        data:       new Date(Number(msg.messageTimestamp) * 1000)
-                      .toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }),
-        processado: false,
-      };
-
-      salvarNaFila(entrada);
-      log(`📩 [${nomeGrupo}] ${autor}: ${texto.substring(0, 80).replace(/\n/g,' ')}`);
+      await processarMensagem(sock, msg);
     }
   });
 }

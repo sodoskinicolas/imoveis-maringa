@@ -1203,6 +1203,33 @@ def _nomes_condos_por_lower():
             _cache_nomes_condos_por_lower = {}
     return _cache_nomes_condos_por_lower
 
+
+_cache_condos_substring = None
+
+def _condos_para_substring():
+    """
+    Lista (cacheada por processo) de (nome_lower, nome_oficial) dos condomínios
+    elegíveis para busca por substring no texto — já filtrando nomes curtos e
+    nomes que colidem com cidade/bairro. Evita recarregar o banco e refazer
+    strip()/lower() a cada chamada de extrair_edificio (gargalo O(n²)).
+    """
+    global _cache_condos_substring
+    if _cache_condos_substring is None:
+        pares = []
+        try:
+            with db.db_conn() as conn:
+                nomes = db.listar_condominios_nomes(conn)
+            for n in nomes:
+                n = str(n or '').strip()
+                nl = n.lower()
+                if not n or len(n) <= 5 or nl in _NAO_BAIRRO:
+                    continue
+                pares.append((nl, n))
+        except Exception:
+            pares = []
+        _cache_condos_substring = pares
+    return _cache_condos_substring
+
 def _validar_candidato_edificio(candidato):
     """
     Decide se um candidato extraído por regex é mesmo nome de prédio, e
@@ -1332,14 +1359,8 @@ def extrair_edificio(texto):
     #    chamado literalmente "MARINGÁ" no import do GeoMaringá — sem esse
     #    filtro, toda mensagem que menciona a cidade "casava" com ele).
     try:
-        with db.db_conn() as conn:
-            nomes_condos = db.listar_condominios_nomes(conn)
         tl = texto.lower()
-        for n in nomes_condos:
-            n = str(n or '').strip()
-            nl = n.lower()
-            if not n or len(n) <= 5 or nl in _NAO_BAIRRO:
-                continue
+        for nl, n in _condos_para_substring():
             if nl in tl:
                 return n
     except Exception:

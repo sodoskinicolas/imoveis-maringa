@@ -138,7 +138,12 @@ def ler_planilha():
                 "nome":            nome,
                 "bairro":          bairro_final,
                 "area":            area,
-                "quartos":         toi(r.get("Quartos")),
+                # A planilha é exportada do site Sub100 da JJ, onde "Quartos"
+                # EXCLUI as suítes (ficha real ref 43820000173: planilha
+                # q=2/s=1, site "3 dormitórios sendo 1 Suíte + 2 Quartos").
+                # Total = Quartos + Suítes (verificado em 2026-07-02).
+                "quartos":         ((toi(r.get("Quartos")) or 0)
+                                    + (toi(r.get("Suítes")) or 0)) or None,
                 "suites":          toi(r.get("Suítes")),
                 "vagas":           toi(r.get("Vagas")),
                 "preco":           preco_num,

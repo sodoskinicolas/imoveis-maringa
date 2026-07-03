@@ -304,12 +304,40 @@ def parse_sub100_block(html_block, base_domain):
 
     tipo = tipo or "Imóvel"
 
-    # ── Demais campos ─────────────────────────────────────────────────────────
+    # ── Dormitórios/suítes ────────────────────────────────────────────────────
+    # Os tenants Sub100 mostram dormitórios no card como "S + Q" — SUÍTES
+    # primeiro, quartos comuns depois — no markup:
+    #   <span class="iconColor icon-dormitorios ..."></span> <span>1 + 2</span>
+    # e no título/meta como "1 suíte + 2 quartos". Número único = só quartos
+    # comuns, sem suíte. Verificado nas fichas reais em 2026-07-02 (ex. Haraki
+    # ref 14420001641: card "1 + 2", ficha "Dormitórios 1 suíte + 2 quartos" =
+    # 3 no total). Antes, o regex genérico pegava só um dos números ("2
+    # quartos" do título) e a suíte era perdida — os 5 tenants gravavam
+    # suites=None e quartos subcontado.
+    quartos = suites = None
+    icon_dorm_m = re.search(
+        r'icon-dormitorios[^>]*>\s*</span>\s*<span[^>]*>\s*(\d+)(?:\s*\+\s*(\d+))?', html_block)
+    sq_texto_m = re.search(r'(\d+)\s*su[ií]tes?\s*\+\s*(\d+)\s*quartos?', html_block, re.I)
+    if icon_dorm_m and icon_dorm_m.group(2):
+        suites  = parse_int(icon_dorm_m.group(1))
+        quartos = parse_int(int(icon_dorm_m.group(1)) + int(icon_dorm_m.group(2)))
+    elif sq_texto_m:
+        suites  = parse_int(sq_texto_m.group(1))
+        quartos = parse_int(int(sq_texto_m.group(1)) + int(sq_texto_m.group(2)))
+    elif icon_dorm_m:
+        quartos = parse_int(icon_dorm_m.group(1))
+    else:
+        qtos_m  = re.search(r'(\d+)\s*(?:quarto|dorm)', html_block, re.I)
+        quartos = parse_int(qtos_m.group(1)) if qtos_m else None
+
+    # ── Demais campos (com fallback nos ícones do card, que não têm rótulo
+    #    em texto — banheiros/vagas ficavam None nos 5 tenants) ───────────────
     area_m  = re.search(r'([\d.,]+)\s*m[²2]', html_block)
     preco_m = re.search(r'R\$\s*[\d.,]+', html_block.replace("\xa0", " "))
-    qtos_m  = re.search(r'(\d+)\s*(?:quarto|dorm)', html_block, re.I)
-    ban_m   = re.search(r'(\d+)\s*(?:banheiro|ban\.)', html_block, re.I)
-    vaga_m  = re.search(r'(\d+)\s*(?:vaga|garagem)', html_block, re.I)
+    ban_m   = (re.search(r'(\d+)\s*(?:banheiro|ban\.)', html_block, re.I)
+               or re.search(r'icon-banheiros[^>]*>\s*</span>\s*<span[^>]*>\s*(\d+)', html_block))
+    vaga_m  = (re.search(r'(\d+)\s*(?:vaga|garagem)', html_block, re.I)
+               or re.search(r'icon-garagem[^>]*>\s*</span>\s*<span[^>]*>\s*(\d+)', html_block))
     bairro_m = re.search(
         r'(?:localiza[çc][aã]o|bairro)[^<]*?([A-ZÀ-Ú][a-zà-ú\s]+(?:Zona\s+\d+)?)',
         html_block, re.I
@@ -322,11 +350,9 @@ def parse_sub100_block(html_block, base_domain):
         "tipo":      tipo,
         "bairro":    bairro,
         "area":      parse_area(fix_enc(area_m.group(0))) if area_m else None,
-        "quartos":   parse_int(qtos_m.group(1))  if qtos_m  else None,
-        # Sub100 só expõe contagem de banheiro no card, não suíte — antes isso
-        # estava sendo gravado por engano na coluna "suites".
+        "quartos":   quartos,
         "banheiros": parse_int(ban_m.group(1))   if ban_m   else None,
-        "suites":    None,
+        "suites":    suites,
         "vagas":     parse_int(vaga_m.group(1))  if vaga_m  else None,
         "preco":     parse_preco(preco_m.group(0)) if preco_m else None,
         "obs":       limpar_texto_html(html_block),
@@ -553,7 +579,13 @@ def parse_lelo_card(html_block, href):
         "bairro": bairro,
         "cidade": cidade,
         "area": area,
-        "quartos": parse_int(qtos_m.group(1)) if qtos_m else None,
+        # Lélo (CasaSoft) usa semântica SUBSET: "3 Dormitórios (1 Suíte)" = 3
+        # no total. Único ajuste: imóvel só de suítes mostra apenas "3 Suítes"
+        # (sem a palavra Dormitórios) e quartos ficava None — nesses casos o
+        # total é o próprio número de suítes (conferido com o slug da URL,
+        # que traz o total: ".../apartamento-3-quartos-...").
+        "quartos": (parse_int(qtos_m.group(1)) if qtos_m
+                    else (parse_int(suite_m.group(1)) if suite_m else None)),
         "suites": parse_int(suite_m.group(1)) if suite_m else None,
         "banheiros": parse_int(banh_m.group(1)) if (banh_m and banh_m.lastindex) else None,
         "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
@@ -739,7 +771,15 @@ def parse_patrimonio_card(html_block, href):
         "bairro": bairro,
         "cidade": cidade,
         "area": parse_area(area_m.group(0)) if area_m else None,
-        "quartos": parse_int(quartos_m.group(1)) if quartos_m else None,
+        # Kurole (Patrimônio) é ADITIVO: o card mostra "3 Dormitórios" (comuns)
+        # e "1 Suíte" separados, e o título do mesmo imóvel diz "1 Suíte + 3
+        # Quartos" — total = Dorm + Suítes (verificado no site em 2026-07-02,
+        # ex. Residencial Granada; há cards com 4 Suítes > 3 Dormitórios, o
+        # que só faz sentido na semântica aditiva).
+        "quartos": parse_int(
+            (int(quartos_m.group(1)) if quartos_m else 0)
+            + (int(suites_m.group(1)) if suites_m else 0)
+        ) if (quartos_m or suites_m) else None,
         "suites": parse_int(suites_m.group(1)) if suites_m else None,
         "banheiros": parse_int(banho_m.group(1)) if banho_m else None,
         "vagas": parse_int(vaga_m.group(1)) if vaga_m else None,
@@ -920,6 +960,20 @@ def parse_portal_sub100_item(it):
             or _num_br(it.get("total_area"))
             or _num_br(it.get("land_area")))
 
+    # Na API do portal, "dorms" são os quartos COMUNS (excluindo suítes) —
+    # verificado em 2026-07-02 comparando 23 anúncios reais com suas
+    # descrições (ex: dorms=2 + suites=1 → texto "3 Quartos sendo uma suíte";
+    # dorms=1 + suites=1 → "2 Dormitórios (1 Suíte, 1 Quarto)"). Total de
+    # quartos = dorms + suites. Sem essa soma, todo imóvel com suíte ficava
+    # com quartos subcontado e validar_campos_numericos descartava as suítes
+    # nos casos suites > dorms.
+    def _int0(v):
+        try:
+            return max(0, int(float(v)))
+        except (TypeError, ValueError):
+            return 0
+    quartos_total = _int0(it.get("dorms")) + _int0(it.get("suites"))
+
     preco_f = _num_br(it.get("total"))
     tipo    = infer_tipo(subtipo)
     if tipo == "Imóvel" and subtipo:
@@ -940,7 +994,7 @@ def parse_portal_sub100_item(it):
         "edificio":  (condo.get("name") or "").strip(),
         "corretor":  anunc.strip(),
         "area":      area,
-        "quartos":   parse_int(it.get("dorms")),
+        "quartos":   parse_int(quartos_total),
         "suites":    parse_int(it.get("suites")),
         "banheiros": parse_int(it.get("bwc")),
         "vagas":     parse_int(it.get("parking_spaces")),

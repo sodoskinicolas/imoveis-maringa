@@ -16,7 +16,9 @@ os.chdir(TMP)
 import raspar_imoveis as ri
 
 FALHAS = []
+TOTAL = [0]
 def check(nome, cond, extra=""):
+    TOTAL[0] += 1
     print(("  OK  " if cond else "  FALHOU ") + nome + (f"  [{extra}]" if extra and not cond else ""))
     if not cond:
         FALHAS.append(nome)
@@ -99,7 +101,9 @@ check("endereço rua+nº", it["endereco"] == "Rua Tietê 584")
 check("edifício do condo", it["edificio"] == "Torre de Miami")
 check("corretor = anunciante", it["corretor"] == "Casa Dom Imóveis")
 check("área privativa", it["area"] == 48.0)
-check("quartos", it["quartos"] == 2)
+# Na API do portal, dorms EXCLUI suítes (verificado em 23 anúncios reais em
+# 2026-07-02): total de quartos = dorms + suites. Este fixture: dorms=2 + suites=1 = 3.
+check("quartos = dorms + suites", it["quartos"] == 3, str(it["quartos"]))
 check("suítes (API dá direto!)", it["suites"] == 1)
 check("banheiros", it["banheiros"] == 1)
 check("vagas", it["vagas"] == 1)
@@ -119,6 +123,95 @@ check("terreno: tipo", it3["tipo"] == "Terreno")
 check("terreno: área = total/land", it3["area"] == 400.0)
 
 check("sem reference → None", ri.parse_portal_sub100_item({"address": {}}) is None)
+
+# Casos reais de dorms/suites investigados no portal em 2026-07-02 (descrição
+# do anúncio vs campos da API) — a regra quartos = dorms + suites deve bater
+# com o texto de cada anúncio:
+_CASOS_QUARTOS = [
+    # (ref real,       dorms, suites, total no texto do anúncio)
+    ("2020005967",     1,     2,      3),   # "três quartos, sendo duas suítes"
+    ("21220000377",    1,     2,      3),   # "3 quartos ... 02 suítes + 01 quarto"
+    ("2020006245",     0,     2,      2),   # "dois dormitórios, ambos suítes"
+    ("55020000119",    0,     1,      1),   # "1 dormitório, sendo 1 suíte"
+    ("21220000412",    1,     1,      2),   # "2 Dormitórios (1 Suíte, 1 Quarto)"
+    ("420002040",      2,     1,      3),   # "3 Quartos sendo uma suíte"
+    ("64320000097",    2,     0,      2),   # Torre de Miami: "2 dormitórios", sem suíte
+]
+for ref, d, s, esperado in _CASOS_QUARTOS:
+    caso = dict(ITEM_SALA, reference=ref, dorms=d, suites=s, subtype_name="Apartamento")
+    r = ri.parse_portal_sub100_item(caso)
+    check(f"quartos real {ref}: {d}+{s} → {esperado}", r["quartos"] == esperado, str(r["quartos"]))
+    ok_suites = (r["suites"] or 0) <= (r["quartos"] or 0)
+    check(f"  suítes ≤ quartos ({ref})", ok_suites)
+
+# ── 2b. Semântica quartos/suítes das OUTRAS fontes (auditoria 2026-07-02) ────
+print("\n== quartos/suítes: tenants Sub100, Lélo, Patrimônio ==")
+
+# Tenant Sub100 — markup real capturado do card da Haraki (ref 14420001641,
+# ficha diz "Dormitórios 1 suíte + 2 quartos" = 3 no total):
+CARD_TENANT_SQ = ('<a href="/imovel/14420001641/venda/casa-em-maringa/zona-05">'
+    '<div class="row d-flex flex-nowrap align-items-center mt-4 mb-2 pt-2 me-3 fs-7">'
+    '<div class="col-auto d-flex justify-content-between align-items-center gap-2">'
+    '<span class="iconColor icon-dormitorios fs-4"></span> <span>1 + 2</span> </div>'
+    '<div class="col-auto"><span class="iconColor icon-banheiros fs-4"></span> <span>3</span></div>'
+    '<div class="col-auto"><span class="iconColor icon-garagem fs-4"></span> <span>2</span></div>'
+    '<div class="col-auto"><span class="iconColor icon-area_total fs-4"></span> '
+    '<span translate="no">205,21 m²</span></div></div> R$ 979.000,00')
+t = ri.parse_sub100_block(CARD_TENANT_SQ, "harakiimoveis.com.br")
+check("tenant '1 + 2' → quartos 3", t["quartos"] == 3, str(t["quartos"]))
+check("tenant '1 + 2' → suites 1", t["suites"] == 1, str(t["suites"]))
+check("tenant ícone banheiros → 3", t["banheiros"] == 3, str(t["banheiros"]))
+check("tenant ícone garagem → vagas 2", t["vagas"] == 2, str(t["vagas"]))
+
+# número único = só quartos comuns, sem suíte (Haraki ref 14420001806: card "3",
+# ficha "3 quartos"):
+CARD_TENANT_SIMPLES = CARD_TENANT_SQ.replace("1 + 2", "3").replace("14420001641", "14420001806")
+t2 = ri.parse_sub100_block(CARD_TENANT_SIMPLES, "harakiimoveis.com.br")
+check("tenant '3' → quartos 3, sem suíte", t2["quartos"] == 3 and t2["suites"] is None,
+      f"q={t2['quartos']} s={t2['suites']}")
+
+# texto "1 suíte + 2 quartos" (título/meta) como fallback sem o markup de ícone:
+CARD_TENANT_TEXTO = ('<a href="/imovel/43820000173/venda/casa-em-maringa/lot-madrid">x</a> '
+    'Casa à venda com 1 suíte + 2 quartos em Loteamento Madrid R$ 330.000,00')
+t3 = ri.parse_sub100_block(CARD_TENANT_TEXTO, "juniorjoda.com.br")
+check("tenant texto '1 suíte + 2 quartos' → 3/1", t3["quartos"] == 3 and t3["suites"] == 1,
+      f"q={t3['quartos']} s={t3['suites']}")
+
+# regressão: card antigo sem suíte nenhuma continua igual
+t4 = ri.parse_sub100_block('<a href="/imovel/8020000829/venda/sobrado-em-maringa/jardim-everest">x</a> '
+                           'R$ 500.000,00 3 quartos 120 m² 2 banheiros', "harakiimoveis.com.br")
+check("tenant regressão '3 quartos' texto", t4["quartos"] == 3 and t4["suites"] is None)
+
+# Patrimônio (Kurole) — ADITIVO: card real "3 Dormitórios"+"1 Suíte" = título
+# "1 Suíte + 3 Quartos" (Residencial Granada, 2026-07-02):
+CARD_KUROLE = ('<div class="imo-dad-compl"><div class="dorm-ico" title="3 Dormitórios">'
+    '<span></span><span>3</span><div>Dorm.</div></div>'
+    '<div class="suites-ico" title="1 Suíte"><span></span><span>1</span><div>Suite</div></div>'
+    '<div class="banh-ico" title="3 Banheiros"><span></span><span>3</span><div>Banho</div></div>'
+    '<div class="gar-ico" title="4 Garagens"><span></span><span>4</span><div>Garagens</div></div></div>'
+    ' 250,00 m² R$ 890.000,00 V')
+p = ri.parse_patrimonio_card(CARD_KUROLE, "https://www.patrimonioimoveisprontos.com.br/comprar/x/782")
+check("kurole 3 Dorm + 1 Suíte → quartos 4", p["quartos"] == 4, str(p["quartos"]))
+check("kurole suites 1", p["suites"] == 1, str(p["suites"]))
+p2 = ri.parse_patrimonio_card(CARD_KUROLE.replace('title="3 Dormitórios"', 'title="x"')
+                              .replace('<span>3</span><div>Dorm.</div>', ''),
+                              "https://www.patrimonioimoveisprontos.com.br/comprar/x/783")
+check("kurole só '1 Suíte' → quartos 1", p2["quartos"] == 1, str(p2["quartos"]))
+
+# Lélo — SUBSET: "3 Dormitórios (1 Suíte)" = 3 total (comportamento mantido);
+# caso só-suítes "3 Suítes" → quartos herda 3 (antes ficava None):
+if hasattr(ri, 'parse_lelo_card') or True:
+    fn = getattr(ri, 'parse_lelo_card', None) or getattr(ri, '_parse_lelo_card', None)
+    if fn:
+        l1 = fn('Apartamento 3 Dormitórios (1 Suíte) 2 vagas R$ 500.000',
+                'https://www.leloimoveis.com.br/imovel/apartamento-3-quartos-zona-08-maringa/79900/1')
+        check("lélo subset 3 Dorm (1 Suíte) → 3/1", l1["quartos"] == 3 and l1["suites"] == 1,
+              f"q={l1['quartos']} s={l1['suites']}")
+        l2 = fn('Apartamento 3 Suítes 2 vagas R$ 1.500.000',
+                'https://www.leloimoveis.com.br/imovel/apartamento-3-quartos-zona-08-maringa/79900/2')
+        check("lélo só-suítes '3 Suítes' → quartos 3", l2["quartos"] == 3, str(l2["quartos"]))
+    else:
+        print("  (parse da Lélo não exposto como função — pulado)")
 
 # ── 3. scrape_portal_sub100 com API mockada (2 páginas reais de estrutura) ───
 print("\n== scrape_portal_sub100 (rede mockada) ==")
@@ -218,5 +311,5 @@ check("parse_sub100_block (tenant) segue funcionando",
       ri.parse_sub100_block('<a href="/imovel/8020000829/venda/sobrado-em-maringa/jardim-everest">x</a> '
                             'R$ 500.000,00 3 quartos 120 m²', "harakiimoveis.com.br")["tipo"] == "Sobrado")
 
-print("\n" + ("TODOS OS %d TESTES PASSARAM" % 60 if not FALHAS else "FALHARAM: " + ", ".join(FALHAS)))
+print("\n" + ("TODOS OS %d TESTES PASSARAM" % TOTAL[0] if not FALHAS else "FALHARAM: " + ", ".join(FALHAS)))
 sys.exit(1 if FALHAS else 0)

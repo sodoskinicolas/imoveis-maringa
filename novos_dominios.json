@@ -10,5 +10,11 @@
     "descoberto_em": "2026-07-01",
     "analisado": true,
     "config_gerada": true
+  },
+  "shimizuimoveis.com.br": {
+    "url_exemplo": "https://www.shimizuimoveis.com.br/imoveis/casa-venda-3-dormitorios-10-vagas-136m2-maringa-vila-morangueira-CA0108",
+    "descoberto_em": "2026-07-04",
+    "analisado": true,
+    "config_gerada": false
   }
 }

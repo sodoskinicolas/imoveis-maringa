@@ -802,6 +802,13 @@ def pesquisar_condominio(nome, cidade="Maringá-PR"):
     Pesquisa dados completos de um condomínio via Claude Sonnet + web_search.
     Retorna dict com informações ou None se já pesquisado/erro.
     """
+    # Mesmo circuit breaker da busca de bairro: sem créditos na API, parar de
+    # tentar pelo resto da execução. Sem isso, a rodada real de 2026-07-03
+    # gastou 62min na validação só spamando 400 (milhares de edifícios novos
+    # do portal × ~1s de falha cada).
+    global _web_sem_creditos
+    if _web_sem_creditos:
+        return None
     api_key = _api_key()
     if not api_key:
         return None
@@ -868,7 +875,11 @@ def pesquisar_condominio(nome, cidade="Maringá-PR"):
             return info
 
     except Exception as e:
-        print(f"  ⚠️  pesquisar_condominio('{nome}'): {e}")
+        if 'credit balance is too low' in str(e):
+            _web_sem_creditos = True
+            print("  ⚠️  API sem créditos — pesquisa de condomínio/bairro DESLIGADA pelo resto da execução")
+        else:
+            print(f"  ⚠️  pesquisar_condominio('{nome}'): {e}")
 
     return None
 

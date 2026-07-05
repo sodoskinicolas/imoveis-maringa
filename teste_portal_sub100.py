@@ -296,6 +296,25 @@ check("histórico de preço tem 2 entradas", ph2 == 2, str(ph2))
 rem = con2.execute("SELECT COUNT(*) c FROM imoveis WHERE fonte='sub100.com.br' AND status='Removido'").fetchone()["c"]
 check("sala+terreno marcados Removido", rem == 2, str(rem))
 
+# ── 5b. Slug único: 2 imóveis do mesmo bairro (link termina igual) ───────────
+print("\n== slug único (colisão que derrubou a rodada de 2026-07-03) ==")
+import db as _db
+try:
+    with _db.db_conn() as c3:
+        for _ref in ("77720000001", "77720000002"):
+            _db.upsert_imovel_externo(c3, {
+                "ref_externa": _ref, "data_captura": "2026-07-03",
+                "grupo": "sub100.com.br", "tipo": "Apartamento",
+                "bairro": "Zona 07", "preco": 500000,
+                "link": f"https://sub100.com.br/imoveis/{_ref}/venda/apartamento-em-maringa-pr/zona-07",
+            }, "sub100.com.br")
+        n_slug = c3.execute("SELECT COUNT(*) FROM imoveis WHERE ref_externa IN "
+                            "('77720000001','77720000002')").fetchone()[0]
+    check("2 imóveis com link terminando igual → 2 inseridos (sem IntegrityError)",
+          n_slug == 2, str(n_slug))
+except Exception as e:
+    check("slug único sem IntegrityError", False, str(e)[:80])
+
 # ── 6. Regressão: fontes existentes intactas ─────────────────────────────────
 print("\n== regressão fontes existentes ==")
 antes = dict(con2.execute("SELECT fonte, COUNT(*) FROM imoveis WHERE fonte IS NOT NULL "

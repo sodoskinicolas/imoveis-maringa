@@ -283,7 +283,13 @@ def upsert_imovel_externo(conn, item, fonte):
     ).fetchone()
 
     if row is None:
-        sl = slug_from_obs(item.get("link") or "")
+        # Slug determinístico e único por (fonte, ref). Antes usava
+        # slug_from_obs(link) = "domínio/último-segmento-da-URL", mas o link
+        # do portal Sub100 termina no SLUG DO BAIRRO (ex: .../zona-07), que se
+        # repete entre imóveis — o UNIQUE de `slug` estourava
+        # (IntegrityError) e derrubava a rodada inteira no rollback
+        # (aconteceu em 2026-07-03 com os ~14 mil do portal).
+        sl = f"{fonte}/{ref}"
         cur = conn.execute("""
             INSERT INTO imoveis
                 (data_captura, grupo, corretor, contato, tipo, bairro, area,

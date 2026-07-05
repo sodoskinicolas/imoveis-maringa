@@ -1304,6 +1304,14 @@ def atualizar_db(novos_raw, dry_run=False):
             elif acao == "atualizado":
                 atualizados += 1
 
+            # Commit parcial: com ~16 mil itens numa transação única, qualquer
+            # erro no fim descartava a rodada INTEIRA no rollback (aconteceu
+            # 2x em 2026-07-02/03 — 40min de coleta perdidos cada vez). O
+            # upsert é idempotente, então commit a cada 1000 não corrompe nada
+            # e a próxima rodada completa o que faltar.
+            if (novos + atualizados + precos_mudaram) % 1000 == 0:
+                conn.commit()
+
         # Só marca como Removido dentro das fontes que de fato coletamos algo
         # nesta rodada — se um site falhou por completo (0 itens), não
         # queremos apagar o status de tudo que já estava lá por causa disso.

@@ -16919,3 +16919,375 @@ To https://github.com/sodoskinicolas/imoveis-maringa.git
    2c1271b..e3a3017  main -> main
 [2026-07-05 13:41:03] ✅ Push feito ao GitHub. Site será atualizado em instantes.
 [2026-07-05 13:41:03] === Ciclo concluído ===
+[2026-07-05 14:20:07] === Início do ciclo automático ===
+[2026-07-05 14:20:07] Processando 122 mensagens pendentes...
+📬 122 mensagens pendentes (total: 256)
+
+📦 71 pacotes agrupados (era 122 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 2 [Odair]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ2AFkEUm8NNudeg6kZ'}
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ2rnYSTP4tDg7xM6zy'}
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ37SMQvwN2DKCzyeRQ'}
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3BFJWRhejDmz6D2Dm'}
+  📍 Bairro (cache): 'Cond. 135 MTS Construção' → 'Zona 01 Centro'
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  📍 Bairro (cache): 'Cond. 135 MTS Construção' → 'Zona 01 Centro'
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): 'EDIFÍCIO VITÓRIA' → 'Jardim Vitoria'
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3EndCqHJX9kXstjkH'}
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  ⚠️  Claude API (link): Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3Q2FeRqjciTcYQLef'}
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3S5XMDHSvHmXD4Bsw'}
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3V8q8a4RUgotmLcxb'}
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3bYJDRvZPcXgUc1tm'}
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+  📍 Bairro corrigido: 'Jardim Universitário (Zona 07)' → 'Jardim Universitário' (90%)
+  🏗️  Bairro do condo 'Signature': Zona 01
+  📍 Bairro (cache): '' → 'Zona 07'
+  ⚠️  area=5.2 fora da faixa plausível pra Galpão (10-500000) — descartado
+  🔍 Claude analisa 1 imagem de 1 [João Storto]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3iN4RcCrFgUhRsYLf'}
+  📍 Bairro (cache): '' → 'Zona 03'
+  📍 Bairro (cache): '' → 'Zona 03'
+  📍 Bairro (cache): '' → 'Jardim São Silvestre'
+  📍 Bairro (cache): '' → 'Parque da Gávea'
+  📍 Bairro (cache): '' → 'Zona 08'
+  🔍 Claude analisa 1 imagem de 1 [Debora Santos]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ3umfKtzegREbPNZf5'}
+  🔍 Claude analisa 1 imagem de 4 [Felipe Souza Cruz]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ41e8NQ6xR5pYiwhFy'}
+  🔍 Claude analisa 1 imagem de 4 [Felipe Souza Cruz]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ45hTbv6vyFEQPoxbd'}
+  🔗 Link encontrado na mensagem — buscando dados em https://www.shimizuimoveis.com.br/imoveis/casa-venda-3-dormitorios-10-vagas-136m2-maringa-vila-morangueira-CA0108
+  ⚠️  Claude API (link): Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjJ4AUSoTVLU8quPuCmQ'}
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 56 duplicatas ignoradas
+   ↳ 15 pacotes sem dados de imóvel
+[2026-07-05 14:20:39] Processamento concluído.
+[2026-07-05 14:20:39] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 4 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #51] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #52] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #53] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #55] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 15 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+
+  ✅ imoveis: 0 bairros corrigidos
+  ✅ bairros: 0 corrigido(s)
+
+✅ 4 correção(ões) automática(s) · 15 alerta(s) para revisão manual
+[2026-07-05 14:20:51] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1840: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (3608 imóveis [57 JJ · 1374 VR] · 35 demandas · 0 arquivadas)
+[main 47604ba] 🤖 Auto: 2026-07-05 14:20 — mensagens + sites descobertos
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   76f3d2a..47604ba  main -> main
+[2026-07-05 14:20:57] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-05 14:20:57] === Ciclo concluído ===
+[2026-07-05 14:50:57] === Início do ciclo automático ===
+[2026-07-05 14:50:57] Processando 122 mensagens pendentes...
+📬 122 mensagens pendentes (total: 256)
+
+📦 71 pacotes agrupados (era 122 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 2 [Odair]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLNRKQ1izHMLDCj2mho'}
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLNrMJ7yXFMdYFTbEHz'}
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLNv5Xbinb6BFtFU1ea'}
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLP1ZRy9QDJ4WU2yJ8j'}
+  📍 Bairro (cache): 'Cond. 135 MTS Construção' → 'Zona 01 Centro'
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  📍 Bairro (cache): 'Cond. 135 MTS Construção' → 'Zona 01 Centro'
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): 'EDIFÍCIO VITÓRIA' → 'Jardim Vitoria'
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLP6EiZWbJcZ82dcHBM'}
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  ⚠️  Claude API (link): Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPH84NNUKWkRFysW9s'}
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPKatr41VUbgfKB657'}
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPPdyCgweEjtATTgCh'}
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPekZngsPb1w5YZdnX'}
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+  📍 Bairro corrigido: 'Jardim Universitário (Zona 07)' → 'Jardim Universitário' (90%)
+  🏗️  Bairro do condo 'Signature': Zona 01
+  📍 Bairro (cache): '' → 'Zona 07'
+  ⚠️  area=5.2 fora da faixa plausível pra Galpão (10-500000) — descartado
+  🔍 Claude analisa 1 imagem de 1 [João Storto]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPj146449xaJAEF8VJ'}
+  📍 Bairro (cache): '' → 'Zona 03'
+  📍 Bairro (cache): '' → 'Zona 03'
+  📍 Bairro (cache): '' → 'Jardim São Silvestre'
+  📍 Bairro (cache): '' → 'Parque da Gávea'
+  📍 Bairro (cache): '' → 'Zona 08'
+  🔍 Claude analisa 1 imagem de 1 [Debora Santos]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPnzuZH8YHtQC4nQ6p'}
+  🔍 Claude analisa 1 imagem de 4 [Felipe Souza Cruz]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPrheoSD6u2sQpVQ5H'}
+  🔍 Claude analisa 1 imagem de 4 [Felipe Souza Cruz]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPux7XpYzWp86Su5HT'}
+  🔗 Link encontrado na mensagem — buscando dados em https://www.shimizuimoveis.com.br/imoveis/casa-venda-3-dormitorios-10-vagas-136m2-maringa-vila-morangueira-CA0108
+  ⚠️  Claude API (link): Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcjLPxqzgLMWrthe1F3nu'}
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 56 duplicatas ignoradas
+   ↳ 15 pacotes sem dados de imóvel
+[2026-07-05 14:51:21] Processamento concluído.
+[2026-07-05 14:51:21] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 4 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #51] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #52] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #53] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #55] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 15 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+
+  ✅ imoveis: 0 bairros corrigidos
+  ✅ bairros: 0 corrigido(s)
+
+✅ 4 correção(ões) automática(s) · 15 alerta(s) para revisão manual
+[2026-07-05 14:51:33] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1840: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (3608 imóveis [57 JJ · 1374 VR] · 35 demandas · 0 arquivadas)
+[main 6e0a679] 🤖 Auto: 2026-07-05 14:51 — mensagens + sites descobertos
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   47604ba..6e0a679  main -> main
+[2026-07-05 14:51:37] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-05 14:51:37] === Ciclo concluído ===
+[2026-07-06 05:51:39] === Início do ciclo automático ===
+[2026-07-06 05:51:41] Processando 122 mensagens pendentes...
+📬 122 mensagens pendentes (total: 256)
+
+📦 71 pacotes agrupados (era 122 msgs individuais)
+
+  🔍 Claude analisa 1 imagem de 2 [Odair]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckX4Co7VY7T17Y9G6KEa'}
+  🔍 Claude analisa 1 imagem de 1 [João Malvezzi]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckX4EmBa29bHBYucx1wA'}
+  🔗 Link encontrado na mensagem — buscando dados em https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct
+  ⚠️  Link https://pr.olx.com.br/regiao-de-maringa/imoveis/apartamento-3-quartos-zona-8-maringa-1077534503?utm_medium=shared_link&utm_source=direct → status 403 / text/html; charset=UTF-8
+  🔍 Claude analisa 1 imagem de 1 [Afonso Leite]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckX4LrJVw4qh8gceimYR'}
+  🏗️  Bairro do condo 'NEST635': Zona 08
+  🏗️  Quartos do condo 'NEST635': 3
+  🏗️  Vagas do condo 'NEST635': 2
+  🔍 Claude analisa 1 imagem de 1 [Bianca Correa]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckX4QtPH7yFyXKGykfAw'}
+  📍 Bairro (cache): 'Cond. 135 MTS Construção' → 'Zona 01 Centro'
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  📍 Bairro (cache): 'Cond. 135 MTS Construção' → 'Zona 01 Centro'
+  ⚠️  suítes (2) > quartos (1) — suítes descartadas
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): '' → 'Zona 01 Centro'
+  📍 Bairro (cache): 'EDIFÍCIO VITÓRIA' → 'Jardim Vitoria'
+  🔍 Claude analisa 1 imagem de 1 [Augusto De Paula]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckZinPzJkcQwbLXpUh4c'}
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  📍 Bairro (cache): 'Liberdade' → 'Parque Industrial I'
+  🔗 Link encontrado na mensagem — buscando dados em https://www.sympla.com.br/evento/minha-venda-minha-vida/3350915
+  ⚠️  Claude API (link): Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaE7wJ7KZzJhpjSwi9a'}
+  🔍 Claude analisa 1 imagem de 3 [Patricia Souza]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaEAT6zKXktsWH2ATnx'}
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaECZML1yN86Tv17Zvo'}
+  🔍 Claude analisa 1 imagem de 4 [Rafael Panini - Corretor de Imóveis]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaEEonj8mhGKFbsMzor'}
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'Maison Constantine': Zona Armazém (Zona 07)
+  🏗️  Quartos do condo 'Maison Constantine': 3
+  📍 Bairro corrigido: 'Zona Armazém (Zona 07)' → 'Zona 07' (90%)
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'SKY': Zona 03
+  🏗️  Área do condo 'SKY': 163m²
+  🏗️  Quartos do condo 'SKY': 3
+  🏗️  Bairro do condo 'CAMPO BELO': Jardim Universitário (Zona 07)
+  📍 Bairro corrigido: 'Jardim Universitário (Zona 07)' → 'Jardim Universitário' (90%)
+  🏗️  Bairro do condo 'Signature': Zona 01
+  📍 Bairro (cache): '' → 'Zona 07'
+  ⚠️  area=5.2 fora da faixa plausível pra Galpão (10-500000) — descartado
+  🔍 Claude analisa 1 imagem de 1 [João Storto]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaEHzXvAySdbMUt96KY'}
+  📍 Bairro (cache): '' → 'Zona 03'
+  📍 Bairro (cache): '' → 'Zona 03'
+  📍 Bairro (cache): '' → 'Jardim São Silvestre'
+  📍 Bairro (cache): '' → 'Parque da Gávea'
+  📍 Bairro (cache): '' → 'Zona 08'
+  🔍 Claude analisa 1 imagem de 1 [Debora Santos]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaEKucwC2532ViBgTwQ'}
+  🔍 Claude analisa 1 imagem de 4 [Felipe Souza Cruz]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaEMz8orfpuQKHQe6o6'}
+  🔍 Claude analisa 1 imagem de 4 [Felipe Souza Cruz]
+  ⚠️  Claude API: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaEPdrWY7N78Vcfa3km'}
+  🔗 Link encontrado na mensagem — buscando dados em https://www.shimizuimoveis.com.br/imoveis/casa-venda-3-dormitorios-10-vagas-136m2-maringa-vila-morangueira-CA0108
+  ⚠️  Claude API (link): Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CckaETBBYZPBMf8E6m56v'}
+
+✅ 0 imóveis inseridos → SQLite imoveis
+🔍 0 demandas inseridas → SQLite demandas
+   ↳ 56 duplicatas ignoradas
+   ↳ 15 pacotes sem dados de imóvel
+[2026-07-06 06:33:23] Processamento concluído.
+[2026-07-06 06:33:23] Verificando qualidade dos dados...
+🔍 Quality gate — verificando dados antes de publicar...
+
+── Imóveis ──────────────────────────────────────────────────────
+  ✅ imoveis: 4 corrigido(s)
+
+── Demandas ─────────────────────────────────────────────────────
+  📵 [demandas #1] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #2] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #3] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #5] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #6] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #29] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #38] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #40] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #41] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #45] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #49] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #51] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #52] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #53] sem contato WhatsApp — grupo pode usar LID
+  📵 [demandas #55] sem contato WhatsApp — grupo pode usar LID
+  ✅ demandas: 0 corrigido(s), 15 alerta(s)
+
+── Bairros ──────────────────────────────────────────────────────
+
+  ✅ imoveis: 0 bairros corrigidos
+  ✅ bairros: 0 corrigido(s)
+
+✅ 4 correção(ões) automática(s) · 15 alerta(s) para revisão manual
+[2026-07-06 06:33:35] Gerando site...
+/Users/nicolassodoski/Claude/Projects/PW/gerar_site.py:1840: SyntaxWarning: "\D" is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\D"? A raw string is also an option.
+  </html>"""
+✅ Site gerado: /Users/nicolassodoski/Claude/Projects/PW/Imoveis.html (3608 imóveis [57 JJ · 1374 VR] · 35 demandas · 0 arquivadas)
+[main 4dc6d17] 🤖 Auto: 2026-07-06 06:33 — mensagens + sites descobertos
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+To https://github.com/sodoskinicolas/imoveis-maringa.git
+   6e0a679..4dc6d17  main -> main
+[2026-07-06 06:33:40] ✅ Push feito ao GitHub. Site será atualizado em instantes.
+[2026-07-06 06:33:40] === Ciclo concluído ===

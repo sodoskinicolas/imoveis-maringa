@@ -237,6 +237,9 @@ RE_DEMANDA = re.compile(
     r'busca(?:ndo)?\s+(?:casa|apartamento|apto|imovel|imóvel|terreno)|'
     r'algu[eé]m\s+(?:tem|com|que\s+tenha)\s+\w|'   # "alguém com um X pra venda"
     r'algu[eé]m\s+(?:tem|tem\s+um|sabe\s+de)|'
+    r'(?:se\s+)?algu[eé]m\s+tiver|'                 # "se alguém tiver casa..." (busca)
+    r'me\s+avise|passo\s+o\s+cliente|'              # "me avise que passo o cliente"
+    r'tenho\s+comprad|'
     r'\bpra\s+venda[,\s].{0,30}(?:precis|quer|busca|procu)|'  # "pra venda... preciso"
     r'\bsem\s+ser\b|'   # "sem ser Mrv" — exclusão de marca/construtora, só faz sentido em busca
     # Atalho comum de post de demanda: "Apartamento até 380 mil ..." (título curto,
@@ -319,6 +322,12 @@ def extrair_preco(texto):
         # de preço (evita confundir com CEP, telefone, código de imóvel etc.)
         (r'(?:at[ée]|por|valor|pre[çc]o|or[çc]amento|na\s+faixa\s+de|'
          r'cerca\s+de|em\s+torno\s+de)\s*(?:de\s+)?(\d{1,3}(?:\.\d{3}){1,3}(?:,\d{2})?)\b', 'reais'),
+        # Rótulo de preço + número solto com FILLER de palavras no meio
+        # ("Valor limite para fechamento é de 420.000", "teto de 500.000",
+        # "orçamento do cliente gira em torno de 600.000"). Só formato com ponto
+        # de milhar, pra não confundir com telefone/CEP/código.
+        (r'(?:valor|or[çc]amento|teto|limite|fechamento|invest(?:imento)?)\b[^\d\n]{0,30}?'
+         r'(\d{1,3}(?:\.\d{3}){1,2}(?:,\d{2})?)\b', 'reais'),
     ]
     for pat, tipo in padroes:
         m = re.search(pat, texto, re.IGNORECASE)
@@ -380,6 +389,31 @@ def extrair_area(texto):
         try: return float(m.group(1).replace(',','.'))
         except: pass
 
+    # 4. Área escrita por extenso sem símbolo m²: "1000 metros", "135 MTS construção".
+    #    Exige 2+ dígitos pra não pegar "5 metros pé direito".
+    #    (a) medida com rótulo de área ÚTIL (privativa/construção), antes ou depois
+    #        → prioridade máxima ("PRIVATIVA DE 138 METROS", "135 MTS construção").
+    m = (re.search(r'(?:privativ\w*|constru[íi]d\w*|constru[çc][ãa]o|[uú]til)\s*'
+                   r'(?:de\s*)?(\d{2,6})\s*(?:metros|mts)\b', t, re.IGNORECASE)
+         or re.search(r'\b(\d{2,6})\s*(?:metros|mts)\s+(?:de\s+)?'
+                      r'(?:privativ|constru|[uú]til)', t, re.IGNORECASE))
+    if m:
+        try: return float(m.group(1))
+        except: pass
+    #    (b) medida cujo rótulo logo à frente NÃO seja terreno/lote (evita casar
+    #        "177 MTS terreno" e "200 metros de terreno").
+    for m in re.finditer(r'\b(\d{2,6})\s*(?:metros|mts)\b', t, re.IGNORECASE):
+        after = t[m.end():m.end() + 14].lower()
+        if re.search(r'terreno|lote|terr\b', after):
+            continue
+        try: return float(m.group(1))
+        except: pass
+    #    (c) sobrou só terreno (ex.: demanda "terreno acima de 1000 metros")
+    m = re.search(r'\b(\d{2,6})\s*(?:metros|mts)\b', t, re.IGNORECASE)
+    if m:
+        try: return float(m.group(1))
+        except: pass
+
     return None
 
 def extrair_num(texto, palavras):
@@ -387,6 +421,61 @@ def extrair_num(texto, palavras):
         m = re.search(r'(\d+)\s*' + p, texto, re.IGNORECASE)
         if m: return int(m.group(1))
     return None
+
+# Números escritos por extenso (0–4 cobre a esmagadora maioria dos imóveis)
+_NUM_EXTENSO = {
+    'um': 1, 'uma': 1, 'dois': 2, 'duas': 2, 'tres': 3, 'três': 3,
+    'quatro': 4, 'cinco': 5,
+}
+
+def extrair_suites(texto):
+    """Suítes: dígito ('01 suíte', '2 suítes') OU por extenso ('sendo uma suíte')."""
+    n = extrair_num(texto, [r'su[íi]tes?'])
+    if n:
+        return n
+    m = re.search(r'\b(um|uma|dois|duas|tr[êe]s|quatro)\s+su[íi]tes?', texto, re.IGNORECASE)
+    if m:
+        return _NUM_EXTENSO.get(m.group(1).lower())
+    return None
+
+def extrair_vagas(texto):
+    """Vagas de garagem: dígito antes ('2 vagas') OU depois ('garagem pra 4 veículos')."""
+    n = extrair_num(texto, [r'vagas?', r'garagens?'])
+    if n:
+        return n
+    m = re.search(r'(?:garagem|garagens|vaga|vagas)\s+(?:pra|para|p/|com|de|c/)\s*(\d+)',
+                  texto, re.IGNORECASE)
+    if not m:
+        m = re.search(r'(\d+)\s*(?:ve[ií]culos?|carros?|autos?|autom[oó]veis?)',
+                      texto, re.IGNORECASE)
+    if m:
+        try:
+            return int(m.group(1))
+        except Exception:
+            pass
+    return None
+
+def eh_locacao(texto):
+    """
+    Detecta demanda de LOCAÇÃO (aluguel). Sinaliza por palavra-chave explícita
+    OU por valor pequeno (< 15 mil) numa faixa/teto — aluguel mensal em Maringá
+    é R$ centenas a poucos milhares; venda nunca é tão baixa.
+    """
+    t = texto.lower()
+    if re.search(r'loca[çc][ãa]o|aluguel|alug(?:a|ar|o|uel)|para\s+alugar|'
+                 r'/\s*m[êe]s|por\s+m[êe]s|mensal', t):
+        return True
+    for m in re.finditer(
+        r'(?:faixa|valor|at[ée]|entre)\s*(?:de\s+)?r?\$?\s*'
+        r'([\d.]{3,7})(?!\s*(?:mil|mi\b|milh|k\b|000))', t):
+        raw = m.group(1).replace('.', '')
+        try:
+            v = int(raw)
+            if 300 <= v <= 15000:
+                return True
+        except Exception:
+            pass
+    return False
 
 def extrair_tipo(texto):
     t = texto.lower()
@@ -1107,8 +1196,9 @@ def extrair_bairro(texto, todos=False):
         encontrados = []
         vistos = set()
 
-        # Passo 1: "Zona(s) 01, 03, 07 e 08" → cada número vira "Zona XX"
-        for m_z in re.finditer(r'\bZona(?:s)?\s+(\d+(?:\s*[,e]\s*\d+)*)', texto_exp, re.IGNORECASE):
+        # Passo 1: "Zona(s) 01, 03, 07 ou 08" → cada número vira "Zona XX"
+        # (aceita vírgula, "e", "ou" e barra como separador entre os números)
+        for m_z in re.finditer(r'\bZona(?:s)?\s+(\d+(?:\s*(?:,|/|ou|e)\s*\d+)*)', texto_exp, re.IGNORECASE):
             for num in re.findall(r'\d+', m_z.group(1)):
                 bl = f"zona {int(num):02d}"
                 if bl in BAIRROS_LOWER and BAIRROS_LOWER[bl] not in vistos:
@@ -1124,21 +1214,61 @@ def extrair_bairro(texto, todos=False):
         if encontrados:
             return ' · '.join(encontrados)
 
-        # Passo 3: padrão contextual "região/bairro do/da NOME"
-        # Captura apenas palavras que começam com maiúscula (para não engolir o resto da frase)
+        # Passo 3: padrão contextual "região/bairro do/da NOME" — case-insensitive
+        # (o corretor às vezes escreve tudo minúsculo: "região da mandacaru").
+        # Para no primeiro delimitador (vírgula/ponto) para não engolir a frase.
         for m_ctx in re.finditer(
-            r'(?:região|regiao|bairro)\s+(?:do|da|de|dos|das)\s+'
-            r'([A-ZÀ-Ú][a-zA-ZÀ-ú]+(?:\s+[A-ZÀ-Ú][a-zA-ZÀ-ú]+)*)',
-            texto_exp
+            r'(?:regi[ãa]o|bairro)\s+(?:do|da|de|dos|das)\s+'
+            r'([A-Za-zÀ-ú]+(?:\s+[A-Za-zÀ-ú]+){0,2})',
+            texto_exp, re.IGNORECASE
         ):
             c = m_ctx.group(1).strip()
+            # Remove palavras de cauda que NÃO são parte do bairro
+            # ("regiao do Dias ate 480" capturaria "Dias ate" → tira "ate").
+            _STOP_CAUDA = {
+                'ate', 'até', 'nova', 'novo', 'com', 'de', 'da', 'do', 'dos', 'das',
+                'por', 'pra', 'para', 'valor', 'mil', 'r', 'e', 'ou', 'no', 'na',
+                'que', 'sendo', 'perto', 'proximo', 'próximo',
+            }
+            palavras = c.split()
+            while palavras and palavras[-1].lower() in _STOP_CAUDA:
+                palavras.pop()
+            c = ' '.join(palavras)
+            cl = c.lower()
+            if not (2 < len(c) < 40) or cl in _NAO_BAIRRO:
+                continue
+            if cl in BAIRROS_LOWER:
+                return BAIRROS_LOWER[cl]
+            # Tentar prefixo "Jardim X" (ex: "regiao do Dias" → "Jardim Dias";
+            # "região da mandacaru" → "Jardim Mandacaru")
+            jardim = f"jardim {cl}"
+            if jardim in BAIRROS_LOWER:
+                return BAIRROS_LOWER[jardim]
+            # Região citada que não está na lista oficial (ex: "fim da picada") —
+            # preserva o nome cru pra não perder o lead.
+            return c.title()
+
+        # Passo 4: bairro por prefixo "Jardim/Jd/Parque/Conjunto NOME" ou
+        # logradouro "Avenida/Rua NOME" — mesmo fora da lista oficial.
+        m_pref = re.search(
+            r'\b(?:jardim|jd\.?|pq\.?|parque|conj\.?|conjunto)\s+'
+            r'([A-ZÀ-Ú][a-zà-ú]+(?:\s+[A-ZÀ-Ú][a-zà-ú]+){0,2})',
+            texto_exp, re.IGNORECASE)
+        if m_pref:
+            c = m_pref.group(1).strip()
             if 2 < len(c) < 40 and c.lower() not in _NAO_BAIRRO:
-                if c.lower() in BAIRROS_LOWER:
-                    return BAIRROS_LOWER[c.lower()]
-                # Tentar prefixo "Jardim X" (ex: "regiao do Dias" → "Jardim Dias")
-                jardim = f"jardim {c.lower()}"
-                if jardim in BAIRROS_LOWER:
-                    return BAIRROS_LOWER[jardim]
+                jl = f"jardim {c.lower()}"
+                if jl in BAIRROS_LOWER:
+                    return BAIRROS_LOWER[jl]
+                return f"Jardim {c.title()}"
+        m_log = re.search(
+            r'\b(?:avenida|av\.?|rua|r\.|alameda|estrada|rodovia)\s+'
+            r'([A-ZÀ-Ú][a-zà-ú]+(?:\s+[A-ZÀ-Ú][a-zà-ú]+){0,2})',
+            texto_exp, re.IGNORECASE)
+        if m_log:
+            c = m_log.group(1).strip()
+            if 2 < len(c) < 40 and c.lower() not in _NAO_BAIRRO:
+                return c.title()
         return ''
 
     # ── Modo imóvel: retornar primeiro/mais relevante ───────────────────────────
@@ -1296,15 +1426,67 @@ def extrair_condominio(texto):
                 return nome
     return None
 
-def extrair_edificio(texto):
+_VERBOS_LIDERANTES = {
+    'busca', 'busco', 'tenho', 'procura', 'procuro', 'preciso', 'quero',
+    'vendo', 'alugo', 'ofereço', 'oferecemos', 'oi', 'olá', 'ola', 'bom',
+    'boa', 'pessoal', 'galera', 'alguém', 'alguem', 'atenção', 'atencao',
+}
+
+def _edificios_lista(texto):
+    """
+    Coleta os nomes de uma LISTA de edifícios numa demanda, ex:
+    "Alguém tem apartamento em: Libert Park, Santa Inês, Bellagio, Rio Tevere?"
+    → ['Libert Park', 'Santa Inês', 'Bellagio', 'Rio Tevere'].
+    Só considera segmentos que contêm vírgula (lista) e itens que são nome
+    próprio inteiro (todas as palavras capitalizadas), filtrando genéricos.
+    """
+    achados, vistos = [], set()
+    for seg in re.split(r'[\n]', texto):
+        if seg.count(',') < 1:
+            continue
+        if ':' in seg:
+            seg = seg.split(':', 1)[1]
+        for item in re.split(r',|;|\bou\b|\be\b', seg):
+            item = item.strip().strip('*').rstrip('?.!·-').strip()
+            m = re.match(
+                r'^([A-ZÀ-Ú][A-Za-zÀ-ú0-9]+(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú0-9]+){0,2})$', item)
+            if not m:
+                continue
+            cand = m.group(1).strip()
+            # Tira verbo/saudação inicial colado ("Busca Maraú" → "Maraú"), mas
+            # preserva prefixos de prédio ("Torre Oregon", "Residencial X").
+            parts = cand.split()
+            if parts and parts[0].lower() in _VERBOS_LIDERANTES:
+                parts = parts[1:]
+            cand = ' '.join(parts)
+            cl = cand.lower()
+            if len(cand) > 2 and cl not in _EDIFICIO_GENERICO and cl not in vistos:
+                achados.append(cand)
+                vistos.add(cl)
+    return achados
+
+def extrair_edificio(texto, todos=False):
     """
     Extrai nome de EDIFÍCIO (torre/prédio vertical) mencionado no texto.
 
     Padrões: prefixo "edifício/ed.", nome no início da mensagem,
-    código de empreendimento (NEST635, SKY), nome após gatilho ("no Vision").
+    código de empreendimento (NEST635, SKY), nome após gatilho ("no Vision"),
+    nome em negrito ("*Spazio Mendoza*").
+    todos=True (demanda): se houver uma LISTA de edifícios, devolve todos
+    separados por ' · '; senão cai no fluxo normal de nome único.
     Para "condomínio X" / "residencial X" use extrair_condominio().
     """
+    if todos:
+        itens = _edificios_lista(texto)
+        if len(itens) >= 2:
+            return ' · '.join(itens)
+
     candidatos = []
+
+    # 0. Nome próprio em negrito do WhatsApp ("*Spazio Mendoza*") — todas as
+    #    palavras capitalizadas, 2+ palavras (evita pegar "*Urgente*").
+    for mb in re.finditer(r'\*([A-ZÀ-Ú][A-Za-zÀ-ú0-9]+(?:\s+[A-ZÀ-Ú][A-Za-zÀ-ú0-9]+)+)\*', texto):
+        candidatos.append(mb.group(1).strip())
 
     # 1. Prefixo explícito de edifício: "edifício X", "ed. X"
     m = _RE_PREFIX_EDIFICIO.search(texto)
@@ -1386,15 +1568,19 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
     pesquisa na web na hora (usado para demandas, para preencher specs antes de salvar).
     eh_demanda=True: extrai todos os bairros/regiões mencionados (não só o primeiro).
     """
-    edificio   = extrair_edificio(texto)
+    edificio   = extrair_edificio(texto, todos=eh_demanda)
     condominio = extrair_condominio(texto)
     # Se ambos extraíram o mesmo nome → é condomínio, não edifício
     if edificio and condominio and edificio.lower() == condominio.lower():
         edificio = None
     condo_specs = None
 
-    # Se achou nome de edifício → buscar specs direto no DB (rápido)
-    if edificio:
+    # Demanda com LISTA de edifícios ("A · B · C") — não force specs de um só
+    # prédio sobre a demanda; ela busca qualquer um deles.
+    edificio_multi = bool(edificio and ' · ' in edificio)
+
+    # Se achou nome de edifício (único) → buscar specs direto no DB (rápido)
+    if edificio and not edificio_multi:
         condo_row = buscar_condo_completo(edificio)
         condo_specs = trim_specs_condo(condo_row)
         precisa_completar = condo_row is None or condo_incompleto(condo_row)
@@ -1438,9 +1624,9 @@ def extrair_campos(texto, pesquisar_condo_imediato=False, eh_demanda=False):
         'condominio': condominio,
         'area':       extrair_area(texto),
         'quartos':   extrair_num(texto, [r'quartos?', r'dormit[oó]rios?', r'dorm\.?']),
-        'suites':    extrair_num(texto, [r'su[íi]tes?']),
+        'suites':    extrair_suites(texto),
         'banheiros': extrair_num(texto, [r'banheiros?', r'\bwc\b', r'lavabo']),
-        'vagas':     extrair_num(texto, [r'vagas?', r'garagens?']),
+        'vagas':     extrair_vagas(texto),
         'preco':     extrair_preco(texto),
     }
 
@@ -1876,11 +2062,22 @@ def main():
             if not contato_ok and campos.get('link'):
                 # Sem WhatsApp válido — usa o link do anúncio como contato/fonte
                 contato_ok = campos['link']
+            # ── Rede de segurança do modelo híbrido ────────────────────────────
+            # Se o regex não conseguiu extrair NENHUM alvo de busca (preço, região,
+            # edifício, área ou nº de quartos), a demanda entra como 'Revisar' em
+            # vez de 'Nova': continua aparecendo no site (status != Inativo) com
+            # uma pílula de alerta, e vira a fila que o revisar_demandas.py (LLM)
+            # reprocessa quando houver créditos. Assim nenhum lead se perde calado.
+            tem_alvo = any([
+                campos.get('preco'), campos.get('bairro'), campos.get('edificio'),
+                campos.get('area'), campos.get('quartos'),
+            ])
+            status_dem = 'Nova' if tem_alvo else 'Revisar'
             linha = [
                 pacote['data'], pacote['grupo'], pacote['autor'], contato_ok,
                 campos['tipo'], campos.get('bairro',''), campos.get('area'),
                 campos.get('quartos'), campos.get('suites'), campos.get('banheiros'),
-                campos.get('vagas'), campos.get('preco'), obs, 'Nova'
+                campos.get('vagas'), campos.get('preco'), obs, status_dem
             ]
             novas_demandas.append(linha)
             fps_d.add(fp or f"{pacote['autor']}|ts:{ts0}")

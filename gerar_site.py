@@ -1109,8 +1109,11 @@ function _renderEdificioGrupos(lista, gridEl, cardFn){{
   gridEl.innerHTML=html||'<div class="empty"><p>Nenhum resultado.</p></div>';
 }}
 
+var _limI=60, _listaI=[];
 function aplicarI(){{
-  var lista=ordenarI(filtrarI());
+  _listaI=ordenarI(filtrarI());
+  _limI=60;
+  var lista=_listaI;
   ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i','excl-i'].forEach(selActive);
   var cp=lista.filter(function(i){{return i.preco;}});
   var med=cp.length?Math.round(cp.reduce(function(s,i){{return s+i.preco;}},0)/cp.length):0;
@@ -1122,14 +1125,39 @@ function aplicarI(){{
     (semExcl?'<div class="stat"><strong>'+semExcl+'</strong> ⚡ sem excl.</div>':'')+
     (med?'<div class="stat"><strong>'+fmtP(med)+'</strong> preço médio</div>':'');
   document.getElementById('rtxt-i').textContent=lista.length+' de '+IMOVEIS.length;
+  _renderI();
+}}
+// Renderiza só os primeiros _limI (paginação) — sem isso, 18 mil cards de uma
+// vez travam o navegador. Botão "mostrar mais" carrega o próximo lote.
+function _renderI(){{
   var grid=document.getElementById('grid-i');
+  var old=document.getElementById('maisbtn-i'); if(old) old.remove();
+  // Sem busca/filtro: não renderiza nada (evita travar com milhares de cards)
+  if(!_algumFiltroI()){{
+    grid.className='grid';
+    grid.innerHTML='<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Busque por edifício, bairro ou corretor — ou use os filtros — para ver os imóveis.</p></div>';
+    return;
+  }}
+  var lista=_listaI;
+  var vis=lista.slice(0,_limI);
   if(_viewI==='edificio'){{
-    _renderEdificioGrupos(lista, grid, cardI);
+    _renderEdificioGrupos(vis, grid, cardI);
   }} else {{
     grid.className=(_viewI==='lista')?'grid list-view':'grid';
-    grid.innerHTML=lista.length?lista.map(cardI).join(''):
+    grid.innerHTML=vis.length?vis.map(cardI).join(''):
       '<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>Nenhum imóvel encontrado.</p></div>';
   }}
+  if(lista.length>_limI){{
+    grid.insertAdjacentHTML('afterend','<div id="maisbtn-i" style="text-align:center;margin:18px 0"><button onclick="maisI()" style="padding:10px 24px;border:1px solid #ccc;border-radius:8px;background:#fff;cursor:pointer;font-size:14px">Mostrar mais — '+Math.min(_limI,lista.length)+' de '+lista.length+'</button></div>');
+  }}
+}}
+function maisI(){{ _limI+=60; _renderI(); }}
+// Só há filtro/busca ativo? (senão a lista fica escondida — evita despejar 18 mil)
+function _algumFiltroI(){{
+  if((document.getElementById('busca-i').value||'').trim()) return true;
+  return ['bairro-i','quartos-i','banheiros-i','vagas-i','preco-min-i','preco-max-i','fonte-i','status-i','datapub-i','excl-i'].some(function(id){{
+    var el=document.getElementById(id); return el && (el.value||'').trim();
+  }});
 }}
 
 var _viewI='cards';

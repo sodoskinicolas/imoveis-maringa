@@ -269,6 +269,16 @@ def gerar_html(imoveis, demandas, demandas_arq=None):
     total_l   = len(imoveis_loc)
     total_d   = len(demandas)
     total_da  = len(demandas_arq)
+    # Cobertura de plantas dos edifícios verticais (mapeados do GeoMaringá)
+    try:
+        with db.db_conn() as _cv:
+            total_vert  = _cv.execute("SELECT COUNT(*) FROM verticais_geo").fetchone()[0]
+            vert_planta = _cv.execute(
+                "SELECT COUNT(*) FROM verticais_geo WHERE plantas IS NOT NULL AND plantas != '[]'"
+            ).fetchone()[0]
+    except Exception:
+        total_vert, vert_planta = 0, 0
+    pct_vert = round(vert_planta / total_vert * 100) if total_vert else 0
     agora     = datetime.now().strftime("%d/%m/%Y %H:%M")
     dados_i   = json.dumps(imoveis_venda, ensure_ascii=False)
     dados_l   = json.dumps(imoveis_loc,   ensure_ascii=False)
@@ -509,10 +519,15 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .card-expand-arrow{{font-size:11px;color:#9c72c8;margin-left:4px;transition:transform .2s;display:inline-block;opacity:.5}}
 .card.expanded .card-expand-arrow{{transform:rotate(180deg);opacity:1}}
 
+.cobertura-badge{{display:inline-flex;align-items:center;gap:7px;background:#f0f7f0;border:1px solid #d9ead3;color:#357a38;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;white-space:nowrap}}
+.cob-bar{{width:70px;height:6px;background:#d9ead3;border-radius:99px;overflow:hidden}}
+.cob-bar-fill{{display:block;height:100%;background:#4caf50;border-radius:99px;transition:width .4s}}
+.cob-pct{{color:#4a8a4d;font-weight:700}}
 @media(max-width:640px){{
   .topbar,.hero,.statsbar,.content{{padding-left:16px;padding-right:16px}}
   .tabnav{{padding-left:16px}}
   .card-price{{font-size:16px}}
+  .cobertura-badge .cob-bar,.cobertura-badge .cob-pct{{display:none}}
 }}
 </style>
 </head>
@@ -520,6 +535,11 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 
 <div class="topbar">
   <span class="logo">Imóveis Maringá</span>
+  <span class="cobertura-badge" title="Edifícios verticais com planta preenchida, de {total_vert} mapeados no GeoMaringá">
+    🏢 <b>{vert_planta}</b>/{total_vert} edifícios
+    <span class="cob-bar"><span class="cob-bar-fill" style="width:{pct_vert}%"></span></span>
+    <span class="cob-pct">{pct_vert}%</span>
+  </span>
   <span class="topbar-meta">Atualizado {agora}</span>
 </div>
 

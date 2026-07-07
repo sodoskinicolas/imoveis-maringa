@@ -215,13 +215,19 @@ def get_page(url, ajax=False, retries=3, delay=2):
 # — descobrir_categorias_venda() lê a home do site e extrai as URLs de
 # categoria reais que estão publicadas ali, o que sobrevive a mudanças de
 # slug sem precisar de manutenção manual.
-SUB100_SITES = [
+# Os 5 tenants abaixo agora são cobertos pelo PORTAL (scrape_portal_sub100),
+# que devolve o MESMO imóvel já COM edifício/condomínio (condo.name) — o card
+# do site direto não expõe isso. Por isso o scrape direto fica DESLIGADO por
+# padrão: evita raspar 2x (dedup) e garante o nome do prédio. Para religar o
+# scrape direto, rode com  SUB100_TENANTS_DIRETO=1  no ambiente.
+_SUB100_TENANTS = [
     {"domain": "harakiimoveis.com.br",    "grupo": "Haraki Imóveis"},
     {"domain": "massaruimoveis.com.br",   "grupo": "Massaru Imóveis"},
     {"domain": "bellakaza.com.br",        "grupo": "Bellakaza"},
     {"domain": "silvioiwata.com.br",      "grupo": "Silvio Iwata"},
     {"domain": "casadocorretormga.com.br","grupo": "Casa do Corretor"},
 ]
+SUB100_SITES = _SUB100_TENANTS if os.environ.get("SUB100_TENANTS_DIRETO") == "1" else []
 
 # Carregar sites descobertos automaticamente pelo descobrir_sites.py
 _SITES_EXTRAS_FILE = Path(__file__).parent / "sites_extras.json"
@@ -858,17 +864,22 @@ PORTAL_SUB100_CIDADE    = "maringa-pr"
 # Anunciantes do portal que já raspamos direto da fonte (site próprio ou
 # planilha) — importar de novo pelo portal duplicaria os imóveis no banco.
 # Comparação por substring do nome normalizado (sem acento, minúsculo).
+# Os 5 tenants Sub100 saíram desta lista de propósito: agora QUEREMOS que o
+# portal ingira os imóveis deles (traz o edifício via condo.name, coisa que o
+# scrape direto do card não expunha). O scrape direto deles fica desligado por
+# padrão (ver SUB100_SITES), então não há duplicação. Se você religar o scrape
+# direto com SUB100_TENANTS_DIRETO=1, adicione-os de volta aqui pra evitar dup.
+# Ficam só as fontes com scraper próprio que o portal NÃO cobre.
 _ANUNCIANTES_JA_RASPADOS = [
-    "lelo imoveis",                  # leloimoveis.com.br
-    "haraki",                        # harakiimoveis.com.br
-    "massaru",                       # massaruimoveis.com.br
-    "bellakaza",                     # bellakaza.com.br
-    "silvio iwata",                  # silvioiwata.com.br
-    "casa do corretor",              # casadocorretormga.com.br
+    "lelo imoveis",                  # leloimoveis.com.br (plataforma CasaSoft)
     "opcao imoveis",                 # opcaoimoveis.com.br
     "patrimonio imoveis prontos",    # patrimonioimoveisprontos.com.br
     "junior joda",                   # planilha JuniorJoda_Imoveis.xlsx
 ]
+if os.environ.get("SUB100_TENANTS_DIRETO") == "1":
+    _ANUNCIANTES_JA_RASPADOS += [
+        "haraki", "massaru", "bellakaza", "silvio iwata", "casa do corretor",
+    ]
 
 def _normalizar_nome(s):
     import unicodedata
@@ -1295,6 +1306,9 @@ def atualizar_db(novos_raw, dry_run=False):
                 "status":          "Novo",
                 "data_publicacao": hoje,
                 "link":            item.get("link", ""),
+                # nome do edifício/condomínio estruturado (portal traz condo.name)
+                "edificio":        item.get("edificio") or "",
+                "condominio":      item.get("condominio") or "",
             }
             acao, _ = db.upsert_imovel_externo(conn, db_item, fonte)
             if acao == "novo":

@@ -15750,3 +15750,123 @@ UnboundLocalError: cannot access local variable 'found' where it is not associat
 2026-07-03 20:00:26,579 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
 2026-07-03 20:00:26,877 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
 2026-07-03 20:00:26,900 INFO Validação concluída em 3753.1s
+2026-07-07 10:56:00,730 INFO ============================================================
+2026-07-07 10:56:00,730 INFO Iniciando raspagem — 2026-07-07 10:56:00
+2026-07-07 10:56:00,730 INFO Versão do script: salvo em 2026-07-07 10:51:20
+2026-07-07 10:56:01,103 INFO [leloimoveis.com.br] iniciando (pid 42516)
+2026-07-07 10:56:01,112 INFO [opcaoimoveis.com.br] iniciando (pid 42517)
+2026-07-07 10:56:01,115 INFO [patrimonioimoveisprontos.com.br] iniciando (pid 42518)
+2026-07-07 10:56:01,122 INFO [sub100.com.br] iniciando (pid 42519)
+2026-07-07 10:56:01,424 INFO [Patrimônio Imóveis Prontos] página 1: 27 imóveis novos
+2026-07-07 10:56:01,897 INFO [Opção Imóveis] 30 imóveis coletados (só página 1 de ~12 — ver nota no código sobre a limitação de paginação)
+2026-07-07 10:56:01,898 INFO [opcaoimoveis.com.br] terminou em 0.8s (pid 42517)
+2026-07-07 10:56:02,572 INFO [Patrimônio Imóveis Prontos] página 2: 27 imóveis novos
+2026-07-07 10:56:03,406 INFO [Lélo Imóveis] página 1: 12 imóveis novos
+2026-07-07 10:56:03,693 INFO [Patrimônio Imóveis Prontos] página 3: 27 imóveis novos
+2026-07-07 10:56:04,844 INFO [Patrimônio Imóveis Prontos] página 4: 27 imóveis novos
+2026-07-07 10:56:04,915 INFO [Lélo Imóveis] página 2: 12 imóveis novos
+2026-07-07 10:56:06,051 INFO [Patrimônio Imóveis Prontos] página 5: 27 imóveis novos
+2026-07-07 10:56:07,211 INFO [Patrimônio Imóveis Prontos] página 6: 27 imóveis novos
+2026-07-07 10:56:07,484 INFO [Lélo Imóveis] página 3: 12 imóveis novos
+2026-07-07 10:56:08,530 INFO [Patrimônio Imóveis Prontos] página 7: 27 imóveis novos
+2026-07-07 10:56:09,629 INFO [Lélo Imóveis] página 4: 12 imóveis novos
+2026-07-07 10:56:09,667 INFO [Patrimônio Imóveis Prontos] página 8: 27 imóveis novos
+2026-07-07 10:56:10,859 INFO [Patrimônio Imóveis Prontos] página 9: 27 imóveis novos
+2026-07-07 10:56:11,980 INFO [Patrimônio Imóveis Prontos] página 10: 27 imóveis novos
+2026-07-07 10:56:12,052 INFO [Lélo Imóveis] página 5: 12 imóveis novos
+2026-07-07 10:56:13,119 INFO [Patrimônio Imóveis Prontos] página 11: 27 imóveis novos
+2026-07-07 10:56:14,232 INFO [Patrimônio Imóveis Prontos] página 12: 7 imóveis novos
+2026-07-07 10:56:14,512 INFO [Lélo Imóveis] página 6: 12 imóveis novos
+2026-07-07 10:56:15,351 INFO [Patrimônio Imóveis Prontos] página 13: 0 imóveis novos
+2026-07-07 10:56:15,351 INFO [Patrimônio Imóveis Prontos] Total: 297 imóveis (Maringá)
+2026-07-07 10:56:15,351 INFO [patrimonioimoveisprontos.com.br] terminou em 14.2s (pid 42518)
+2026-07-07 10:56:16,837 INFO [Lélo Imóveis] página 7: 12 imóveis novos
+2026-07-07 10:56:19,367 INFO [Lélo Imóveis] página 8: 12 imóveis novos
+2026-07-07 10:56:21,779 INFO [Lélo Imóveis] página 9: 12 imóveis novos
+2026-07-07 10:56:24,192 INFO [Lélo Imóveis] página 10: 12 imóveis novos
+2026-07-07 10:56:26,554 INFO [Lélo Imóveis] página 11: 12 imóveis novos
+2026-07-07 10:56:29,370 INFO [Lélo Imóveis] página 12: 12 imóveis novos
+2026-07-07 10:56:31,983 INFO [Lélo Imóveis] página 13: 12 imóveis novos
+2026-07-07 10:56:34,441 INFO [Lélo Imóveis] página 14: 12 imóveis novos
+2026-07-07 10:56:35,076 INFO [Portal Sub100] 100/794 páginas baixadas...
+2026-07-07 10:56:36,928 INFO [Lélo Imóveis] página 15: 12 imóveis novos
+2026-07-07 10:56:39,326 INFO [Lélo Imóveis] página 16: 12 imóveis novos
+2026-07-07 10:56:41,657 INFO [Lélo Imóveis] página 17: 12 imóveis novos
+2026-07-07 10:56:44,099 INFO [Lélo Imóveis] página 18: 12 imóveis novos
+2026-07-07 10:56:46,596 INFO [Lélo Imóveis] página 19: 12 imóveis novos
+2026-07-07 10:56:48,938 INFO [Lélo Imóveis] página 20: 12 imóveis novos
+2026-07-07 10:56:51,335 INFO [Lélo Imóveis] página 21: 12 imóveis novos
+2026-07-07 10:56:53,719 INFO [Lélo Imóveis] página 22: 12 imóveis novos
+2026-07-07 10:56:56,211 INFO [Lélo Imóveis] página 23: 12 imóveis novos
+2026-07-07 10:56:58,731 INFO [Lélo Imóveis] página 24: 12 imóveis novos
+2026-07-07 10:57:01,179 INFO [Lélo Imóveis] página 25: 12 imóveis novos
+2026-07-07 10:57:04,237 INFO [Lélo Imóveis] página 26: 12 imóveis novos
+2026-07-07 10:57:06,585 INFO [Lélo Imóveis] página 27: 12 imóveis novos
+2026-07-07 10:57:08,389 INFO [Portal Sub100] 200/794 páginas baixadas...
+2026-07-07 10:57:09,139 INFO [Lélo Imóveis] página 28: 12 imóveis novos
+2026-07-07 10:57:11,563 INFO [Lélo Imóveis] página 29: 12 imóveis novos
+2026-07-07 10:57:13,986 INFO [Lélo Imóveis] página 30: 12 imóveis novos
+2026-07-07 10:57:16,463 INFO [Lélo Imóveis] página 31: 12 imóveis novos
+2026-07-07 10:57:19,055 INFO [Lélo Imóveis] página 32: 12 imóveis novos
+2026-07-07 10:57:21,565 INFO [Lélo Imóveis] página 33: 12 imóveis novos
+2026-07-07 10:57:24,042 INFO [Lélo Imóveis] página 34: 12 imóveis novos
+2026-07-07 10:57:26,349 INFO [Lélo Imóveis] página 35: 12 imóveis novos
+2026-07-07 10:57:28,706 INFO [Lélo Imóveis] página 36: 12 imóveis novos
+2026-07-07 10:57:31,069 INFO [Lélo Imóveis] página 37: 12 imóveis novos
+2026-07-07 10:57:33,665 INFO [Lélo Imóveis] página 38: 12 imóveis novos
+2026-07-07 10:57:36,129 INFO [Lélo Imóveis] página 39: 12 imóveis novos
+2026-07-07 10:57:38,510 INFO [Lélo Imóveis] página 40: 12 imóveis novos
+2026-07-07 10:57:41,249 INFO [Portal Sub100] 300/794 páginas baixadas...
+2026-07-07 10:57:41,383 INFO [Lélo Imóveis] página 41: 12 imóveis novos
+2026-07-07 10:57:44,527 INFO [Lélo Imóveis] página 42: 12 imóveis novos
+2026-07-07 10:57:47,118 INFO [Lélo Imóveis] página 43: 12 imóveis novos
+2026-07-07 10:57:49,871 INFO [Lélo Imóveis] página 44: 12 imóveis novos
+2026-07-07 10:57:52,558 INFO [Lélo Imóveis] página 45: 12 imóveis novos
+2026-07-07 10:57:54,976 INFO [Lélo Imóveis] página 46: 12 imóveis novos
+2026-07-07 10:57:57,447 INFO [Lélo Imóveis] página 47: 12 imóveis novos
+2026-07-07 10:57:59,530 INFO [Lélo Imóveis] página 48: 6 imóveis novos
+2026-07-07 10:58:01,204 WARNING   Tentativa 1/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-07 10:58:03,376 WARNING   Tentativa 2/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-07 10:58:07,548 WARNING   Tentativa 3/3 falhou: https://www.leloimoveis.com.br/imoveis/venda-pagina-49 → 500 Server Error: Internal Server Error for url: https://www.leloimoveis.com.br/imoveis/venda-pagina-49
+2026-07-07 10:58:07,549 INFO [Lélo Imóveis] Total: 500 imóveis (Maringá)
+2026-07-07 10:58:07,549 INFO [leloimoveis.com.br] terminou em 126.4s (pid 42516)
+2026-07-07 10:58:17,069 INFO [Portal Sub100] 400/794 páginas baixadas...
+2026-07-07 10:58:50,893 INFO [Portal Sub100] 500/794 páginas baixadas...
+2026-07-07 10:59:24,421 INFO [Portal Sub100] 600/794 páginas baixadas...
+2026-07-07 10:59:58,025 INFO [Portal Sub100] 700/794 páginas baixadas...
+2026-07-07 11:00:40,309 INFO [Portal Sub100] 794/794 páginas baixadas
+2026-07-07 11:00:40,622 INFO [Portal Sub100] pulados (já raspados direto): Junior Joda Soluções Imobiliárias: 28, Lélo Imóveis: 473, Opção Imóveis: 285
+2026-07-07 11:00:40,626 INFO [Portal Sub100] descrições: 0 já no banco, 15079 faltando, buscando 15079 nesta rodada
+2026-07-07 11:01:52,580 INFO [Portal Sub100] 1000/15079 descrições buscadas...
+2026-07-07 11:02:59,493 INFO [Portal Sub100] 2000/15079 descrições buscadas...
+2026-07-07 11:04:13,414 INFO [Portal Sub100] 3000/15079 descrições buscadas...
+2026-07-07 11:05:26,963 INFO [Portal Sub100] 4000/15079 descrições buscadas...
+2026-07-07 11:06:42,989 INFO [Portal Sub100] 5000/15079 descrições buscadas...
+2026-07-07 11:07:58,886 INFO [Portal Sub100] 6000/15079 descrições buscadas...
+2026-07-07 11:09:18,594 INFO [Portal Sub100] 7000/15079 descrições buscadas...
+2026-07-07 11:10:31,250 INFO [Portal Sub100] 8000/15079 descrições buscadas...
+2026-07-07 11:11:54,831 INFO [Portal Sub100] 9000/15079 descrições buscadas...
+2026-07-07 11:13:32,323 INFO [Portal Sub100] 10000/15079 descrições buscadas...
+2026-07-07 11:14:46,970 INFO [Portal Sub100] 11000/15079 descrições buscadas...
+2026-07-07 11:16:03,140 INFO [Portal Sub100] 12000/15079 descrições buscadas...
+2026-07-07 11:17:21,361 INFO [Portal Sub100] 13000/15079 descrições buscadas...
+2026-07-07 11:18:33,277 INFO [Portal Sub100] 14000/15079 descrições buscadas...
+2026-07-07 11:19:46,902 INFO [Portal Sub100] 15000/15079 descrições buscadas...
+2026-07-07 11:19:52,089 INFO [Portal Sub100] 15002 descrições novas buscadas
+2026-07-07 11:19:52,794 INFO [Portal Sub100] Total: 15079 imóveis | {'Terreno': 2858, 'Kitnet': 123, 'Sala Comercial': 390, 'Casa': 4372, 'Apartamento': 5161, 'Sobrado': 1469, 'Chácara': 239, 'Duplex': 54, 'Outros negócios': 61, 'Garagem': 10, 'Fazenda': 22, 'Loft': 20, 'Moda e Vestuário': 1, 'Salão': 86, 'Barracão': 172, 'Salão para Eventos': 2, 'Sítio': 30, 'Galpão': 6, 'Bares e Restaurantes': 1, 'Triplex': 2}
+2026-07-07 11:19:53,937 INFO [sub100.com.br] terminou em 1432.8s (pid 42519)
+2026-07-07 11:19:54,376 INFO Total coletado (todos os sites): 15906
+2026-07-07 11:19:54,389 INFO Itens coletados (todos os sites): 15906
+2026-07-07 11:19:54,389 INFO Validando e cruzando com a base (bairros + condominios)...
+2026-07-07 11:19:55,927 INFO HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-07-07 11:20:18,002 INFO   validados 2000/15906...
+2026-07-07 11:20:45,676 INFO   validados 4000/15906...
+2026-07-07 11:21:18,533 INFO   validados 6000/15906...
+2026-07-07 11:21:51,675 INFO   validados 8000/15906...
+2026-07-07 11:22:20,220 INFO   validados 10000/15906...
+2026-07-07 11:22:58,093 INFO   validados 12000/15906...
+2026-07-07 11:23:39,721 INFO   validados 14000/15906...
+2026-07-07 11:24:14,938 INFO Validação concluída em 260.5s
+2026-07-07 11:24:17,387 INFO ✅ 15101 novos · 801 atualizados · 4 com preço alterado · 15 marcados como Removido
+2026-07-07 11:24:17,391 INFO Raspagem concluída. Novos: 15101
+2026-07-07 11:24:17,391 INFO ============================================================

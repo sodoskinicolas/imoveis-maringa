@@ -294,8 +294,9 @@ def upsert_imovel_externo(conn, item, fonte):
             INSERT INTO imoveis
                 (data_captura, grupo, corretor, contato, tipo, bairro, area,
                  quartos, suites, banheiros, vagas, preco, observacoes,
-                 status, data_publicacao, slug, fonte, ref_externa, nome, link)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                 status, data_publicacao, slug, fonte, ref_externa, nome, link,
+                 edificio, condominio)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         """, (
             hoje, item.get("grupo") or fonte, item.get("corretor"), item.get("contato"),
             item.get("tipo"), item.get("bairro"), item.get("area"),
@@ -303,6 +304,8 @@ def upsert_imovel_externo(conn, item, fonte):
             item.get("preco"), item.get("observacoes"),
             item.get("status", "Novo"), item.get("data_publicacao"), sl,
             fonte, ref, item.get("nome"), item.get("link"),
+            (item.get("edificio") or "").strip() or None,
+            (item.get("condominio") or "").strip() or None,
         ))
         novo_id = cur.lastrowid
         if item.get("preco") is not None:
@@ -337,7 +340,20 @@ def upsert_imovel_externo(conn, item, fonte):
         "status":          status_novo,
     }
     sets = ", ".join(f"{c}=?" for c in campos)
-    conn.execute(f"UPDATE imoveis SET {sets} WHERE id=?", (*campos.values(), imovel_id))
+    # edificio/condominio: preenche quando a fonte traz (ex.: portal, condo.name)
+    # mas NÃO apaga o que já existe quando a fonte vem sem o nome (VivaReal etc.).
+    ed_novo = (item.get("edificio") or "").strip()
+    cond_novo = (item.get("condominio") or "").strip()
+    extra = ""
+    extra_vals = []
+    if ed_novo:
+        extra += ", edificio=?"
+        extra_vals.append(ed_novo)
+    if cond_novo:
+        extra += ", condominio=?"
+        extra_vals.append(cond_novo)
+    conn.execute(f"UPDATE imoveis SET {sets}{extra} WHERE id=?",
+                 (*campos.values(), *extra_vals, imovel_id))
 
     mudou_preco = (
         preco_novo is not None and preco_antigo is not None

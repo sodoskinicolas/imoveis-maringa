@@ -572,6 +572,29 @@ def _normalizar_bairro(s):
         if unicodedata.category(c) != 'Mn'
     ).strip()
 
+def _bairro_geral(nome):
+    """Unifica subdivisões oficiais num bairro geral: 'Jardim Novo Horizonte
+    I/II/III Parte' → 'Jardim Novo Horizonte'. Só remove o sufixo '<núm> Parte'
+    (romano ou 2ª), preservando o resto do nome."""
+    import re
+    n = (nome or "").strip()
+    prev = None
+    while prev != n:
+        prev = n
+        n = re.sub(r'\s+(?:[IVXLC]+|\d+[ªºo°]?)\s+parte\s*$', '', n, flags=re.I).strip()
+    return n
+
+# Prefixos que indicam CONDOMÍNIO/edifício (não é bairro) — usados pra não
+# confiar num "bairro" que na verdade é nome de prédio.
+_PREFIXO_NAO_BAIRRO = ("condominio", "cond", "edificio", "ed", "residence", "torre")
+
+def _parece_bairro(s):
+    """Heurística: o texto parece um bairro (e não um condomínio/edifício)?"""
+    n = _normalizar_bairro(s)
+    if not n or len(n) < 3:
+        return False
+    return n.split(' ')[0] not in _PREFIXO_NAO_BAIRRO
+
 def _carregar_bairros_oficiais():
     global _BAIRROS_OFICIAIS_LOWER
     if _BAIRROS_OFICIAIS_LOWER is not None:
@@ -579,7 +602,14 @@ def _carregar_bairros_oficiais():
     try:
         with open(BAIRROS_OFICIAIS_FILE, encoding='utf-8') as f:
             lista = json.load(f)   # lista plana de strings
-        _BAIRROS_OFICIAIS_LOWER = {_normalizar_bairro(b): b for b in lista}
+        # Valor sempre é o bairro GERAL (Partes unificadas). Chaves incluem tanto
+        # o nome oficial completo ('...i parte') quanto a base ('...'), pra um
+        # bairro-base anunciado casar exato e vencer sem cair no cache do edifício.
+        _BAIRROS_OFICIAIS_LOWER = {}
+        for b in lista:
+            geral = _bairro_geral(b)
+            _BAIRROS_OFICIAIS_LOWER[_normalizar_bairro(b)] = geral
+            _BAIRROS_OFICIAIS_LOWER.setdefault(_normalizar_bairro(geral), geral)
     except Exception as e:
         print(f"  ⚠️  bairros_maringa.json: {e}")
         _BAIRROS_OFICIAIS_LOWER = {}
@@ -751,6 +781,18 @@ def validar_bairro(bairro_extraido, texto_completo='', edificio='', permitir_web
             cache[_normalizar_bairro(bairro_extraido)] = oficial
             _cv_save()
             return oficial
+
+    # Passo 1.5: bairro anunciado que PARECE bairro (não é nome de prédio) é
+    # confiável mesmo sem estar na lista oficial — mantém o anunciado (só
+    # unifica Partes) em vez de deixar o cache do edifício sobrescrever com
+    # um valor errado. Foi essa sobrescrita que trocava 'Alto das Grevíleas'
+    # por 'Jardim Paraíso'. O cache do edifício só entra quando NÃO há bairro
+    # anunciado (ou quando o "bairro" é nome de condomínio/edifício).
+    if bairro_extraido and _parece_bairro(bairro_extraido):
+        geral = _bairro_geral(bairro_extraido.strip())
+        cache[_normalizar_bairro(bairro_extraido)] = geral
+        _cv_save()
+        return geral
 
     # Passo 2: cache por edifício — só valores que são bairros oficiais
     if chave_cache and chave_cache in cache:

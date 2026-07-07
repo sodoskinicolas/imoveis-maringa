@@ -232,10 +232,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card-expand-arrow{font-size:11px;color:#9c72c8;margin-left:4px;transition:transform .2s;display:inline-block;opacity:.5}
 .card.expanded .card-expand-arrow{transform:rotate(180deg);opacity:1}
 
+.cobertura-badge{display:inline-flex;align-items:center;gap:7px;background:#f0f7f0;border:1px solid #d9ead3;color:#357a38;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.cob-bar{width:70px;height:6px;background:#d9ead3;border-radius:99px;overflow:hidden}
+.cob-bar-fill{display:block;height:100%;background:#4caf50;border-radius:99px;transition:width .4s}
+.cob-pct{color:#4a8a4d;font-weight:700}
 @media(max-width:640px){
   .topbar,.hero,.statsbar,.content{padding-left:16px;padding-right:16px}
   .tabnav{padding-left:16px}
   .card-price{font-size:16px}
+  .cobertura-badge .cob-bar,.cobertura-badge .cob-pct{display:none}
 }
 </style>
 </head>
@@ -243,7 +248,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <div class="topbar">
   <span class="logo">Imóveis Maringá</span>
-  <span class="topbar-meta">Atualizado 07/07/2026 00:54</span>
+  <span class="cobertura-badge" title="Edifícios verticais com planta preenchida, de 1493 mapeados no GeoMaringá">
+    🏢 <b>69</b>/1493 edifícios
+    <span class="cob-bar"><span class="cob-bar-fill" style="width:5%"></span></span>
+    <span class="cob-pct">5%</span>
+  </span>
+  <span class="topbar-meta">Atualizado 07/07/2026 01:02</span>
 </div>
 
 <!-- Tab nav -->

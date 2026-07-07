@@ -263,7 +263,12 @@ def carregar_demandas_arquivadas():
 
 def gerar_html(imoveis, demandas, demandas_arq=None):
     demandas_arq = demandas_arq or []
-    imoveis_venda = [i for i in imoveis if i.get("status") != "Aluguel"]
+    # Não lista imóveis inativos na venda (Removido/Cancelado/Descartado) — é
+    # onde caem as duplicatas antigas dos tenants depois do consolidar_tenants.py.
+    # 'Vendido' continua aparecendo (histórico).
+    _inativos = {"Removido", "Cancelado", "Descartado"}
+    imoveis_venda = [i for i in imoveis
+                     if i.get("status") != "Aluguel" and i.get("status") not in _inativos]
     imoveis_loc   = [i for i in imoveis if i.get("status") == "Aluguel"]
     total_i   = len(imoveis_venda)
     total_l   = len(imoveis_loc)

@@ -281,9 +281,27 @@ def gerar_html(imoveis, demandas, demandas_arq=None):
             vert_planta = _cv.execute(
                 "SELECT COUNT(*) FROM verticais_geo WHERE plantas IS NOT NULL AND plantas != '[]'"
             ).fetchone()[0]
+            vert_preco = _cv.execute(
+                "SELECT COUNT(*) FROM verticais_geo WHERE "
+                "(preco IS NOT NULL AND preco != '' AND preco != 0) OR "
+                "(preco_medio IS NOT NULL AND preco_medio != '' AND preco_medio != 0)"
+            ).fetchone()[0]
+            # área privativa: edifícios com ao menos uma planta com 'area' preenchida
+            vert_area = 0
+            for (_pl,) in _cv.execute(
+                "SELECT plantas FROM verticais_geo WHERE plantas IS NOT NULL AND plantas != '[]'"
+            ).fetchall():
+                try:
+                    _arr = json.loads(_pl)
+                except Exception:
+                    continue
+                if any(isinstance(_p, dict) and _p.get("area") not in (None, "", 0) for _p in _arr):
+                    vert_area += 1
     except Exception:
-        total_vert, vert_planta = 0, 0
-    pct_vert = round(vert_planta / total_vert * 100) if total_vert else 0
+        total_vert, vert_planta, vert_preco, vert_area = 0, 0, 0, 0
+    pct_vert  = round(vert_planta / total_vert * 100) if total_vert else 0
+    pct_preco = round(vert_preco  / total_vert * 100) if total_vert else 0
+    pct_area  = round(vert_area   / total_vert * 100) if total_vert else 0
     agora     = datetime.now().strftime("%d/%m/%Y %H:%M")
     dados_i   = json.dumps(imoveis_venda, ensure_ascii=False)
     dados_l   = json.dumps(imoveis_loc,   ensure_ascii=False)
@@ -524,10 +542,19 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .card-expand-arrow{{font-size:11px;color:#9c72c8;margin-left:4px;transition:transform .2s;display:inline-block;opacity:.5}}
 .card.expanded .card-expand-arrow{{transform:rotate(180deg);opacity:1}}
 
-.cobertura-badge{{display:inline-flex;align-items:center;gap:7px;background:#f0f7f0;border:1px solid #d9ead3;color:#357a38;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;white-space:nowrap}}
+.cob-wrap{{position:relative;display:inline-block}}
+.cobertura-badge{{display:inline-flex;align-items:center;gap:7px;background:#f0f7f0;border:1px solid #d9ead3;color:#357a38;font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;white-space:nowrap;cursor:pointer;user-select:none}}
+.cobertura-badge:hover{{background:#e6f2e6}}
 .cob-bar{{width:70px;height:6px;background:#d9ead3;border-radius:99px;overflow:hidden}}
 .cob-bar-fill{{display:block;height:100%;background:#4caf50;border-radius:99px;transition:width .4s}}
 .cob-pct{{color:#4a8a4d;font-weight:700}}
+.cob-pop{{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:1000;background:#fff;border:1px solid #d9ead3;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.14);padding:14px 16px;min-width:230px}}
+.cob-pop.open{{display:block}}
+.cob-pop h4{{margin:0 0 10px;font-size:12px;font-weight:800;color:#357a38;text-transform:uppercase;letter-spacing:.4px}}
+.cob-row{{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:5px 0;font-size:13px;color:#444}}
+.cob-row+.cob-row{{border-top:1px solid #f0f0f0}}
+.cob-row b{{font-size:15px;font-weight:800;color:#111}}
+.cob-row .cob-sub{{font-size:11px;color:#999;font-weight:600}}
 @media(max-width:640px){{
   .topbar,.hero,.statsbar,.content{{padding-left:16px;padding-right:16px}}
   .tabnav{{padding-left:16px}}
@@ -540,10 +567,18 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 
 <div class="topbar">
   <span class="logo">Imóveis Maringá</span>
-  <span class="cobertura-badge" title="Edifícios verticais com planta preenchida, de {total_vert} mapeados no GeoMaringá">
-    🏢 <b>{vert_planta}</b>/{total_vert} edifícios
-    <span class="cob-bar"><span class="cob-bar-fill" style="width:{pct_vert}%"></span></span>
-    <span class="cob-pct">{pct_vert}%</span>
+  <span class="cob-wrap">
+    <span class="cobertura-badge" onclick="toggleCobPop(event)" title="Clique para ver a cobertura de dados dos {total_vert} edifícios verticais">
+      🏢 <b>{vert_planta}</b>/{total_vert} edifícios
+      <span class="cob-bar"><span class="cob-bar-fill" style="width:{pct_vert}%"></span></span>
+      <span class="cob-pct">{pct_vert}%</span>
+    </span>
+    <div class="cob-pop" id="cob-pop">
+      <h4>Cobertura · {total_vert} edifícios verticais</h4>
+      <div class="cob-row"><span>🏢 Com planta</span><span><b>{vert_planta}</b> <span class="cob-sub">{pct_vert}%</span></span></div>
+      <div class="cob-row"><span>💰 Com preço</span><span><b>{vert_preco}</b> <span class="cob-sub">{pct_preco}%</span></span></div>
+      <div class="cob-row"><span>📐 Com área privativa</span><span><b>{vert_area}</b> <span class="cob-sub">{pct_area}%</span></span></div>
+    </div>
   </span>
   <span class="topbar-meta">Atualizado {agora}</span>
 </div>
@@ -731,6 +766,19 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
     <div class="search-wrap">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input type="text" id="busca-bairros" class="search-input" placeholder="Filtrar bairros…" autocomplete="off" oninput="filtrarBairros()">
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px">
+      <select id="tipo-bsel" style="height:36px;border-radius:8px;border:1px solid #ccc;padding:0 8px">
+        <option value="apartamento">Apartamento</option>
+        <option value="casa">Casa</option>
+        <option value="sobrado">Sobrado</option>
+        <option value="terreno">Terreno</option>
+        <option value="">Todos os tipos</option>
+      </select>
+      <input type="text" id="q-bsel" placeholder="Quartos (mín)" style="height:36px;width:120px;border-radius:8px;border:1px solid #ccc;padding:0 10px">
+      <input type="text" id="vagas-bsel" placeholder="Vagas (mín)" style="height:36px;width:110px;border-radius:8px;border:1px solid #ccc;padding:0 10px">
+      <button onclick="buscarBairrosSel()" style="height:36px;padding:0 16px;border-radius:8px;border:none;background:#1a2b6b;color:#fff;cursor:pointer;font-weight:600">Ver imóveis dos bairros marcados (<span id="n-bsel">0</span>)</button>
+      <a onclick="limparBairrosSel()" style="cursor:pointer;color:#666;font-size:13px">Limpar seleção</a>
     </div>
   </div>
   <div class="content" id="content-bairros">
@@ -942,6 +990,15 @@ function mudarAba(aba,el){{
   el.classList.add('active');
   document.getElementById('panel-'+aba).classList.add('active');
 }}
+
+function toggleCobPop(ev){{
+  ev.stopPropagation();
+  document.getElementById('cob-pop').classList.toggle('open');
+}}
+document.addEventListener('click',function(e){{
+  var p=document.getElementById('cob-pop');
+  if(p && p.classList.contains('open') && !e.target.closest('.cob-wrap')) p.classList.remove('open');
+}});
 
 /* ════ IMÓVEIS ════ */
 function extrairEdificio(obs) {{
@@ -1487,6 +1544,40 @@ function initBairros(){{
   renderBairrosList();
 }}
 
+// Seleção múltipla de bairros → mostra o mesmo tipo de imóvel em todos
+var _bairrosSel=new Set();
+function toggleBairroSel(cb){{
+  var b=cb.closest('.bairro-row').dataset.bairro;
+  if(cb.checked) _bairrosSel.add(b); else _bairrosSel.delete(b);
+  var n=document.getElementById('n-bsel'); if(n) n.textContent=_bairrosSel.size;
+}}
+function limparBairrosSel(){{
+  _bairrosSel.clear();
+  var n=document.getElementById('n-bsel'); if(n) n.textContent=0;
+  renderBairrosList();
+}}
+function buscarBairrosSel(){{
+  if(!_bairrosSel.size){{ alert('Marque ao menos um bairro na lista abaixo.'); return; }}
+  var tipo=(document.getElementById('tipo-bsel').value||'').toLowerCase();
+  var qmin=parseInt(document.getElementById('q-bsel').value)||0;
+  var vmin=parseInt(document.getElementById('vagas-bsel').value)||0;
+  var excl=['Vendido','Removido','Cancelado','Descartado'];
+  var res=IMOVEIS.filter(function(im){{
+    if(excl.indexOf(im.status)!==-1) return false;
+    if(!_bairrosSel.has(baseBairro(im.bairro))) return false;
+    if(tipo && (im.tipo||'').toLowerCase().indexOf(tipo)===-1) return false;
+    if(qmin && !(im.quartos&&im.quartos>=qmin)) return false;
+    if(vmin && !(im.vagas&&im.vagas>=vmin)) return false;
+    return true;
+  }});
+  res.sort(function(a,b){{return(a.preco||9e9)-(b.preco||9e9);}});
+  var bl=[..._bairrosSel].sort(function(a,b){{return a.localeCompare(b,'pt-BR');}}).join(' · ');
+  var html='<div class="bairros-breadcrumb"><a onclick="renderBairrosList()">🏘️ Bairros</a> › <strong>'+res.length+' imóveis em '+_bairrosSel.size+' bairro(s)</strong></div>';
+  html+='<div class="muted" style="margin:0 0 10px;font-size:13px">'+bl+'</div>';
+  html+='<div class="grid">'+(res.length?res.map(cardI).join(''):'<div class="empty"><p>Nenhum imóvel com esses filtros nos bairros marcados.</p></div>')+'</div>';
+  document.getElementById('content-bairros').innerHTML=html;
+}}
+
 function filtrarBairros(){{
   renderBairrosList();
 }}
@@ -1542,6 +1633,7 @@ function renderBairrosList(){{
     var totalI=0,totalD=0;
     Object.values(edifs).forEach(function(e){{totalI+=e.imoveis.length;totalD+=e.demandas.length;}});
     html+='<div class="bairro-row" data-bairro="'+b.replace(/"/g,'&quot;')+'" onclick="renderEdificiosDoBairro(this.dataset.bairro)">';
+    html+='<label onclick="event.stopPropagation()" style="display:flex;align-items:center;padding:0 10px 0 0;cursor:pointer"><input type="checkbox" onclick="event.stopPropagation()" onchange="toggleBairroSel(this)" '+(_bairrosSel.has(b)?'checked':'')+' style="width:17px;height:17px;cursor:pointer"></label>';
     html+='<div class="bairro-name">'+b+'</div>';
     html+='<div class="bairro-badges">';
     if(totalI) html+='<span class="bairro-badge-i">'+totalI+' imóveis</span>';

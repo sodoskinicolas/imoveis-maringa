@@ -1287,3 +1287,165 @@
 [2026-07-07 11:18]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
 [2026-07-07 11:18]   Total: 2 erros, 4 avisos
 [2026-07-07 11:18] ──────────────────────────────────────────────────────────────
+[2026-07-07 12:46] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 12:46]   🔴 473 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 12:46]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 12:46]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 12:46]   📵 15 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55]
+[2026-07-07 12:46]   ⚠️ 6243 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 12:46]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
+[2026-07-07 12:46]   Total: 2 erros, 4 avisos
+[2026-07-07 12:46] ──────────────────────────────────────────────────────────────
+[2026-07-07 12:46] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 12:46]   🔴 473 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 12:46]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 12:46]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 12:46]   📵 15 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55]
+[2026-07-07 12:46]   ⚠️ 6243 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 12:46]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
+[2026-07-07 12:46]   Total: 2 erros, 4 avisos
+[2026-07-07 12:46] ──────────────────────────────────────────────────────────────
+[2026-07-07 13:46] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 13:46]   🔴 473 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 13:46]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 13:46]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 13:46]   📵 15 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55]
+[2026-07-07 13:46]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 13:46]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
+[2026-07-07 13:46]   Total: 2 erros, 4 avisos
+[2026-07-07 13:46] ──────────────────────────────────────────────────────────────
+[2026-07-07 13:46] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 13:46]   🔴 473 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 13:46]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 13:46]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 13:46]   📵 15 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55]
+[2026-07-07 13:46]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 13:46]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
+[2026-07-07 13:46]   Total: 2 erros, 4 avisos
+[2026-07-07 13:46] ──────────────────────────────────────────────────────────────
+[2026-07-07 15:02] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 15:02]   🔴 473 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 15:02]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 15:02]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 15:02]   📵 15 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55]
+[2026-07-07 15:02]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 15:02]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
+[2026-07-07 15:02]   Total: 2 erros, 4 avisos
+[2026-07-07 15:02] ──────────────────────────────────────────────────────────────
+[2026-07-07 15:02] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 15:02]   🔴 473 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 15:02]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 15:02]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 15:02]   📵 15 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55]
+[2026-07-07 15:02]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 15:02]   ⚠️ 5 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58]
+[2026-07-07 15:02]   Total: 2 erros, 4 avisos
+[2026-07-07 15:02] ──────────────────────────────────────────────────────────────
+[2026-07-07 19:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 19:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 19:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 19:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 19:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 19:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 19:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 19:12]   Total: 2 erros, 4 avisos
+[2026-07-07 19:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 19:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 19:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 19:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 19:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 19:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 19:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 19:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 19:12]   Total: 2 erros, 4 avisos
+[2026-07-07 19:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 20:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 20:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 20:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 20:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 20:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 20:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 20:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 20:12]   Total: 2 erros, 4 avisos
+[2026-07-07 20:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 20:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 20:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 20:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 20:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 20:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 20:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 20:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 20:12]   Total: 2 erros, 4 avisos
+[2026-07-07 20:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 21:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 21:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 21:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 21:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 21:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 21:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 21:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 21:12]   Total: 2 erros, 4 avisos
+[2026-07-07 21:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 21:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 21:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 21:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 21:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 21:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 21:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 21:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 21:12]   Total: 2 erros, 4 avisos
+[2026-07-07 21:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 22:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 22:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 22:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 22:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 22:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 22:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 22:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 22:12]   Total: 2 erros, 4 avisos
+[2026-07-07 22:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 22:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 22:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 22:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 22:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 22:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 22:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 22:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 22:12]   Total: 2 erros, 4 avisos
+[2026-07-07 22:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 23:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 23:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 23:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 23:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 23:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 23:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 23:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 23:12]   Total: 2 erros, 4 avisos
+[2026-07-07 23:12] ──────────────────────────────────────────────────────────────
+[2026-07-07 23:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-07 23:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-07 23:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-07 23:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-07 23:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-07 23:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-07 23:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-07 23:12]   Total: 2 erros, 4 avisos
+[2026-07-07 23:12] ──────────────────────────────────────────────────────────────
+[2026-07-08 00:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-08 00:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-08 00:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-08 00:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-08 00:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-08 00:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-08 00:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-08 00:12]   Total: 2 erros, 4 avisos
+[2026-07-08 00:12] ──────────────────────────────────────────────────────────────
+[2026-07-08 00:12] ── Relatório verificador ──────────────────────────────────────
+[2026-07-08 00:12]   🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)
+[2026-07-08 00:12]   🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]
+[2026-07-08 00:12]   📵 18222 imóveis ativos sem contato: ids=[1053, 1113, 1116, 1117, 1119, 1122, 1123, 1125, 1126, 1134]
+[2026-07-08 00:12]   📵 16 demandas sem contato: ids=[1, 2, 3, 5, 6, 29, 38, 40, 41, 45, 49, 51, 52, 53, 55, 60]
+[2026-07-08 00:12]   ⚠️ 6244 imóveis ativos com area/quartos/preco faltando: ids=[1052, 1053, 1054, 1055, 1056, 1057, 1058, 1062, 1063, 1064]
+[2026-07-08 00:12]   ⚠️ 6 demandas com edifício mas specs incompletos: ids=[51, 52, 53, 55, 58, 60]
+[2026-07-08 00:12]   Total: 2 erros, 4 avisos
+[2026-07-08 00:12] ──────────────────────────────────────────────────────────────

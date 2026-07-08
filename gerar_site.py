@@ -261,6 +261,63 @@ def carregar_demandas_arquivadas():
     return _transformar_demandas(registros, status_label="Arquivada")
 
 
+def _coletar_mercado():
+    """Edifícios verticais com estrutura de lazer catalogada (coluna `lazer`).
+    Alimenta a aba Mercado com o filtro de lazer."""
+    import unicodedata as _ud
+
+    def _norm(s):
+        s = (s or "").strip().lower()
+        return "".join(ch for ch in _ud.normalize("NFD", s)
+                       if _ud.category(ch) != "Mn")
+
+    try:
+        with db.db_conn() as cm:
+            rows = cm.execute(
+                "SELECT cadastro_es, nome_web, nome_cadastral, bairro, tipo_logradouro, "
+                "logradouro, numeros, n_unidades, preco, lazer, lazer_confianca "
+                "FROM verticais_geo WHERE classe='vertical' AND lazer IS NOT NULL "
+                "AND lazer!='' AND lazer!='[]' ORDER BY n_unidades DESC"
+            ).fetchall()
+    except Exception:
+        return []
+    out = []
+    for r in rows:
+        ces, nome_web, nome_cad, bairro, tl, lg, nums, nun, preco, lazer, conf = (
+            r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7], r[8], r[9], r[10])
+        try:
+            itens = [str(x).strip() for x in json.loads(lazer) if str(x).strip()]
+        except Exception:
+            itens = []
+        if not itens:
+            continue
+        nome = (nome_web or nome_cad or "").strip()
+        if nome.isupper():
+            nome = nome.title()
+        num = ""
+        try:
+            arr = json.loads(nums) if nums else []
+            if arr:
+                num = str(arr[0])
+        except Exception:
+            pass
+        endereco = " ".join(p for p in [(tl or "").strip(),
+                                        (lg or "").split(",")[0].strip()] if p)
+        if num:
+            endereco += f", {num}"
+        out.append({
+            "id": ces,
+            "nome": nome,
+            "bairro": (bairro or "").strip().title(),
+            "endereco": endereco.strip(", ").strip(),
+            "unidades": nun or 0,
+            "preco": (preco or "").strip(),
+            "conf": conf or "",
+            "lazer": sorted(set(itens), key=_norm),
+        })
+    return out
+
+
 def gerar_html(imoveis, demandas, demandas_arq=None):
     demandas_arq = demandas_arq or []
     # Não lista imóveis inativos na venda (Removido/Cancelado/Descartado) — é
@@ -307,6 +364,9 @@ def gerar_html(imoveis, demandas, demandas_arq=None):
     dados_l   = json.dumps(imoveis_loc,   ensure_ascii=False)
     dados_d   = json.dumps(demandas,      ensure_ascii=False)
     dados_da  = json.dumps(demandas_arq,  ensure_ascii=False)
+    mercado   = _coletar_mercado()
+    total_m   = len(mercado)
+    dados_m   = json.dumps(mercado, ensure_ascii=False)
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -350,6 +410,29 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 .filter-sep{{width:1px;height:20px;background:#e0e0db;margin:0 2px}}
 .btn-clear{{padding:7px 12px;border:1.5px solid transparent;border-radius:8px;font-size:13px;color:#999;background:none;cursor:pointer}}
 .btn-clear:hover{{color:#111}}
+
+/* Mercado: multiselect dropdown de lazer */
+.ms-wrap{{position:relative;display:inline-block}}
+.ms-btn{{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid #e0e0db;border-radius:8px;background:#fff;font-size:13px;color:#333;cursor:pointer;min-width:200px;justify-content:space-between}}
+.ms-btn:hover{{border-color:#111}}
+.ms-btn.has{{border-color:#111;background:#111;color:#fff}}
+.ms-pop{{display:none;position:absolute;top:calc(100% + 6px);left:0;z-index:30;background:#fff;border:1px solid #e0e0db;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.14);padding:8px;max-height:320px;overflow:auto;min-width:240px}}
+.ms-pop.open{{display:block}}
+.ms-opt{{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;font-size:13px;color:#333;cursor:pointer;white-space:nowrap}}
+.ms-opt:hover{{background:#f4f4f0}}
+.ms-opt input{{accent-color:#111}}
+.ms-opt .cnt{{margin-left:auto;color:#999;font-size:11px;background:#f0f0ec;border-radius:9px;padding:0 6px}}
+/* Mercado: cards de edifício */
+.mkgrid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:4px 28px 40px}}
+.mkcard{{background:#fff;border:1px solid #eee;border-radius:12px;padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}}
+.mkcard h3{{font-size:15px;font-weight:700;margin:0}}
+.mkcard .addr{{color:#666;font-size:12.5px;margin-top:2px}}
+.mkcard .meta{{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:#888;margin:8px 0 2px}}
+.mkcard .meta b{{color:#333}}
+.mktags{{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}}
+.mktag{{background:#f0f4f0;color:#256;border-radius:6px;padding:3px 8px;font-size:12px}}
+.mktag.hit{{background:#111;color:#fff}}
+.mkbadge{{font-size:10px;padding:1px 6px;border-radius:5px;background:#eee;color:#888;margin-left:6px;vertical-align:middle}}
 
 /* Stats */
 .statsbar{{display:flex;gap:24px;padding:16px 28px 0}}
@@ -603,6 +686,9 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   <div class="tab" onclick="mudarAba('bairros',this);initBairros()">
     🏘️ Bairros
   </div>
+  <div class="tab" onclick="mudarAba('mercado',this);renderMercado()">
+    📊 Mercado <span class="tab-badge" id="badge-mercado">{total_m}</span>
+  </div>
 </nav>
 
 <!-- ═══ PAINEL IMÓVEIS ═══ -->
@@ -786,6 +872,31 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
   </div>
 </div>
 
+<!-- ═══ PAINEL MERCADO (edifícios + filtro de lazer) ═══ -->
+<div class="panel" id="panel-mercado">
+  <div class="hero">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="busca-m" class="search-input" placeholder="Buscar edifício, bairro ou endereço…" autocomplete="off" oninput="renderMercado()">
+    </div>
+    <div class="filterbar">
+      <div class="ms-wrap" id="ms-lazer">
+        <button type="button" class="ms-btn" id="ms-btn" onclick="msToggleOpen(event)">
+          <span id="ms-label">Lazer: todos</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="ms-pop" id="ms-pop"></div>
+      </div>
+      <label style="font-size:13px;color:#555;display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+        <input type="checkbox" id="ms-mode" checked onchange="renderMercado()"> exigir todos os itens marcados
+      </label>
+      <a class="btn-clear" onclick="msClear()">Limpar</a>
+      <span style="margin-left:auto;font-size:13px;color:#555">Mostrando <b id="m-cnt">0</b> edifícios</span>
+    </div>
+  </div>
+  <div class="mkgrid" id="content-mercado"></div>
+</div>
+
 <!-- ═══ PAINEL DEMANDAS ═══ -->
 <div class="panel" id="panel-demandas">
   <div class="hero">
@@ -917,6 +1028,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
 var IMOVEIS  = {dados_i};
 var LOCACAO  = {dados_l};
 var DEMANDAS = {dados_d};
+var MERCADO  = {dados_m};
 var ARQUIVADAS = {dados_da};
 
 /* ── helpers ── */
@@ -989,6 +1101,88 @@ function mudarAba(aba,el){{
   document.querySelectorAll('.panel').forEach(function(p){{p.classList.remove('active');}});
   el.classList.add('active');
   document.getElementById('panel-'+aba).classList.add('active');
+}}
+
+/* ════ MERCADO (edifícios + filtro de lazer, lógica E) ════ */
+var mkSel = new Set();
+var mkBuilt = false;
+function mkNorm(s){{ return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,''); }}
+function mkBuildPop(){{
+  var freq = {{}}, labelOf = {{}};
+  MERCADO.forEach(function(e){{
+    (e.lazer||[]).forEach(function(it){{
+      var k = mkNorm(it);
+      freq[k] = (freq[k]||0)+1;
+      if(!labelOf[k]) labelOf[k] = it;
+    }});
+  }});
+  var keys = Object.keys(freq).sort(function(a,b){{ return freq[b]-freq[a] || a.localeCompare(b); }});
+  var pop = document.getElementById('ms-pop');
+  pop.innerHTML = keys.map(function(k){{
+    return '<label class="ms-opt"><input type="checkbox" value="'+k+'" onchange="msOnCheck(this)">'+
+           labelOf[k]+'<span class="cnt">'+freq[k]+'</span></label>';
+  }}).join('') || '<div style="padding:10px;color:#999;font-size:13px">Sem dados de lazer ainda.</div>';
+  mkBuilt = true;
+}}
+function msToggleOpen(ev){{
+  ev.stopPropagation();
+  document.getElementById('ms-pop').classList.toggle('open');
+}}
+document.addEventListener('click',function(e){{
+  var pop = document.getElementById('ms-pop');
+  if(pop && pop.classList.contains('open') && !e.target.closest('#ms-lazer')) pop.classList.remove('open');
+}});
+function msOnCheck(cb){{
+  if(cb.checked) mkSel.add(cb.value); else mkSel.delete(cb.value);
+  msSyncLabel();
+  renderMercado();
+}}
+function msSyncLabel(){{
+  var btn = document.getElementById('ms-btn'), lbl = document.getElementById('ms-label');
+  if(mkSel.size===0){{ lbl.textContent='Lazer: todos'; btn.classList.remove('has'); }}
+  else {{ lbl.textContent = mkSel.size+' item'+(mkSel.size>1?'s':'')+' de lazer'; btn.classList.add('has'); }}
+}}
+function msClear(){{
+  mkSel.clear();
+  document.querySelectorAll('#ms-pop input:checked').forEach(function(c){{c.checked=false;}});
+  document.getElementById('busca-m').value='';
+  msSyncLabel();
+  renderMercado();
+}}
+function renderMercado(){{
+  if(!mkBuilt) mkBuildPop();
+  var q = mkNorm(document.getElementById('busca-m').value);
+  var modeAll = document.getElementById('ms-mode').checked;
+  var sel = Array.from(mkSel);
+  var out = MERCADO.filter(function(e){{
+    var keys = (e.lazer||[]).map(mkNorm);
+    var okSel;
+    if(sel.length===0) okSel = true;
+    else if(modeAll) okSel = sel.every(function(k){{return keys.indexOf(k)!==-1;}});
+    else okSel = sel.some(function(k){{return keys.indexOf(k)!==-1;}});
+    if(!okSel) return false;
+    if(q){{
+      var hay = mkNorm((e.nome||'')+' '+(e.bairro||'')+' '+(e.endereco||''));
+      if(hay.indexOf(q)===-1) return false;
+    }}
+    return true;
+  }});
+  document.getElementById('m-cnt').textContent = out.length;
+  var grid = document.getElementById('content-mercado');
+  if(out.length===0){{ grid.innerHTML='<div class="empty" style="grid-column:1/-1"><p>Nenhum edifício com essa combinação de lazer.</p></div>'; return; }}
+  grid.innerHTML = out.map(function(e){{
+    var tags = (e.lazer||[]).map(function(it){{
+      var hit = mkSel.has(mkNorm(it));
+      return '<span class="mktag'+(hit?' hit':'')+'">'+it+'</span>';
+    }}).join('');
+    var conf = e.conf ? '<span class="mkbadge">'+e.conf+'</span>' : '';
+    var preco = e.preco ? '<span><b>R$ '+Number(e.preco).toLocaleString('pt-BR')+'</b></span>' : '';
+    var unid = e.unidades ? '<span><b>'+e.unidades+'</b> unid.</span>' : '';
+    return '<div class="mkcard"><h3>'+(e.nome||'—')+conf+'</h3>'+
+      '<div class="addr">'+(e.endereco||'')+(e.bairro?' · '+e.bairro:'')+'</div>'+
+      '<div class="meta">'+unid+preco+'</div>'+
+      '<div class="mktags">'+tags+'</div></div>';
+  }}).join('');
 }}
 
 function toggleCobPop(ev){{

@@ -1,5 +1,5 @@
 {
-  "ts": "2026-07-08T00:12:07.719834",
+  "ts": "2026-07-09T07:33:13.183938",
   "erros": [
     "🔴 644 grupos de imóveis duplicados: ids=[3357,3358,3359,3360] (,,R$101,sem área); ids=[3060,3396,3417] (,,R$300,sem área); ids=[3061,3067,3386] (,,R$330,sem área); ids=[3015,3027,3058,3071,3421] (,,R$350,sem área); ids=[3018,3433,3434] (,,R$390,sem área)",
     "🔴 2 demandas duplicadas por corretor+edificio: +55 44 9886-0181 CORRETOR MGA / Barcelona → ids=[53,55,60]; João Brenner / Vision → ids=[5,6]"

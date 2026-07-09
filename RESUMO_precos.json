@@ -1,0 +1,89 @@
+{
+  "atualizado_em": "2026-07-08T01:00:36.499842",
+  "edificios_analisados": 744,
+  "bairros_analisados": 403,
+  "m2_medio_com_lazer_completo": 8633,
+  "m2_medio_sem_lazer": 6394,
+  "por_padrao": {
+    "sem_classe": {
+      "n": 15,
+      "m2_medio": null
+    },
+    "alto": {
+      "n": 240,
+      "m2_medio": 10538
+    },
+    "baixo": {
+      "n": 243,
+      "m2_medio": 4139
+    },
+    "medio": {
+      "n": 246,
+      "m2_medio": 6450
+    }
+  },
+  "padrao_de_cadastro": 29,
+  "total_suspeitos_direitos": 647,
+  "top_bairros_m2": [
+    {
+      "bairro": "Zona Armazém",
+      "m2": 13431,
+      "n": 61
+    },
+    {
+      "bairro": "Jardim Veredas",
+      "m2": 11818,
+      "n": 1
+    },
+    {
+      "bairro": "Jardim Alamar",
+      "m2": 11479,
+      "n": 28
+    },
+    {
+      "bairro": "Zona 01 Centro",
+      "m2": 10258,
+      "n": 18
+    },
+    {
+      "bairro": "Zona 03",
+      "m2": 10082,
+      "n": 576
+    },
+    {
+      "bairro": "Estrada Romeirinha",
+      "m2": 10000,
+      "n": 1
+    },
+    {
+      "bairro": "Centro",
+      "m2": 9997,
+      "n": 1246
+    },
+    {
+      "bairro": "Jardim Aclimação",
+      "m2": 9968,
+      "n": 470
+    },
+    {
+      "bairro": "Jardim Tabaeté",
+      "m2": 9645,
+      "n": 68
+    },
+    {
+      "bairro": "Rua Distrito Federal",
+      "m2": 9494,
+      "n": 1
+    }
+  ],
+  "edificios_maior_valorizacao_30d": [],
+  "edificios_maior_queda_30d": [],
+  "edificios_mais_baixaram": [
+    {
+      "cad": 1127199,
+      "bairro": "Centro",
+      "pct": 100.0,
+      "n_ativos": 22
+    }
+  ]
+}

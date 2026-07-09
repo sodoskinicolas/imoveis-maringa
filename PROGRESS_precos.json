@@ -1,20 +1,20 @@
 {
-  "atualizado_em": "2026-07-08T00:08:46.537151",
-  "com_preco": 725,
+  "atualizado_em": "2026-07-08T05:27:18.181499-03:00",
+  "com_preco": 817,
   "total": 1235,
-  "pct": 59,
-  "com_planta": 966,
+  "pct": 66,
+  "com_planta": 973,
   "ultimo_lote": [
-    "INFANTE DON HENRIQUE R$1.090.000",
-    "MONTE AQUILA R$210.000",
-    "MARQUÊS DE OLINDA (revisar_web)",
-    "SÃO JOSÉ/San Jose (revisar_web)",
-    "HORTÊNCIA (revisar_web)",
-    "MERCÚRIO (revisar_web)",
-    "MONTE VISO (revisar_web)",
-    "SAINT JAMES (revisar_web)",
-    "PRIMAVERA (revisar_web)",
-    "MARANA (revisar_web)"
+    "Rio da Prata - R$ 250.000",
+    "Saldanha - R$ 430.000",
+    "Regente Feijó - revisar",
+    "Michelli - revisar",
+    "Granado - revisar",
+    "Santana - revisar",
+    "Camões - revisar",
+    "Sol do Caribe - revisar",
+    "Olinda - revisar",
+    "Ypacaraí - revisar"
   ],
-  "restam_sem_preco": 510
+  "restam_sem_preco": 418
 }

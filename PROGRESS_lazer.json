@@ -1,19 +1,19 @@
 {
-  "atualizado_em": "2026-07-08T00:11:34",
-  "com_lazer": 250,
-  "total": 1235,
-  "pct": 20,
-  "ultimo_lote": [
-    "HERMAN LUNDGREN — (sem lazer explícito na web)",
-    "CENTAURO — salão de festas [media]",
-    "VISCONDE DE OURO PRETO — academia, bicicletário, portaria 24h, salão de festas [media]",
-    "TOMÁS DE AQUINO — churrasqueira, piscina, portaria 24h, quadra poliesportiva, salão de festas [alta]",
-    "MONJARDIM — academia, brinquedoteca, espaço gourmet, piscina, playground, portaria 24h, quadra poliesportiva, sala de jogos, salão de festas, sauna [alta]",
-    "VILLAGE VERDE — bicicletário, salão de festas [baixa]",
-    "VILLA FERRARA — salão de festas [baixa]",
-    "PARANAGUÁ STUDIOS — loja de conveniência, sala de estudos, salão de festas, terraço [media]",
-    "MELBOURNE — (sem lazer explícito na web)",
-    "MARIA AUGUSTA — (sem lazer explícito na web)"
-  ],
-  "restam_sem_lazer": 862
+ "atualizado_em": "2026-07-08T05:30:14",
+ "com_lazer": 406,
+ "total": 1235,
+ "pct": 33,
+ "ultimo_lote": [
+  "NIÁGARA (R. Mandaguari 62, Zona 07) — salão de festas",
+  "MARAJÓ — sem lazer explícito (revisar_web)",
+  "DOIS IRMÃOS — sem lazer explícito (revisar_web)",
+  "TARSILA DO AMARAL — sem lazer explícito (revisar_web)",
+  "PLAZA ASTÚRIAS — sem lazer explícito (revisar_web)",
+  "MARIA REGINA — sem lazer explícito (revisar_web)",
+  "THOMAZ BERALDI — só churrasqueira privativa/portaria remota (revisar_web)",
+  "CANADÁ — sem lazer explícito (revisar_web)",
+  "PARIGOT DE SOUZA — sem lazer confiável (revisar_web)",
+  "LÍRIOS — sem lazer confiável (revisar_web)"
+ ],
+ "restam_sem_lazer": 599
 }

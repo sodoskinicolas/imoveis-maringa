@@ -16,5 +16,95 @@
     "descoberto_em": "2026-07-04",
     "analisado": true,
     "config_gerada": false
+  },
+  "cortegaimoveis.com.br": {
+    "url_exemplo": "https://cortegaimoveis.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Ortega Negócios Imobiliários",
+    "plataforma": "html-generico"
+  },
+  "bgimobi.com.br": {
+    "url_exemplo": "https://bgimobi.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "BG Imobi",
+    "plataforma": "desconhecida"
+  },
+  "nerisimobiliaria.com.br": {
+    "url_exemplo": "https://nerisimobiliaria.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Neris Imóveis (Sarandi/Paiçandu)",
+    "plataforma": "desconhecida"
+  },
+  "sarandiimoveis.com.br": {
+    "url_exemplo": "https://sarandiimoveis.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Sarandi Imóveis",
+    "plataforma": "sem-resposta"
+  },
+  "libraimoveismga.com.br": {
+    "url_exemplo": "https://libraimoveismga.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Libra Imóveis",
+    "plataforma": "html-generico"
+  },
+  "renovagestaodeimoveis.com.br": {
+    "url_exemplo": "https://renovagestaodeimoveis.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Renova Gestão (Sub100-coberto)",
+    "plataforma": "html-generico"
+  },
+  "icasanova.com.br": {
+    "url_exemplo": "https://icasanova.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Imobiliária Casa Nova (Sub100-coberto)",
+    "plataforma": "sub100"
+  },
+  "delaraecarvalho.com.br": {
+    "url_exemplo": "https://delaraecarvalho.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Delara & Carvalho Consultoria",
+    "plataforma": "desconhecida"
+  },
+  "imobiliariamaringa.com.br": {
+    "url_exemplo": "https://imobiliariamaringa.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Imobiliária Maringá",
+    "plataforma": "sem-resposta"
+  },
+  "propostaimoveis.com.br": {
+    "url_exemplo": "https://propostaimoveis.com.br",
+    "descoberto_em": "2026-07-17",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Proposta Imóveis (Sub100-coberto)",
+    "plataforma": "html-generico"
   }
 }

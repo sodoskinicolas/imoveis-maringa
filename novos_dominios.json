@@ -106,5 +106,53 @@
     "origem": "busca_web_claude",
     "nome": "Proposta Imóveis (Sub100-coberto)",
     "plataforma": "html-generico"
+  },
+  "lotusconstrutora.com.br": {
+    "url_exemplo": "https://lotusconstrutora.com.br",
+    "descoberto_em": "2026-07-19",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Lotus Construtora"
+  },
+  "construtoracidadeverde.com.br": {
+    "url_exemplo": "https://construtoracidadeverde.com.br",
+    "descoberto_em": "2026-07-19",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Construtora Cidade Verde (CCV)"
+  },
+  "ayoshii.com.br": {
+    "url_exemplo": "https://ayoshii.com.br",
+    "descoberto_em": "2026-07-19",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "A.Yoshii Engenharia"
+  },
+  "grupoperondi.com.br": {
+    "url_exemplo": "https://grupoperondi.com.br",
+    "descoberto_em": "2026-07-19",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Perondi Construtora e Imobiliária"
+  },
+  "corretorbrunomarinho.com.br": {
+    "url_exemplo": "https://corretorbrunomarinho.com.br",
+    "descoberto_em": "2026-07-19",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Bruno Marinho Corretor"
+  },
+  "imobiliarianacionalmga.com.br": {
+    "url_exemplo": "https://imobiliarianacionalmga.com.br",
+    "descoberto_em": "2026-07-19",
+    "analisado": true,
+    "config_gerada": false,
+    "origem": "busca_web_claude",
+    "nome": "Imobiliária Nacional"
   }
 }
